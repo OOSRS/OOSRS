@@ -56,7 +56,7 @@ cd OOSRS
 java -jar runelite-client/build/libs/openosrs-client-1.0.1.jar
 ```
 
-Use a Java 21 JDK. On Windows, use `gradlew.bat`. The build fetches its pinned game dependency and verifies its SHA-256; you do not need the private maintainer tools. [Full build guide →](docs/BUILDING.md)
+Use a Java 11 JDK. On Windows, use `gradlew.bat`. The build fetches its pinned game dependency and verifies its SHA-256; you do not need the private maintainer tools. [Full build guide →](docs/BUILDING.md)
 
 ## Project layout
 

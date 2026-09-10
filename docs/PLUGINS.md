@@ -25,7 +25,7 @@ cd OOSRS-Plugins
 
 The JAR appears at `welcome-message/build/libs/welcome-message-1.0.0.jar`.
 
-For a separate plugin project, use JDK 21, copy an example source, and reference the matching released client JAR as `compileOnly(files("libs/openosrs-client-1.0.0.jar"))`. Use `compileOnly("org.pf4j:pf4j:3.6.0")` and `annotationProcessor("org.pf4j:pf4j:3.6.0")` so extension discovery is generated. Copy the manifest settings from the example build. Keep your release version and manifest version identical.
+For a separate plugin project, use JDK 11, copy an example source, and reference the matching released client JAR as `compileOnly(files("libs/openosrs-client-1.0.0.jar"))`. Use `compileOnly("org.pf4j:pf4j:3.6.0")` and `annotationProcessor("org.pf4j:pf4j:3.6.0")` so extension discovery is generated. Copy the manifest settings from the example build. Keep your release version and manifest version identical.
 
 ## Lifecycle and events
 

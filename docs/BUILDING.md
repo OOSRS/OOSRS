@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Java **21 JDK**, with `JAVA_HOME` pointing to it.
+- Java **11 JDK**, with `JAVA_HOME` pointing to it.
 - Git and internet access for the first build.
 - Java **11 or newer** and a desktop session for running the client.
 
@@ -26,7 +26,7 @@ The client entry point supplies the module access required by desktop plugins. Y
 ./gradlew :runelite-client:runClient
 ```
 
-Import the repository as a Gradle project in your IDE and select JDK 21. The regular `run` task also launches the client.
+Import the repository as a Gradle project in your IDE and select JDK 11. The regular `run` task also launches the client.
 
 ## Game dependency
 
@@ -50,7 +50,7 @@ Open `openosrs-api/build/docs/javadoc/index.html` or `runelite-api/build/docs/ja
 
 ## Troubleshooting
 
-- **Wrong Java version:** use JDK 21 for builds; released client and launcher JARs run on Java 11 or newer.
+- **Wrong Java version:** use JDK 11 for builds; released client and launcher JARs run on Java 11 or newer.
 - **Dependency download failed:** check connectivity and retry. An invalid download never replaces a verified local game dependency.
 - **Checksum mismatch:** stop and report it; do not remove the verification step.
 - **Client does not start:** inspect `~/.openosrs/logs/`; launcher-specific logs live in `~/.openosrs/launcher/logs/`.
