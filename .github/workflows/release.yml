@@ -1,0 +1,35 @@
+name: Build and release
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Build release artifacts
+        run: ./gradlew releaseArtifacts --console=plain
+      - name: Prepare metadata
+        run: python3 scripts/release.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: oosrs
+          path: release-output/*
+      - name: Publish tagged release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 scripts/release.py --check-tag "$GITHUB_REF_NAME"
+          gh release create "$GITHUB_REF_NAME" release-output/* --verify-tag --title "OpenOSRS $GITHUB_REF_NAME" --generate-notes

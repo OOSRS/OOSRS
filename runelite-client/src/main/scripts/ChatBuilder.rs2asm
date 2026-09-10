@@ -1,0 +1,2199 @@
+.id                 84
+.int_stack_count    1
+.string_stack_count 0
+.int_var_count      24
+.string_var_count   23
+   iconst                 10616888
+   if_getwidth           
+   istore                 1
+   chat_playername       
+   removetags            
+   sstore                 0
+   iconst                 0
+   istore                 2
+   get_varc_int           41
+   iconst                 3
+   if_icmpeq              LABEL12
+   jump                   LABEL14
+LABEL12:
+   iconst                 1
+   istore                 2
+LABEL14:
+   iconst                 0
+   istore                 3
+   iconst                 0
+   istore                 4
+   iconst                 0
+   istore                 5
+   sconst                 "<col=004f00>"
+   sstore                 1
+   sconst                 "<col=0000ff>"
+   sstore                 2
+   sconst                 "<col=0000ff>"
+   sstore                 3
+   sconst                 ""
+   sstore                 4
+   sconst                 ""
+   sstore                 5
+   sconst                 ""
+   sstore                 6
+   sconst                 ""
+   sstore                 7
+   sconst                 ""
+   sstore                 8
+   sconst                 ""
+   sstore                 9
+   sconst                 ""
+   sstore                 10
+   sconst                 ""
+   sstore                 11
+   sconst                 ""
+   sstore                 12
+   sconst                 ""
+   sstore                 13
+   sconst                 ""
+   sstore                 14
+   invoke                 921
+   iconst                 1
+   if_icmpeq              LABEL52
+   jump                   LABEL131
+LABEL52:
+   iconst                 16777215
+   iconst                 1
+   iconst                 1
+   istore                 5
+   istore                 4
+   istore                 3
+   sconst                 "<col=30ff30>"
+   sconst                 "<col=9070ff>"
+   sconst                 "<col=9070ff>"
+   sstore                 3
+   sstore                 2
+   sstore                 1
+   iconst                 2897
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 4
+   iconst                 2899
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 5
+   iconst                 2902
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 6
+   iconst                 2909
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 8
+   iconst                 2907
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 7
+   iconst                 2911
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 9
+   iconst                 2913
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 10
+   iconst                 2976
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 11
+   iconst                 3746
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 12
+   iconst                 3748
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 13
+   iconst                 3750
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 14
+   jump                   LABEL197
+LABEL131:
+   iconst                 2896
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 4
+   iconst                 2898
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 5
+   iconst                 2901
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 6
+   iconst                 2906
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 7
+   iconst                 2908
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 8
+   iconst                 2910
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 9
+   iconst                 2912
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 10
+   iconst                 2975
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 11
+   iconst                 3745
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 12
+   iconst                 3747
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 13
+   iconst                 3749
+   iconst                 1230
+   struct_param          
+   sconst                 "col"
+   invoke                 3739
+   sstore                 14
+LABEL197:
+   iload                  3
+   sconst                 "col"
+   invoke                 3739
+   sstore                 15
+   sload                  4
+   sload                  5
+   sload                  6
+   sload                  15
+   sload                  7
+   sload                  8
+   sload                  9
+   sload                  10
+   sload                  11
+   sload                  12
+   sload                  13
+   sload                  14
+   iload                  5
+   invoke                 4484
+   sstore                 14
+   sstore                 13
+   sstore                 12
+   sstore                 11
+   sstore                 10
+   sstore                 9
+   sstore                 8
+   sstore                 7
+   sstore                 15
+   sstore                 6
+   sstore                 5
+   sstore                 4
+   iconst                 0
+   istore                 6
+   iconst                 0
+   istore                 7
+   iconst                 0
+   istore                 8
+   iconst                 105
+   iconst                 73
+   iconst                 579
+   iload                  8
+   enum                  
+   istore                 9
+   get_varc_int           41
+   iconst                 0
+   if_icmpeq              LABEL246
+   get_varc_int           41
+   iconst                 2
+   if_icmpeq              LABEL246
+   jump                   LABEL302
+LABEL246:
+   chat_getmessagefilter 
+   string_length         
+   iconst                 0
+   if_icmpgt              LABEL251
+   jump                   LABEL302
+LABEL251:
+   sload                  4
+   sconst                 "Public chat filtering:"
+   sconst                 "</col>"
+   sconst                 " "
+   sconst                 "<lt>"
+   chat_getmessagefilter 
+   escape                
+   lowercase             
+   sconst                 "<gt>"
+   join_string            7
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 199
+   istore                 7
+   iload                  9
+   if_clearops           
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonop            
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseover     
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseleave    
+   iload                  6
+   iload                  7
+   sub                   
+   istore                 6
+   iload                  8
+   iconst                 1
+   add                   
+   istore                 8
+   iconst                 105
+   iconst                 73
+   iconst                 579
+   iload                  8
+   enum                  
+   istore                 9
+LABEL302:
+   iload                  0
+   istore                 10
+   iconst                 0
+   istore                 11
+   iconst                 -1
+   istore                 12
+   sconst                 ""
+   sstore                 16
+   sconst                 ""
+   sstore                 17
+   sconst                 ""
+   sstore                 18
+   sconst                 ""
+   sstore                 19
+   iconst                 -1
+   istore                 13
+   iconst                 0
+   istore                 14
+   iconst                 0
+   istore                 15
+   sconst                 ""
+   sstore                 20
+   iconst                 -1
+   istore                 16
+   iconst                 -1
+   istore                 17
+   iconst                 -1
+   istore                 18
+   iconst                 126
+   istore                 19
+   iconst                 126
+   istore                 20
+   iconst                 0
+   activeclansettings_find_affined
+   iconst                 1
+   if_icmpeq              LABEL339
+   jump                   LABEL359
+LABEL339:
+   iconst                 0
+   activeclanchannel_find_affined
+   iconst                 1
+   if_icmpeq              LABEL344
+   jump                   LABEL359
+LABEL344:
+   sload                  0
+   activeclanchannel_getuserslot
+   istore                 17
+   iload                  17
+   iconst                 -1
+   if_icmpne              LABEL351
+   jump                   LABEL354
+LABEL351:
+   iload                  17
+   activeclanchannel_getuserrank
+   istore                 18
+LABEL354:
+   activeclanchannel_getrankkick
+   iconst                 2956
+   invoke                 4456
+   istore                 20
+   istore                 19
+LABEL359:
+   sconst                 ""
+   sstore                 21
+   iconst                 0
+   istore                 21
+   sconst                 ""
+   sstore                 22
+LABEL365:
+   iload                  10
+   iconst                 -1
+   if_icmpne              LABEL369
+   jump                   LABEL1763
+LABEL369:
+   iload                  9
+   iconst                 -1
+   if_icmpne              LABEL373
+   jump                   LABEL1763
+LABEL373:
+   iload                  10
+   chat_gethistoryex_byuid
+   istore                 21
+   sstore                 21                ; timestamp
+   istore                 15
+   sstore                 18
+   sstore                 17
+   sstore                 16
+   istore                 12
+   istore                 11
+   iload                  11
+   sload                  16
+   iload                  15
+   sload                  18
+   invoke                 193
+   iconst                 1
+   if_icmpeq              CHAT_FILTER
+   jump                   LABEL1759
+CHAT_FILTER:
+   sload                  18                ; Load the message
+   iconst                 1                 ; Gets changed to 0 if message is blocked
+   iload                  11                ; Load the messageType
+   iload                  10                 ; Load the id of the messageNode
+   sconst                 "chatFilterCheck"
+   runelite_callback     
+   pop_int               ; Pop the id of the messageNode
+   pop_int               ; Pop the messageType
+   iconst                 1                 ; 2nd half of conditional
+   sstore                 18                ; Override the message with our filtered message
+   if_icmpeq              LABEL391          ; Check if we are building this message
+   jump                   LABEL1759          ; continue to next message, skipping this
+LABEL391:
+   iload                  11
+   sload                  16
+   sload                  21
+   sload                  18
+   sconst                 "null"
+   invoke                 4742
+   sload                  18
+   iload                  12
+   iload                  2
+   sload                  0
+   iload                  15
+   invoke                 90
+   iconst                 1
+   if_icmpeq              LABEL406
+   jump                   LABEL1759
+LABEL406:
+   iconst                 0 ; splitpmbox
+   iload                  10 ; message uid
+   sload                  17 ; message channel
+   sload                  16 ; message name
+   sload                  18 ; message
+   sload                  21 ; message timestamp
+   sconst                 "chatMessageBuilding"
+   runelite_callback     
+   pop_int                   ; pop uid
+   pop_int                   ; splitpmbox
+   sstore                 21 ; message timestamp
+   sstore                 18 ; message
+   sstore                 16 ; message name
+   sstore                 17 ; message channel
+   iload                  11
+   switch                
+      2: LABEL409
+      1: LABEL409
+      90: LABEL433
+      91: LABEL433
+      3: LABEL457
+      7: LABEL457
+      101: LABEL482
+      5: LABEL503
+      6: LABEL539
+      103: LABEL564
+      104: LABEL564
+      110: LABEL564
+      109: LABEL585
+      9: LABEL606
+      111: LABEL635
+      112: LABEL660
+      41: LABEL685
+      44: LABEL904
+      43: LABEL1069
+      46: LABEL1208
+      14: LABEL1263
+      107: LABEL1293
+   jump                   LABEL1332
+LABEL409:
+   sload                  21
+   sload                  16
+   sconst                 ":"
+   join_string            2
+   sconst                 "null"
+   invoke                 4742
+   sload                  4
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 203
+   istore                 7
+   jump                   LABEL1349
+LABEL433:
+   sload                  21
+   sload                  16
+   sconst                 ":"
+   join_string            2
+   sconst                 "null"
+   invoke                 4742
+   sload                  6
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 203
+   istore                 7
+   jump                   LABEL1349
+LABEL457:
+   sload                  21
+   sconst                 "From "
+   sload                  16
+   sconst                 ":"
+   join_string            3
+   sconst                 "privChatUsername"
+   runelite_callback     
+   sconst                 "null"
+   invoke                 4742
+   sload                  5
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 203
+   istore                 7
+   jump                   LABEL1349
+LABEL482:
+   sload                  21
+   sload                  9
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   sconst                 "null"
+   invoke                 4742
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 199
+   istore                 7
+   jump                   LABEL1349
+LABEL503:
+   sload                  21
+   sload                  5
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   sconst                 "null"
+   invoke                 4742
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 199
+   istore                 7
+   get_varbit             1627
+   iconst                 0
+   if_icmpeq              LABEL527
+   jump                   LABEL538
+LABEL527:
+   iload                  12
+   iconst                 500
+   add                   
+   iconst                 1
+   add                   
+   set_varc_int           65
+   iconst                 664
+   iconst                 0
+   sconst                 "1"
+   iconst                 10616832
+   if_setontimer         
+LABEL538:
+   jump                   LABEL1349
+LABEL539:
+   sload                  21
+   sconst                 "To "
+   sload                  16
+   sconst                 ":"
+   join_string            3
+   sconst                 "privChatUsername"
+   runelite_callback     
+   sconst                 "null"
+   invoke                 4742
+   sload                  5
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 203
+   istore                 7
+   jump                   LABEL1349
+LABEL564:
+   sload                  21
+   sload                  10
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   sconst                 "null"
+   invoke                 4742
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 199
+   istore                 7
+   jump                   LABEL1349
+LABEL585:
+   sload                  21
+   sconst                 "<col=1a31f2>"
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   sconst                 "null"
+   invoke                 4742
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 199
+   istore                 7
+   jump                   LABEL1349
+LABEL606:
+   sload                  21
+   sconst                 "["
+   sload                  3
+   sload                  17
+   sconst                 "</col>"
+   sconst                 "] "
+   sload                  16
+   sconst                 ":"
+   join_string            7
+   sconst                 "null"
+   invoke                 4742
+   sload                  7
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 203
+   istore                 7
+   jump                   LABEL1349
+LABEL635:
+   sload                  18
+   invoke                 632
+   sstore                 18
+   sstore                 22
+   sload                  21
+   sconst                 "<col=1a31f2>"
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   sconst                 "null"
+   invoke                 4742
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 199
+   istore                 7
+   jump                   LABEL1349
+LABEL660:
+   sload                  18
+   invoke                 632
+   sstore                 18
+   sstore                 22
+   sload                  21
+   sconst                 "<col=1a31f2>"
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   sconst                 "null"
+   invoke                 4742
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 199
+   istore                 7
+   jump                   LABEL1349
+LABEL685:
+   iconst                 1
+   activeclansettings_find_affined
+   iconst                 1
+   if_icmpeq              LABEL690
+   jump                   LABEL737
+LABEL690:
+   iconst                 1
+   activeclanchannel_find_affined
+   iconst                 1
+   if_icmpeq              LABEL695
+   jump                   LABEL737
+LABEL695:
+   sload                  18
+   invoke                 5501
+   iconst                 1
+   if_icmpeq              LABEL700
+   jump                   LABEL737
+LABEL700:
+   sload                  18
+   invoke                 632
+   sstore                 18
+   sstore                 22
+   sload                  21
+   sconst                 "["
+   sload                  2
+   sload                  17
+   sconst                 "</col>"
+   sconst                 "]"
+   join_string            5
+   sconst                 "null"
+   invoke                 4742
+   iconst                 -1
+   iconst                 0
+   iconst                 0
+   sload                  16
+   sconst                 ":"
+   join_string            2
+   sload                  12
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 4483
+   istore                 7
+   jump                   LABEL903
+LABEL737:
+   iconst                 0
+   activeclansettings_find_affined
+   iconst                 1
+   if_icmpeq              LABEL742
+   jump                   LABEL871
+LABEL742:
+   iconst                 0
+   activeclanchannel_find_affined
+   iconst                 1
+   if_icmpeq              LABEL747
+   jump                   LABEL871
+LABEL747:
+   sload                  16
+   removetags            
+   activeclanchannel_getuserslot
+   istore                 17
+   iload                  17
+   iconst                 -1
+   if_icmpne              LABEL755
+   jump                   LABEL834
+LABEL755:
+   iload                  17
+   activeclanchannel_getuserrank
+   invoke                 4302
+   istore                 16
+   sstore                 20
+   iload                  16
+   iconst                 -1
+   if_icmpne              LABEL764
+   jump                   LABEL797
+LABEL764:
+   sload                  21
+   sconst                 "["
+   sload                  2
+   sload                  17
+   sconst                 "</col>"
+   sconst                 "]"
+   join_string            5
+   sconst                 "null"
+   invoke                 4742
+   iload                  16
+   iconst                 13
+   iconst                 13
+   sload                  16
+   sconst                 ":"
+   join_string            2
+   sload                  8
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 4483
+   istore                 7
+   jump                   LABEL833
+LABEL797:
+   sload                  21
+   sconst                 "["
+   sload                  2
+   sload                  17
+   sconst                 "</col>"
+   sconst                 "]"
+   join_string            5
+   sconst                 "null"
+   invoke                 4742
+   iconst                 -1
+   iconst                 0
+   iconst                 0
+   sload                  2
+   sload                  20
+   sconst                 "</col>"
+   sconst                 " "
+   sload                  16
+   sconst                 ":"
+   join_string            6
+   sload                  8
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 4483
+   istore                 7
+LABEL833:
+   jump                   LABEL870
+LABEL834:
+   iconst                 -1
+   invoke                 4302
+   istore                 16
+   sstore                 20
+   sload                  21
+   sconst                 "["
+   sload                  2
+   sload                  17
+   sconst                 "</col>"
+   sconst                 "]"
+   join_string            5
+   sconst                 "null"
+   invoke                 4742
+   iload                  16
+   iconst                 13
+   iconst                 13
+   sload                  16
+   sconst                 ":"
+   join_string            2
+   sload                  8
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 4483
+   istore                 7
+LABEL870:
+   jump                   LABEL903
+LABEL871:
+   sload                  21
+   sconst                 "["
+   sload                  2
+   sload                  17
+   sconst                 "</col>"
+   sconst                 "]"
+   join_string            5
+   sconst                 "null"
+   invoke                 4742
+   iconst                 -1
+   iconst                 0
+   iconst                 0
+   sload                  16
+   sconst                 ":"
+   join_string            2
+   sload                  8
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 4483
+   istore                 7
+LABEL903:
+   jump                   LABEL1349
+LABEL904:
+   activeclansettings_find_listened
+   iconst                 1
+   if_icmpeq              LABEL908
+   jump                   LABEL1036
+LABEL908:
+   activeclanchannel_find_listened
+   iconst                 1
+   if_icmpeq              LABEL912
+   jump                   LABEL1036
+LABEL912:
+   sload                  16
+   removetags            
+   activeclanchannel_getuserslot
+   istore                 17
+   iload                  17
+   iconst                 -1
+   if_icmpne              LABEL920
+   jump                   LABEL999
+LABEL920:
+   iload                  17
+   activeclanchannel_getuserrank
+   invoke                 4302
+   istore                 16
+   sstore                 20
+   iload                  16
+   iconst                 -1
+   if_icmpne              LABEL929
+   jump                   LABEL962
+LABEL929:
+   sload                  21
+   sconst                 "["
+   sload                  2
+   sload                  17
+   sconst                 "</col>"
+   sconst                 "]"
+   join_string            5
+   sconst                 "null"
+   invoke                 4742
+   iload                  16
+   iconst                 13
+   iconst                 13
+   sload                  16
+   sconst                 ":"
+   join_string            2
+   sload                  11
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 4483
+   istore                 7
+   jump                   LABEL998
+LABEL962:
+   sload                  21
+   sconst                 "["
+   sload                  2
+   sload                  17
+   sconst                 "</col>"
+   sconst                 "]"
+   join_string            5
+   sconst                 "null"
+   invoke                 4742
+   iconst                 -1
+   iconst                 0
+   iconst                 0
+   sload                  2
+   sload                  20
+   sconst                 "</col>"
+   sconst                 " "
+   sload                  16
+   sconst                 ":"
+   join_string            6
+   sload                  11
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 4483
+   istore                 7
+LABEL998:
+   jump                   LABEL1035
+LABEL999:
+   iconst                 -1
+   invoke                 4302
+   istore                 16
+   sstore                 20
+   sload                  21
+   sconst                 "["
+   sload                  2
+   sload                  17
+   sconst                 "</col>"
+   sconst                 "]"
+   join_string            5
+   sconst                 "null"
+   invoke                 4742
+   iload                  16
+   iconst                 13
+   iconst                 13
+   sload                  16
+   sconst                 ":"
+   join_string            2
+   sload                  11
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 4483
+   istore                 7
+LABEL1035:
+   jump                   LABEL1068
+LABEL1036:
+   sload                  21
+   sconst                 "["
+   sload                  2
+   sload                  17
+   sconst                 "</col>"
+   sconst                 "]"
+   join_string            5
+   sconst                 "null"
+   invoke                 4742
+   iconst                 -1
+   iconst                 0
+   iconst                 0
+   sload                  16
+   sconst                 ":"
+   join_string            2
+   sload                  11
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 4483
+   istore                 7
+LABEL1068:
+   jump                   LABEL1349
+LABEL1069:
+   sload                  18
+   invoke                 5309
+   iconst                 1
+   if_icmpeq              LABEL1074
+   jump                   LABEL1139
+LABEL1074:
+   sload                  18
+   invoke                 632
+   sstore                 18
+   sstore                 16
+   sload                  18
+   sconst                 "</col>"
+   sconst                 "</col>"
+   sload                  14
+   append                
+   invoke                 3302
+   sstore                 18
+   iconst                 1
+   activeclansettings_find_affined
+   iconst                 1
+   if_icmpeq              LABEL1090
+   jump                   LABEL1117
+LABEL1090:
+   sload                  21
+   sconst                 "["
+   sload                  2
+   activeclansettings_getclanname
+   sconst                 "</col>"
+   sconst                 "]"
+   join_string            5
+   sconst                 "null"
+   invoke                 4742
+   sload                  14
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 203
+   istore                 7
+   jump                   LABEL1138
+LABEL1117:
+   sload                  21
+   sconst                 ""
+   sconst                 "null"
+   invoke                 4742
+   sload                  14
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 203
+   istore                 7
+LABEL1138:
+   jump                   LABEL1207
+LABEL1139:
+   sload                  18
+   sconst                 "</col>"
+   sconst                 "</col>"
+   sload                  13
+   append                
+   invoke                 3302
+   sstore                 18
+   iconst                 0
+   activeclanchannel_find_affined
+   iconst                 1
+   if_icmpeq              LABEL1151
+   jump                   LABEL1182
+LABEL1151:
+   sload                  21
+   sconst                 "["
+   sload                  2
+   activeclanchannel_getclanname
+   sconst                 "</col>"
+   sconst                 "]"
+   join_string            5
+   sconst                 "null"
+   invoke                 4742
+   iconst                 -1
+   iconst                 0
+   iconst                 0
+   sconst                 ""
+   sload                  13
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 4483
+   istore                 7
+   jump                   LABEL1207
+LABEL1182:
+   sload                  21
+   sconst                 ""
+   sconst                 "null"
+   invoke                 4742
+   iconst                 -1
+   iconst                 0
+   iconst                 0
+   sconst                 ""
+   sload                  13
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 4483
+   istore                 7
+LABEL1207:
+   jump                   LABEL1349
+LABEL1208:
+   activeclanchannel_find_listened
+   iconst                 1
+   if_icmpeq              LABEL1212
+   jump                   LABEL1240
+LABEL1212:
+   sload                  21
+   sconst                 "["
+   sload                  2
+   activeclanchannel_getclanname
+   sconst                 "</col>"
+   sconst                 "]"
+   join_string            5
+   sconst                 "null"
+   invoke                 4742
+   iconst                 -1
+   iconst                 0
+   iconst                 0
+   sconst                 ""
+   sload                  18
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 4483
+   istore                 7
+   jump                   LABEL1262
+LABEL1240:
+   sload                  21
+   sconst                 ""
+   sconst                 "null"
+   invoke                 4742
+   iconst                 -1
+   iconst                 0
+   iconst                 0
+   sconst                 ""
+   sload                  18
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 4483
+   istore                 7
+LABEL1262:
+   jump                   LABEL1349
+LABEL1263:
+   sload                  18
+   invoke                 2066
+   istore                 13
+   sstore                 19
+   sstore                 18
+   sload                  21
+   sload                  1
+   sconst                 "Broadcast:"
+   sconst                 "</col>"
+   join_string            3
+   sconst                 "null"
+   invoke                 4742
+   sload                  15
+   sload                  18
+   sconst                 "</col>"
+   join_string            3
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 203
+   istore                 7
+   jump                   LABEL1349
+LABEL1293:
+   clientclock           
+   iload                  12
+   sub                   
+   iconst                 500
+   if_icmpgt              LABEL1299
+   jump                   LABEL1314
+LABEL1299:
+   sconst                 "jk :P"
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 199
+   istore                 7
+   jump                   LABEL1331
+LABEL1314:
+   sload                  21
+   sload                  18
+   sconst                 "null"
+   invoke                 4742
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 199
+   istore                 7
+LABEL1331:
+   jump                   LABEL1349
+LABEL1332:
+   sload                  21
+   sload                  18
+   sconst                 "null"
+   invoke                 4742
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 199
+   istore                 7
+LABEL1349:
+   iload                  9
+   if_clearops           
+   iload                  11
+   switch                
+      1: LABEL1354
+      2: LABEL1354
+      3: LABEL1354
+      6: LABEL1354
+      7: LABEL1354
+      9: LABEL1354
+      90: LABEL1354
+      91: LABEL1354
+      106: LABEL1354
+      41: LABEL1354
+      44: LABEL1354
+      101: LABEL1458
+      103: LABEL1501
+      104: LABEL1501
+      110: LABEL1501
+      14: LABEL1544
+      109: LABEL1604
+      111: LABEL1647
+      112: LABEL1690
+   jump                   LABEL1733
+LABEL1354:
+   sconst                 "<col=ffffff>"
+   sload                  16
+   sconst                 "</col>"
+   join_string            3
+   iload                  9
+   if_setopbase          
+   iconst                 86
+   iconst                 -2147483644
+   sconst                 "event_opbase"
+   iload                  11
+   sconst                 "isi"
+   iload                  9
+   if_setonop            
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseover     
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseleave    
+   sload                  0
+   sload                  16
+   removetags            
+   compare               
+   iconst                 0
+   if_icmpne              LABEL1382
+   jump                   LABEL1457
+LABEL1382:
+   iload                  15
+   iconst                 1
+   if_icmpeq              LABEL1386
+   jump                   LABEL1391
+LABEL1386:
+   iconst                 6
+   sconst                 "Message"
+   iload                  9
+   if_setop              
+   jump                   LABEL1399
+LABEL1391:
+   iconst                 6
+   sconst                 "Add friend"
+   iload                  9
+   if_setop              
+   iconst                 7
+   sconst                 "Add ignore"
+   iload                  9
+   if_setop              
+LABEL1399:
+   iconst                 8
+   sconst                 "Report"
+   iload                  9
+   if_setop              
+   iload                  11
+   iconst                 9
+   if_icmpeq              LABEL1407
+   jump                   LABEL1420
+LABEL1407:
+   clan_getchatcount     
+   iconst                 0
+   if_icmpgt              LABEL1411
+   jump                   LABEL1419
+LABEL1411:
+   clan_getchatrank      
+   clan_getchatminkick   
+   if_icmpge              LABEL1415
+   jump                   LABEL1419
+LABEL1415:
+   iconst                 9
+   sconst                 "Kick"
+   iload                  9
+   if_setop              
+LABEL1419:
+   jump                   LABEL1457
+LABEL1420:
+   iload                  11
+   iconst                 41
+   if_icmpeq              LABEL1424
+   jump                   LABEL1457
+LABEL1424:
+   iload                  18
+   iload                  19
+   if_icmpge              LABEL1428
+   jump                   LABEL1457
+LABEL1428:
+   iconst                 0
+   activeclanchannel_find_affined
+   iconst                 1
+   if_icmpeq              LABEL1433
+   jump                   LABEL1457
+LABEL1433:
+   sload                  16
+   removetags            
+   activeclanchannel_getuserslot
+   istore                 17
+   iload                  17
+   iconst                 -1
+   if_icmpeq              LABEL1445
+   iload                  17
+   activeclanchannel_getuserrank
+   iconst                 -1
+   if_icmple              LABEL1445
+   jump                   LABEL1457
+LABEL1445:
+   iconst                 9
+   sconst                 "Kick"
+   iload                  9
+   if_setop              
+   iload                  18
+   iload                  20
+   if_icmpge              LABEL1453
+   jump                   LABEL1457
+LABEL1453:
+   iconst                 10
+   sconst                 "Ban"
+   iload                  9
+   if_setop              
+LABEL1457:
+   jump                   LABEL1745
+LABEL1458:
+   sconst                 "<col=ffffff>"
+   sload                  16
+   sconst                 "</col>"
+   join_string            3
+   iload                  9
+   if_setopbase          
+   iconst                 86
+   iconst                 -2147483644
+   sconst                 "event_opbase"
+   iload                  11
+   sconst                 "isi"
+   iload                  9
+   if_setonop            
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseover     
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseleave    
+   iconst                 1
+   sconst                 "Accept trade"
+   iload                  9
+   if_setop              
+   iload                  15
+   iconst                 1
+   if_icmpeq              LABEL1487
+   jump                   LABEL1492
+LABEL1487:
+   iconst                 6
+   sconst                 "Message"
+   iload                  9
+   if_setop              
+   jump                   LABEL1500
+LABEL1492:
+   iconst                 6
+   sconst                 "Add friend"
+   iload                  9
+   if_setop              
+   iconst                 7
+   sconst                 "Add ignore"
+   iload                  9
+   if_setop              
+LABEL1500:
+   jump                   LABEL1745
+LABEL1501:
+   sconst                 "<col=ffffff>"
+   sload                  16
+   sconst                 "</col>"
+   join_string            3
+   iload                  9
+   if_setopbase          
+   iconst                 86
+   iconst                 -2147483644
+   sconst                 "event_opbase"
+   iload                  11
+   sconst                 "isi"
+   iload                  9
+   if_setonop            
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseover     
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseleave    
+   iconst                 2
+   sconst                 "Accept challenge"
+   iload                  9
+   if_setop              
+   iload                  15
+   iconst                 1
+   if_icmpeq              LABEL1530
+   jump                   LABEL1535
+LABEL1530:
+   iconst                 6
+   sconst                 "Message"
+   iload                  9
+   if_setop              
+   jump                   LABEL1543
+LABEL1535:
+   iconst                 6
+   sconst                 "Add friend"
+   iload                  9
+   if_setop              
+   iconst                 7
+   sconst                 "Add ignore"
+   iload                  9
+   if_setop              
+LABEL1543:
+   jump                   LABEL1745
+LABEL1544:
+   sload                  19
+   string_length         
+   iconst                 0
+   if_icmpgt              LABEL1549
+   jump                   LABEL1578
+LABEL1549:
+   iload                  13
+   iconst                 -1
+   if_icmpne              LABEL1553
+   jump                   LABEL1578
+LABEL1553:
+   iconst                 6
+   sconst                 "Open"
+   iload                  9
+   if_setop              
+   iconst                 7
+   sconst                 "Check"
+   iload                  9
+   if_setop              
+   iconst                 2065
+   iload                  9
+   if_getlayer           
+   iload                  8
+   iconst                 3158271
+   sconst                 "Iii"
+   iload                  9
+   if_setonmouseover     
+   iconst                 2065
+   iload                  9
+   if_getlayer           
+   iload                  8
+   iload                  3
+   sconst                 "Iii"
+   iload                  9
+   if_setonmouseleave    
+   jump                   LABEL1586
+LABEL1578:
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseover     
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseleave    
+LABEL1586:
+   iconst                 9
+   sconst                 "Clear history"
+   iload                  9
+   if_setop              
+   sconst                 "<col=ff9040>"
+   sconst                 "Notification"
+   sconst                 "</col>"
+   join_string            3
+   iload                  9
+   if_setopbase          
+   iconst                 2064
+   iconst                 -2147483644
+   sload                  19
+   iload                  13
+   sconst                 "isi"
+   iload                  9
+   if_setonop            
+   jump                   LABEL1745
+LABEL1604:
+   sconst                 "<col=0xffffff>"
+   sload                  16
+   sconst                 "</col>"
+   join_string            3
+   iload                  9
+   if_setopbase          
+   iconst                 2
+   sconst                 "Form clan"
+   iload                  9
+   if_setop              
+   iconst                 86
+   iconst                 -2147483644
+   sconst                 "event_opbase"
+   iload                  11
+   sconst                 "isi"
+   iload                  9
+   if_setonop            
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseover     
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseleave    
+   iload                  15
+   iconst                 1
+   if_icmpeq              LABEL1633
+   jump                   LABEL1638
+LABEL1633:
+   iconst                 6
+   sconst                 "Message"
+   iload                  9
+   if_setop              
+   jump                   LABEL1646
+LABEL1638:
+   iconst                 6
+   sconst                 "Add friend"
+   iload                  9
+   if_setop              
+   iconst                 7
+   sconst                 "Add ignore"
+   iload                  9
+   if_setop              
+LABEL1646:
+   jump                   LABEL1745
+LABEL1647:
+   sconst                 "<col=0xffffff>"
+   sload                  16
+   sconst                 "</col>"
+   join_string            3
+   iload                  9
+   if_setopbase          
+   iconst                 2
+   sconst                 "Form group"
+   iload                  9
+   if_setop              
+   iconst                 86
+   iconst                 -2147483644
+   sconst                 "event_opbase"
+   iload                  11
+   sconst                 "isi"
+   iload                  9
+   if_setonop            
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseover     
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseleave    
+   iload                  15
+   iconst                 1
+   if_icmpeq              LABEL1676
+   jump                   LABEL1681
+LABEL1676:
+   iconst                 6
+   sconst                 "Message"
+   iload                  9
+   if_setop              
+   jump                   LABEL1689
+LABEL1681:
+   iconst                 6
+   sconst                 "Add friend"
+   iload                  9
+   if_setop              
+   iconst                 7
+   sconst                 "Add ignore"
+   iload                  9
+   if_setop              
+LABEL1689:
+   jump                   LABEL1745
+LABEL1690:
+   sconst                 "<col=0xffffff>"
+   sload                  16
+   sconst                 "</col>"
+   join_string            3
+   iload                  9
+   if_setopbase          
+   iconst                 2
+   sconst                 "Group with"
+   iload                  9
+   if_setop              
+   iconst                 86
+   iconst                 -2147483644
+   sconst                 "event_opbase"
+   iload                  11
+   sconst                 "isi"
+   iload                  9
+   if_setonop            
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseover     
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseleave    
+   iload                  15
+   iconst                 1
+   if_icmpeq              LABEL1719
+   jump                   LABEL1724
+LABEL1719:
+   iconst                 6
+   sconst                 "Message"
+   iload                  9
+   if_setop              
+   jump                   LABEL1732
+LABEL1724:
+   iconst                 6
+   sconst                 "Add friend"
+   iload                  9
+   if_setop              
+   iconst                 7
+   sconst                 "Add ignore"
+   iload                  9
+   if_setop              
+LABEL1732:
+   jump                   LABEL1745
+LABEL1733:
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonop            
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseover     
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseleave    
+LABEL1745:
+   iload                  6
+   iload                  7
+   sub                   
+   istore                 6
+   iload                  8
+   iconst                 1
+   add                   
+   istore                 8
+   iconst                 105
+   iconst                 73
+   iconst                 579
+   iload                  8
+   enum                  
+   istore                 9
+LABEL1759:
+   iload                  10
+   chat_getprevuid       
+   istore                 10
+   jump                   LABEL365
+LABEL1763:
+   iload                  8
+   istore                 22
+LABEL1765:
+   iload                  9
+   iconst                 -1
+   if_icmpne              LABEL1769
+   jump                   LABEL1852
+LABEL1769:
+   iload                  9
+   if_clearops           
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonop            
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseover     
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseleave    
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   iload                  9
+   if_setsize            
+   iconst                 10616888
+   iload                  8
+   iconst                 4
+   multiply              
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL1797
+   jump                   LABEL1801
+LABEL1797:
+   sconst                 ""
+   cc_settext            
+   iconst                 1
+   cc_sethide            
+LABEL1801:
+   iconst                 10616888
+   iload                  8
+   iconst                 4
+   multiply              
+   iconst                 1
+   add                   
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL1811
+   jump                   LABEL1815
+LABEL1811:
+   sconst                 ""
+   cc_settext            
+   iconst                 1
+   cc_sethide            
+LABEL1815:
+   iconst                 10616888
+   iload                  8
+   iconst                 4
+   multiply              
+   iconst                 2
+   add                   
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL1825
+   jump                   LABEL1829
+LABEL1825:
+   sconst                 ""
+   cc_settext            
+   iconst                 1
+   cc_sethide            
+LABEL1829:
+   iconst                 10616888
+   iload                  8
+   iconst                 4
+   multiply              
+   iconst                 3
+   add                   
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL1839
+   jump                   LABEL1841
+LABEL1839:
+   iconst                 1
+   cc_sethide            
+LABEL1841:
+   iload                  8
+   iconst                 1
+   add                   
+   istore                 8
+   iconst                 105
+   iconst                 73
+   iconst                 579
+   iload                  8
+   enum                  
+   istore                 9
+   jump                   LABEL1765
+LABEL1852:
+   iload                  6
+   iconst                 2
+   sub                   
+   istore                 6
+   iconst                 0
+   iload                  6
+   sub                   
+   istore                 6
+   iconst                 10616888
+   if_getheight          
+   istore                 23
+   iload                  6
+   iload                  23
+   if_icmpgt              LABEL1867
+   jump                   LABEL1869
+LABEL1867:
+   iload                  6
+   istore                 23
+LABEL1869:
+   iload                  22
+   istore                 8
+LABEL1871:
+   iload                  8
+   iconst                 0
+   if_icmpgt              LABEL1875
+   jump                   LABEL1958
+LABEL1875:
+   iload                  8
+   iconst                 1
+   sub                   
+   istore                 8
+   iconst                 105
+   iconst                 73
+   iconst                 579
+   iload                  8
+   enum                  
+   istore                 9
+   iload                  9
+   if_gety               
+   iload                  23
+   add                   
+   iconst                 2
+   sub                   
+   istore                 6
+   iload                  9
+   if_getx               
+   iload                  6
+   iconst                 0
+   iconst                 0
+   iload                  9
+   if_setposition        
+   iconst                 10616888
+   iload                  8
+   iconst                 4
+   multiply              
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL1907
+   jump                   LABEL1912
+LABEL1907:
+   cc_getx               
+   iload                  6
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+LABEL1912:
+   iconst                 10616888
+   iload                  8
+   iconst                 4
+   multiply              
+   iconst                 1
+   add                   
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL1922
+   jump                   LABEL1927
+LABEL1922:
+   cc_getx               
+   iload                  6
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+LABEL1927:
+   iconst                 10616888
+   iload                  8
+   iconst                 4
+   multiply              
+   iconst                 2
+   add                   
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL1937
+   jump                   LABEL1942
+LABEL1937:
+   cc_getx               
+   iload                  6
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+LABEL1942:
+   iconst                 10616888
+   iload                  8
+   iconst                 4
+   multiply              
+   iconst                 3
+   add                   
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL1952
+   jump                   LABEL1957
+LABEL1952:
+   cc_getx               
+   iload                  6
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+LABEL1957:
+   jump                   LABEL1871
+LABEL1958:
+   iconst                 0
+   iload                  23
+   iconst                 10616888
+   if_setscrollsize      
+   iconst                 10617389
+   iconst                 10616888
+   get_varc_int           7
+   iload                  23
+   get_varc_int           8
+   sub                   
+   add                   
+   invoke                 72
+   iconst                 10616888
+   if_getscrolly         
+   iload                  23
+   set_varc_int           8
+   set_varc_int           7
+   return                

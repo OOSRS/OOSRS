@@ -1,0 +1,10 @@
+OpenOSRS includes software originally developed by the RuneLite and OpenOSRS
+contributors. Existing source headers retain the applicable copyright and
+license notices. See LICENSE and the individual source files.
+
+Third-party dependencies retain their own licenses. Their notices are included
+in the corresponding dependency archives and the assembled distribution.
+
+The game dependency is downloaded separately during the build, pinned by its
+version and SHA-256. It is not included as source code in this repository and
+is not covered by this repository's source license.

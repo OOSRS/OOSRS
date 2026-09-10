@@ -1,0 +1,6078 @@
+{
+  "bufferMethods": {
+    "ab(IB)V": {
+      "desc": "(IB)V",
+      "owner": "xs",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "ac([BIII)V": {
+      "desc": "([BIII)V",
+      "owner": "xs",
+      "read": "V1",
+      "static": false,
+      "width": "W1"
+    },
+    "ag(I)I": {
+      "desc": "(I)I",
+      "owner": "xs",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "ah()I": {
+      "desc": "()I",
+      "owner": "xs",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "am()I": {
+      "desc": "()I",
+      "owner": "xs",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "an()I": {
+      "desc": "()I",
+      "owner": "xs",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "as(I)Z": {
+      "desc": "(I)Z",
+      "owner": "xs",
+      "read": "Z1",
+      "static": false,
+      "width": "W0"
+    },
+    "at(I)V": {
+      "desc": "(I)V",
+      "owner": "xs",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "av(I)V": {
+      "desc": "(I)V",
+      "owner": "xs",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "ax(B)I": {
+      "desc": "(B)I",
+      "owner": "xs",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "ax(Lxy;I)I": {
+      "desc": "(Lxy;I)I",
+      "owner": "xy",
+      "read": "I3",
+      "static": true,
+      "width": "W0"
+    },
+    "ba(I)I": {
+      "desc": "(I)I",
+      "owner": "xs",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "bc()I": {
+      "desc": "()I",
+      "owner": "xs",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "bh(IB)V": {
+      "desc": "(IB)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "bl(IB)V": {
+      "desc": "(IB)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W4"
+    },
+    "bm([BII)V": {
+      "desc": "([BII)V",
+      "owner": "xs",
+      "read": "V1",
+      "static": false,
+      "width": "W1"
+    },
+    "bn()Z": {
+      "desc": "()Z",
+      "owner": "xs",
+      "read": "Z1",
+      "static": false,
+      "width": "W0"
+    },
+    "bo(I)I": {
+      "desc": "(I)I",
+      "owner": "xs",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "bp()I": {
+      "desc": "()I",
+      "owner": "xs",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "bu(I)I": {
+      "desc": "(I)I",
+      "owner": "xs",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "bv(II)V": {
+      "desc": "(II)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "bx()Z": {
+      "desc": "()Z",
+      "owner": "xs",
+      "read": "Z1",
+      "static": false,
+      "width": "W0"
+    },
+    "bx(Lxy;I)V": {
+      "desc": "(Lxy;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W3"
+    },
+    "bz(II)V": {
+      "desc": "(II)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W4"
+    },
+    "cc(IB)V": {
+      "desc": "(IB)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "cf(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "cg(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "ch(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "cj(B)I": {
+      "desc": "(B)I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "ck(IB)V": {
+      "desc": "(IB)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "cl([BIIB)V": {
+      "desc": "([BIIB)V",
+      "owner": "xy",
+      "read": "V1",
+      "static": false,
+      "width": "W1"
+    },
+    "cm()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "cm(B)Ljava/lang/String;": {
+      "desc": "(B)Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": false,
+      "width": "W0"
+    },
+    "cn(B)B": {
+      "desc": "(B)B",
+      "owner": "xy",
+      "read": "B1",
+      "static": false,
+      "width": "W0"
+    },
+    "cp()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "cp(Ljava/lang/String;I)V": {
+      "desc": "(Ljava/lang/String;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "cq(Ljava/lang/CharSequence;I)V": {
+      "desc": "(Ljava/lang/CharSequence;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W7"
+    },
+    "cr(J)V": {
+      "desc": "(J)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W6"
+    },
+    "cs(II)V": {
+      "desc": "(II)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "ct(Ljava/lang/String;S)V": {
+      "desc": "(Ljava/lang/String;S)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "cu(J)V": {
+      "desc": "(J)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W8"
+    },
+    "cv(IB)V": {
+      "desc": "(IB)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "cw(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "cy(II)V": {
+      "desc": "(II)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "cz(B)I": {
+      "desc": "(B)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "cz(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
+    },
+    "da(IB)V": {
+      "desc": "(IB)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "db(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "dc(I)Ljava/lang/String;": {
+      "desc": "(I)Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": false,
+      "width": "W0"
+    },
+    "dd(I)Ljava/lang/String;": {
+      "desc": "(I)Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L2",
+      "static": false,
+      "width": "W0"
+    },
+    "di(S)I": {
+      "desc": "(S)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "dj(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
+    },
+    "dj(Lxy;[BII)V": {
+      "desc": "(Lxy;[BII)V",
+      "owner": "xy",
+      "read": "V1",
+      "static": true,
+      "width": "W1"
+    },
+    "dk(S)I": {
+      "desc": "(S)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "dm(I)Ljava/lang/String;": {
+      "desc": "(I)Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": false,
+      "width": "W0"
+    },
+    "dp(B)I": {
+      "desc": "(B)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "ds(II)V": {
+      "desc": "(II)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "du(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "dw(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "dx([BIIB)V": {
+      "desc": "([BIIB)V",
+      "owner": "xy",
+      "read": "V1",
+      "static": false,
+      "width": "W1"
+    },
+    "dy(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "ea(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "eb(B)I": {
+      "desc": "(B)I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "ec([BIII)V": {
+      "desc": "([BIII)V",
+      "owner": "xy",
+      "read": "V1",
+      "static": false,
+      "width": "W1"
+    },
+    "ed(IB)V": {
+      "desc": "(IB)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W3"
+    },
+    "ee(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "ef(II)V": {
+      "desc": "(II)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W4"
+    },
+    "eg(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "eh(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "ei(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "ej(B)B": {
+      "desc": "(B)B",
+      "owner": "xy",
+      "read": "B1",
+      "static": false,
+      "width": "W0"
+    },
+    "ek(B)B": {
+      "desc": "(B)B",
+      "owner": "xy",
+      "read": "B1",
+      "static": false,
+      "width": "W0"
+    },
+    "el(IS)V": {
+      "desc": "(IS)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "em(II)V": {
+      "desc": "(II)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W4"
+    },
+    "en(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "eo(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "ep([BIII)V": {
+      "desc": "([BIII)V",
+      "owner": "xy",
+      "read": "V1",
+      "static": false,
+      "width": "W1"
+    },
+    "eq(B)I": {
+      "desc": "(B)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "er(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "es(B)B": {
+      "desc": "(B)B",
+      "owner": "xy",
+      "read": "B1",
+      "static": false,
+      "width": "W0"
+    },
+    "et(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "eu(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "ew(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "ex(B)I": {
+      "desc": "(B)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "ex(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": true,
+      "width": "W0"
+    },
+    "ey(I)I": {
+      "desc": "(I)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "ez(II)V": {
+      "desc": "(II)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W4"
+    },
+    "fa(J)V": {
+      "desc": "(J)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W8"
+    },
+    "fc(J)V": {
+      "desc": "(J)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W6"
+    },
+    "fe(J)V": {
+      "desc": "(J)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W6"
+    },
+    "ff(J)V": {
+      "desc": "(J)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W6"
+    },
+    "fk(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W3"
+    },
+    "fm(J)V": {
+      "desc": "(J)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W8"
+    },
+    "fn(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W3"
+    },
+    "fp(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "fq(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "fr(J)V": {
+      "desc": "(J)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W6"
+    },
+    "ft(J)V": {
+      "desc": "(J)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W6"
+    },
+    "fv(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W3"
+    },
+    "fx(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W4"
+    },
+    "fz(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "ga(Ljava/lang/CharSequence;)V": {
+      "desc": "(Ljava/lang/CharSequence;)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W7"
+    },
+    "gc(Ljava/lang/CharSequence;)V": {
+      "desc": "(Ljava/lang/CharSequence;)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W7"
+    },
+    "ge(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "gl(Lxy;)Ljava/lang/String;": {
+      "desc": "(Lxy;)Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L2",
+      "static": true,
+      "width": "W0"
+    },
+    "go(Ljava/lang/String;)V": {
+      "desc": "(Ljava/lang/String;)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "gp(Ljava/lang/CharSequence;)V": {
+      "desc": "(Ljava/lang/CharSequence;)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W7"
+    },
+    "gs(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "gv(Ljava/lang/String;)V": {
+      "desc": "(Ljava/lang/String;)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "gw(Ljava/lang/CharSequence;)V": {
+      "desc": "(Ljava/lang/CharSequence;)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W7"
+    },
+    "gx(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "gy(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W4"
+    },
+    "gz(Lxy;I)I": {
+      "desc": "(Lxy;I)I",
+      "owner": "xy",
+      "read": "I3",
+      "static": true,
+      "width": "W0"
+    },
+    "ha()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "hf()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "hh()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "hj()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "hj(Lxy;)B": {
+      "desc": "(Lxy;)B",
+      "owner": "xy",
+      "read": "B1",
+      "static": true,
+      "width": "W0"
+    },
+    "hk()B": {
+      "desc": "()B",
+      "owner": "xy",
+      "read": "B1",
+      "static": false,
+      "width": "W0"
+    },
+    "hm(Lxy;IB)V": {
+      "desc": "(Lxy;IB)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W1"
+    },
+    "ho()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "hr()B": {
+      "desc": "()B",
+      "owner": "xy",
+      "read": "B1",
+      "static": false,
+      "width": "W0"
+    },
+    "hu()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "ia()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "ic()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "id()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "ie()Ljava/lang/String;": {
+      "desc": "()Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": false,
+      "width": "W0"
+    },
+    "ig()Ljava/lang/String;": {
+      "desc": "()Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L2",
+      "static": false,
+      "width": "W0"
+    },
+    "ih()Ljava/lang/String;": {
+      "desc": "()Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": false,
+      "width": "W0"
+    },
+    "ii()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "ij()Ljava/lang/String;": {
+      "desc": "()Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": false,
+      "width": "W0"
+    },
+    "ik()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "il()Ljava/lang/String;": {
+      "desc": "()Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": false,
+      "width": "W0"
+    },
+    "in()Ljava/lang/String;": {
+      "desc": "()Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": false,
+      "width": "W0"
+    },
+    "io()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "ip()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "is()Ljava/lang/String;": {
+      "desc": "()Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": false,
+      "width": "W0"
+    },
+    "it()Ljava/lang/String;": {
+      "desc": "()Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": false,
+      "width": "W0"
+    },
+    "iv()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "iw()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "iw(Lxy;I)V": {
+      "desc": "(Lxy;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W2"
+    },
+    "ja()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "jd()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "jf()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "ji(Lxy;I)Ljava/lang/String;": {
+      "desc": "(Lxy;I)Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": true,
+      "width": "W0"
+    },
+    "jo()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "jq()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "ju()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "ka(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "kc()B": {
+      "desc": "()B",
+      "owner": "xy",
+      "read": "B1",
+      "static": false,
+      "width": "W0"
+    },
+    "kd()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "ki(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "kk()B": {
+      "desc": "()B",
+      "owner": "xy",
+      "read": "B1",
+      "static": false,
+      "width": "W0"
+    },
+    "km()B": {
+      "desc": "()B",
+      "owner": "xy",
+      "read": "B1",
+      "static": false,
+      "width": "W0"
+    },
+    "kn()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "kq(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "kr(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "kr(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I3",
+      "static": true,
+      "width": "W0"
+    },
+    "kt()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "kv(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "kw()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "ky()B": {
+      "desc": "()B",
+      "owner": "xy",
+      "read": "B1",
+      "static": false,
+      "width": "W0"
+    },
+    "kz()B": {
+      "desc": "()B",
+      "owner": "xy",
+      "read": "B1",
+      "static": false,
+      "width": "W0"
+    },
+    "la()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "lb(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "lc()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "ld()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "le()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "lf(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "lh(Lxy;I)I": {
+      "desc": "(Lxy;I)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": true,
+      "width": "W0"
+    },
+    "li()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "lj(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "ll()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "lm(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "lo()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "lp(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "lq()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "lr()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "lt()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "lt(Lxy;I)I": {
+      "desc": "(Lxy;I)I",
+      "owner": "xy",
+      "read": "I3",
+      "static": true,
+      "width": "W0"
+    },
+    "lu()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "lv()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "lw()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "lz(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
+    "ma(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W4"
+    },
+    "mb()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "mc([BII)V": {
+      "desc": "([BII)V",
+      "owner": "xy",
+      "read": "V1",
+      "static": false,
+      "width": "W1"
+    },
+    "md()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "me()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "me(Lxs;I)V": {
+      "desc": "(Lxs;I)V",
+      "owner": "xs",
+      "read": "V0",
+      "static": true,
+      "width": "W1"
+    },
+    "mf()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "mg(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W4"
+    },
+    "mh(Lxy;B)I": {
+      "desc": "(Lxy;B)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
+    },
+    "mi()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "mj(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W4"
+    },
+    "mk(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W4"
+    },
+    "mk(Lxs;II)I": {
+      "desc": "(Lxs;II)I",
+      "owner": "xs",
+      "read": "I3",
+      "static": true,
+      "width": "W0"
+    },
+    "ml()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "mp()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "mq()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "mq(Lxy;I)I": {
+      "desc": "(Lxy;I)I",
+      "owner": "xy",
+      "read": "I4",
+      "static": true,
+      "width": "W0"
+    },
+    "mr(Lxy;I)V": {
+      "desc": "(Lxy;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W2"
+    },
+    "ms()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "mt()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "mu()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "mv([BII)V": {
+      "desc": "([BII)V",
+      "owner": "xy",
+      "read": "V1",
+      "static": false,
+      "width": "W1"
+    },
+    "mw()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "my([BII)V": {
+      "desc": "([BII)V",
+      "owner": "xy",
+      "read": "V1",
+      "static": false,
+      "width": "W1"
+    },
+    "nc(Lxy;Ljava/lang/String;)V": {
+      "desc": "(Lxy;Ljava/lang/String;)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W1"
+    },
+    "ni(Lxy;I)V": {
+      "desc": "(Lxy;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W2"
+    },
+    "np()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "nu(Lxy;I)I": {
+      "desc": "(Lxy;I)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
+    },
+    "ox(Lxy;[BII)V": {
+      "desc": "(Lxy;[BII)V",
+      "owner": "xy",
+      "read": "V1",
+      "static": true,
+      "width": "W1"
+    },
+    "pa(Lxy;Ljava/lang/String;S)V": {
+      "desc": "(Lxy;Ljava/lang/String;S)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W1"
+    },
+    "pk(Lxy;[BII)V": {
+      "desc": "(Lxy;[BII)V",
+      "owner": "xy",
+      "read": "V1",
+      "static": true,
+      "width": "W1"
+    },
+    "pq(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
+    },
+    "ps(Lxy;[BII)V": {
+      "desc": "(Lxy;[BII)V",
+      "owner": "xy",
+      "read": "V1",
+      "static": true,
+      "width": "W1"
+    },
+    "pz(Lxy;S)I": {
+      "desc": "(Lxy;S)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
+    },
+    "qf(Lxy;I)I": {
+      "desc": "(Lxy;I)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": true,
+      "width": "W0"
+    },
+    "qw(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
+    },
+    "rq(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": true,
+      "width": "W0"
+    },
+    "sl(Lxy;I)I": {
+      "desc": "(Lxy;I)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": true,
+      "width": "W0"
+    },
+    "sv()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "sw(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I4",
+      "static": true,
+      "width": "W0"
+    },
+    "td(Lxy;)Ljava/lang/String;": {
+      "desc": "(Lxy;)Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": true,
+      "width": "W0"
+    },
+    "tt(Lxs;[BII)V": {
+      "desc": "(Lxs;[BII)V",
+      "owner": "xs",
+      "read": "V1",
+      "static": true,
+      "width": "W1"
+    },
+    "tt(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
+    },
+    "ue(Lxy;)Ljava/lang/String;": {
+      "desc": "(Lxy;)Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": true,
+      "width": "W0"
+    },
+    "um(Lxy;I)V": {
+      "desc": "(Lxy;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W1"
+    },
+    "uu()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "vc(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I4",
+      "static": true,
+      "width": "W0"
+    },
+    "wa(Lxy;B)I": {
+      "desc": "(Lxy;B)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": true,
+      "width": "W0"
+    },
+    "wi(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
+    },
+    "wi(Lxy;II)V": {
+      "desc": "(Lxy;II)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W2"
+    },
+    "ww(Lxy;B)B": {
+      "desc": "(Lxy;B)B",
+      "owner": "xy",
+      "read": "B1",
+      "static": true,
+      "width": "W0"
+    },
+    "xj(Lxy;I)I": {
+      "desc": "(Lxy;I)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
+    },
+    "xw()B": {
+      "desc": "()B",
+      "owner": "xy",
+      "read": "B1",
+      "static": false,
+      "width": "W0"
+    },
+    "zx(Lxs;[BII)V": {
+      "desc": "(Lxs;[BII)V",
+      "owner": "xs",
+      "read": "V1",
+      "static": true,
+      "width": "W1"
+    }
+  },
+  "classCount": 727,
+  "families": {
+    "buffer": "xy",
+    "bufferOffsetField": "ay",
+    "bufferPayloadField": "aj",
+    "bufferSubclasses": [
+      "xs"
+    ],
+    "clientPacket": "js",
+    "isaac": "yt",
+    "packetBufferNode": "jl",
+    "serverPacket": "jj",
+    "serverPacketHolder": "dj",
+    "writersReferencingBoth": [
+      "bb",
+      "bw",
+      "cg",
+      "client",
+      "cr",
+      "cv",
+      "di",
+      "ef",
+      "hu",
+      "ij",
+      "ik",
+      "io",
+      "ku",
+      "ln",
+      "pf",
+      "pt",
+      "qo",
+      "qp",
+      "sw",
+      "vx",
+      "wm",
+      "xp",
+      "zj"
+    ]
+  },
+  "format": "openosrs-hooks/2",
+  "jarSha256": "7fdedf1194261cc5b99faa35e0d2b4e45b6d56665402ccbde7f3aa6207c3f947",
+  "layoutCoverage": {
+    "noLayoutIds": [
+      0,
+      5,
+      6,
+      18,
+      19,
+      20,
+      23,
+      24,
+      26,
+      28,
+      31,
+      34,
+      53,
+      72,
+      76,
+      88,
+      89,
+      91,
+      94,
+      104,
+      106,
+      110
+    ],
+    "quarantinedFixedIds": [],
+    "quarantinedVariableIds": [
+      56,
+      61,
+      114
+    ],
+    "trustedCount": 92,
+    "trustedIds": [
+      1,
+      2,
+      3,
+      4,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      21,
+      22,
+      25,
+      27,
+      29,
+      30,
+      32,
+      33,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      54,
+      55,
+      57,
+      58,
+      59,
+      60,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      73,
+      74,
+      75,
+      77,
+      78,
+      79,
+      80,
+      81,
+      82,
+      83,
+      84,
+      85,
+      86,
+      87,
+      90,
+      92,
+      93,
+      95,
+      96,
+      97,
+      98,
+      99,
+      100,
+      101,
+      102,
+      103,
+      105,
+      107,
+      108,
+      109,
+      111,
+      112,
+      113,
+      115,
+      116
+    ]
+  },
+  "packetCount": 117,
+  "packets": [
+    {
+      "fields": [
+        "az"
+      ],
+      "id": 0,
+      "length": 6,
+      "name": "EVENT_MOUSE_CLICK_V1"
+    },
+    {
+      "fields": [
+        "af"
+      ],
+      "id": 1,
+      "layoutSource": "derived-verified",
+      "length": 9,
+      "name": "IF_BUTTONX",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ae"
+      ],
+      "id": 2,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "OPWORLDENTITY4",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ab"
+      ],
+      "id": 3,
+      "layoutSource": "derived-verified",
+      "length": 2,
+      "name": "RESUME_P_OBJDIALOG",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ag"
+      ],
+      "id": 4,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "OPPLAYER6",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "as"
+      ],
+      "id": 5,
+      "length": 3,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "ax"
+      ],
+      "id": 6,
+      "length": 7,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "ac"
+      ],
+      "id": 7,
+      "layoutSource": "derived-zero-verified",
+      "length": 0,
+      "name": "IDLE",
+      "writes": []
+    },
+    {
+      "fields": [
+        "aa"
+      ],
+      "id": 8,
+      "layoutSource": "derived-verified",
+      "length": 8,
+      "name": "OPLOC3_V2",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ao"
+      ],
+      "id": 9,
+      "layoutSource": "derived-verified",
+      "length": 6,
+      "name": "OPOBJ6",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "al"
+      ],
+      "id": 10,
+      "layoutSource": "derived-verified",
+      "length": 11,
+      "name": "OPWORLDENTITYT",
+      "writes": [
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "aj"
+      ],
+      "id": 11,
+      "layoutSource": "derived-verified",
+      "length": 4,
+      "name": "IF_BUTTON",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ay"
+      ],
+      "id": 12,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "REFLECTION_CHECK_REPLY",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "cy",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "aq"
+      ],
+      "id": 13,
+      "layoutSource": "derived-verified",
+      "length": 9,
+      "name": "TELEPORT",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ad"
+      ],
+      "id": 14,
+      "layoutSource": "derived-verified",
+      "length": -2,
+      "name": "BUG_REPORT",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ap"
+      ],
+      "id": 15,
+      "layoutSource": "derived-verified",
+      "length": 22,
+      "name": "IF_CRMVIEW_OP",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(II)V",
+          "m": "ef",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(II)V",
+          "m": "ez",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "au"
+      ],
+      "id": 16,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "SET_CHATFILTERSETTINGS",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ai"
+      ],
+      "id": 17,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "AFFINEDCLANSETTINGS_ADDBANNED_FROMCHANNEL",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ar"
+      ],
+      "id": 18,
+      "length": 7,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "aw"
+      ],
+      "id": 19,
+      "length": 7,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "ak"
+      ],
+      "id": 20,
+      "length": 7,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "av"
+      ],
+      "id": 21,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "OPPLAYER2",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "at"
+      ],
+      "id": 22,
+      "layoutSource": "derived-verified",
+      "length": 8,
+      "name": "OPOBJ3_V2",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "an"
+      ],
+      "id": 23,
+      "length": 3,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "am"
+      ],
+      "id": 24,
+      "length": 3,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "ah"
+      ],
+      "id": 25,
+      "layoutSource": "derived-verified",
+      "length": 2,
+      "name": "OPWORLDENTITY6",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bn"
+      ],
+      "id": 26,
+      "length": 3,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "bx"
+      ],
+      "id": 27,
+      "layoutSource": "derived-zero-verified",
+      "length": 0,
+      "name": "MAP_BUILD_COMPLETE",
+      "writes": []
+    },
+    {
+      "fields": [
+        "bc"
+      ],
+      "id": 28,
+      "length": 7,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "bp"
+      ],
+      "id": 29,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "CONNECTION_TELEMETRY",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xy",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "br"
+      ],
+      "id": 30,
+      "layoutSource": "derived-verified",
+      "length": 1,
+      "name": "EVENT_APPLET_FOCUS",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bm"
+      ],
+      "id": 31,
+      "length": 7,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "bt"
+      ],
+      "id": 32,
+      "layoutSource": "derived-verified",
+      "length": 10,
+      "name": "SEND_PING_REPLY",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "ef",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(II)V",
+          "m": "ez",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bg"
+      ],
+      "id": 33,
+      "layoutSource": "derived-verified",
+      "length": 1,
+      "name": "CLANCHANNEL_FULL_REQUEST",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bj"
+      ],
+      "id": 34,
+      "length": 7,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "bk"
+      ],
+      "id": 35,
+      "layoutSource": "derived-verified",
+      "length": 4,
+      "name": "OPNPC4_V2",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bo"
+      ],
+      "id": 36,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "OPPLAYER3",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bu"
+      ],
+      "id": 37,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "CLANCHANNEL_KICKUSER",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ba"
+      ],
+      "id": 38,
+      "layoutSource": "derived-verified",
+      "length": 15,
+      "name": "OPOBJT",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bw"
+      ],
+      "id": 39,
+      "layoutSource": "derived-verified",
+      "length": 16,
+      "name": "IF_BUTTOND",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bb"
+      ],
+      "id": 40,
+      "layoutSource": "derived-verified",
+      "length": 7,
+      "name": "EVENT_MOUSE_CLICK_V2",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bi"
+      ],
+      "id": 41,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "OPPLAYER8",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "be"
+      ],
+      "id": 42,
+      "layoutSource": "derived-verified",
+      "length": 11,
+      "name": "OPPLAYERU",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "ez",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "by"
+      ],
+      "id": 43,
+      "layoutSource": "derived-verified",
+      "length": 4,
+      "name": "OPNPC3_V2",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bq"
+      ],
+      "id": 44,
+      "layoutSource": "derived-verified",
+      "length": 5,
+      "name": "WINDOW_STATUS",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bf"
+      ],
+      "id": 45,
+      "layoutSource": "derived-verified",
+      "length": 11,
+      "name": "OPPLAYERT",
+      "writes": [
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "em",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bs"
+      ],
+      "id": 46,
+      "layoutSource": "derived-verified",
+      "length": 4,
+      "name": "SOUND_JINGLEEND",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bd"
+      ],
+      "id": 47,
+      "layoutSource": "derived-verified",
+      "length": -2,
+      "name": "EVENT_KEYBOARD",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;II)V",
+          "m": "wi",
+          "owner": "xy",
+          "static": true,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bl"
+      ],
+      "id": 48,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "OPWORLDENTITY2",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bv"
+      ],
+      "id": 49,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "OPWORLDENTITY3",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bh"
+      ],
+      "id": 50,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "OPPLAYER7",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "bz"
+      ],
+      "id": 51,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "FRIENDCHAT_KICK",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "cr"
+      ],
+      "id": 52,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "OPPLAYER5",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "cu"
+      ],
+      "id": 53,
+      "length": 7,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "cb"
+      ],
+      "id": 54,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "RESUME_P_STRINGDIALOG",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ct"
+      ],
+      "id": 55,
+      "layoutSource": "derived-verified",
+      "length": 4,
+      "name": "EVENT_CAMERA_POSITION",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "cp"
+      ],
+      "id": 56,
+      "length": -1,
+      "name": "MESSAGE_PUBLIC"
+    },
+    {
+      "fields": [
+        "cq"
+      ],
+      "id": 57,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "OPPLAYER1",
+      "writes": [
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "cl"
+      ],
+      "id": 58,
+      "layoutSource": "derived-verified",
+      "length": -2,
+      "name": "IF_SCRIPT_TRIGGER",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "em",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "em",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;II)V",
+          "m": "wi",
+          "owner": "xy",
+          "static": true,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "cd"
+      ],
+      "id": 59,
+      "layoutSource": "derived-verified",
+      "length": 4,
+      "name": "OPNPC1_V2",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "cv"
+      ],
+      "id": 60,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "AFFINEDCLANSETTINGS_SETMUTED_FROMCHANNEL",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "cs"
+      ],
+      "id": 61,
+      "length": -1,
+      "name": "MOVE_MINIMAPCLICK"
+    },
+    {
+      "fields": [
+        "cy"
+      ],
+      "id": 62,
+      "layoutSource": "derived-verified",
+      "length": 4,
+      "name": "RESUME_P_COUNTDIALOG",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "co"
+      ],
+      "id": 63,
+      "layoutSource": "derived-verified",
+      "length": 11,
+      "name": "OPNPCT",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "ef",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ck"
+      ],
+      "id": 64,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "OPPLAYER4",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ca"
+      ],
+      "id": 65,
+      "layoutSource": "derived-verified",
+      "length": 8,
+      "name": "OPOBJ4_V2",
+      "writes": [
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "cc"
+      ],
+      "id": 66,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "FRIENDCHAT_SETRANK",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "cf"
+      ],
+      "id": 67,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "FRIENDLIST_ADD",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "cn"
+      ],
+      "id": 68,
+      "layoutSource": "derived-verified",
+      "length": 15,
+      "name": "OPLOCT",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ch"
+      ],
+      "id": 69,
+      "layoutSource": "derived-verified",
+      "length": 8,
+      "name": "OPLOC4_V2",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "cz"
+      ],
+      "id": 70,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "RESUME_P_NAMEDIALOG",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "cg"
+      ],
+      "id": 71,
+      "layoutSource": "derived-zero-verified",
+      "length": 0,
+      "name": "EXIT_FREECAM",
+      "writes": []
+    },
+    {
+      "fields": [
+        "cw"
+      ],
+      "id": 72,
+      "length": 7,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "cj"
+      ],
+      "id": 73,
+      "layoutSource": "derived-verified",
+      "length": 4,
+      "name": "OPNPC5_V2",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ci"
+      ],
+      "id": 74,
+      "layoutSource": "derived-verified",
+      "length": 8,
+      "name": "OPLOC1_V2",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "cx"
+      ],
+      "id": 75,
+      "layoutSource": "derived-verified",
+      "length": 8,
+      "name": "OPOBJ5_V2",
+      "writes": [
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ce"
+      ],
+      "id": 76,
+      "length": 2,
+      "name": "MEMBERSHIP_PROMOTION_ELIGIBILITY"
+    },
+    {
+      "fields": [
+        "cm"
+      ],
+      "id": 77,
+      "layoutSource": "derived-verified",
+      "length": 8,
+      "name": "OPLOC5_V2",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dc"
+      ],
+      "id": 78,
+      "layoutSource": "derived-verified",
+      "length": 4,
+      "name": "CLICKWORLDMAP",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "ef",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dd"
+      ],
+      "id": 79,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "CLIENT_CHEAT",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dm"
+      ],
+      "id": 80,
+      "layoutSource": "derived-verified",
+      "length": 16,
+      "name": "IF_BUTTONT",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "ez",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dx"
+      ],
+      "id": 81,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "IGNORELIST_ADD",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dy"
+      ],
+      "id": 82,
+      "layoutSource": "derived-verified",
+      "length": 6,
+      "name": "RESUME_PAUSEBUTTON",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "di"
+      ],
+      "id": 83,
+      "layoutSource": "derived-verified",
+      "length": 2,
+      "name": "EVENT_MOUSE_SCROLL",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "du"
+      ],
+      "id": 84,
+      "layoutSource": "derived-verified",
+      "length": 15,
+      "name": "OPOBJU",
+      "writes": [
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "em",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dt"
+      ],
+      "id": 85,
+      "layoutSource": "derived-verified",
+      "length": 11,
+      "name": "OPWORLDENTITYU",
+      "writes": [
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dr"
+      ],
+      "id": 86,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "IGNORELIST_DEL",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dk"
+      ],
+      "id": 87,
+      "layoutSource": "derived-verified",
+      "length": 4,
+      "name": "OPNPC2_V2",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "db"
+      ],
+      "id": 88,
+      "length": -1,
+      "name": "EVENT_NATIVE_MOUSE_MOVE"
+    },
+    {
+      "fields": [
+        "dw"
+      ],
+      "id": 89,
+      "length": 1,
+      "name": "RSEVEN_STATUS"
+    },
+    {
+      "fields": [
+        "dh"
+      ],
+      "id": 90,
+      "layoutSource": "derived-verified",
+      "length": 8,
+      "name": "OPLOC2_V2",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "de"
+      ],
+      "id": 91,
+      "length": 26,
+      "name": "UPDATE_PLAYER_MODEL_V2"
+    },
+    {
+      "fields": [
+        "dz"
+      ],
+      "id": 92,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "SEND_SNAPSHOT",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dn"
+      ],
+      "id": 93,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "OPWORLDENTITY5",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dv"
+      ],
+      "id": 94,
+      "length": 7,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "do"
+      ],
+      "id": 95,
+      "layoutSource": "derived-verified",
+      "length": 10,
+      "name": "IF_SUBOP",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dg"
+      ],
+      "id": 96,
+      "layoutSource": "derived-verified",
+      "length": 3,
+      "name": "OPWORLDENTITY1",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dl"
+      ],
+      "id": 97,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "FRIENDCHAT_JOIN_LEAVE",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dq"
+      ],
+      "id": 98,
+      "layoutSource": "derived-zero-verified",
+      "length": 0,
+      "name": "CLOSE_MODAL",
+      "writes": []
+    },
+    {
+      "fields": [
+        "df"
+      ],
+      "id": 99,
+      "layoutSource": "derived-zero-verified",
+      "length": 0,
+      "name": "NO_TIMEOUT",
+      "writes": []
+    },
+    {
+      "fields": [
+        "ds"
+      ],
+      "id": 100,
+      "layoutSource": "derived-verified",
+      "length": 1,
+      "name": "CLANSETTINGS_FULL_REQUEST",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dj"
+      ],
+      "id": 101,
+      "layoutSource": "derived-verified",
+      "length": 2,
+      "name": "OPNPC6",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "da"
+      ],
+      "id": 102,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "MOVE_GAMECLICK",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "dp"
+      ],
+      "id": 103,
+      "layoutSource": "derived-verified",
+      "length": 4,
+      "name": "DETECT_MODIFIED_CLIENT",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ey"
+      ],
+      "id": 104,
+      "length": 7,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "ea"
+      ],
+      "id": 105,
+      "layoutSource": "derived-verified",
+      "length": 2,
+      "name": "OPLOC6",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ek"
+      ],
+      "id": 106,
+      "length": 3,
+      "name": "-"
+    },
+    {
+      "fields": [
+        "es"
+      ],
+      "id": 107,
+      "layoutSource": "derived-verified",
+      "length": 11,
+      "name": "OPNPCU",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ej"
+      ],
+      "id": 108,
+      "layoutSource": "derived-verified",
+      "length": -2,
+      "name": "MESSAGE_PRIVATE",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;II)V",
+          "m": "wi",
+          "owner": "xy",
+          "static": true,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ed"
+      ],
+      "id": 109,
+      "layoutSource": "derived-verified",
+      "length": 1,
+      "name": "SET_HEADING",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "ev"
+      ],
+      "id": 110,
+      "length": -1,
+      "name": "HISCORE_REQUEST"
+    },
+    {
+      "fields": [
+        "el"
+      ],
+      "id": 111,
+      "layoutSource": "derived-verified",
+      "length": 8,
+      "name": "RESUME_P_COUNTDIALOG_LONG",
+      "writes": [
+        {
+          "d": "(J)V",
+          "m": "cu",
+          "owner": "xs",
+          "static": false,
+          "w": "W8"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "eh"
+      ],
+      "id": 112,
+      "layoutSource": "derived-verified",
+      "length": 8,
+      "name": "OPOBJ1_V2",
+      "writes": [
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cv",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "eg"
+      ],
+      "id": 113,
+      "layoutSource": "derived-verified",
+      "length": 8,
+      "name": "OPOBJ2_V2",
+      "writes": [
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "cc",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "en"
+      ],
+      "id": 114,
+      "length": -1,
+      "name": "EVENT_MOUSE_MOVE"
+    },
+    {
+      "fields": [
+        "ex"
+      ],
+      "id": 115,
+      "layoutSource": "derived-verified",
+      "length": -1,
+      "name": "FRIENDLIST_DEL",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;Ljava/lang/String;S)V",
+          "m": "pa",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        }
+      ]
+    },
+    {
+      "fields": [
+        "eq"
+      ],
+      "id": 116,
+      "layoutSource": "derived-verified",
+      "length": 15,
+      "name": "OPLOCU",
+      "writes": [
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "ef",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        }
+      ]
+    }
+  ],
+  "revision": 240,
+  "sendPath": {
+    "addNodeDescriptor": "(Ljl;I)V",
+    "addNodeMethod": "ae",
+    "addNodeStatic": false,
+    "clientWriterField": "ai",
+    "factoryMethods": [
+      "aa(Ljs;Lyt;)Ljl;",
+      "ao(Ljs;Lyt;)Ljl;"
+    ],
+    "factoryOwner": "jl",
+    "garbageConstant": -1301097035,
+    "nodeBufferField": "ac",
+    "writerCipherField": "ab",
+    "writerClass": "dj"
+  },
+  "serverPacketCount": 152,
+  "serverPackets": [
+    {
+      "fields": [
+        "az"
+      ],
+      "id": 0,
+      "length": 5
+    },
+    {
+      "fields": [
+        "af"
+      ],
+      "id": 1,
+      "length": 10
+    },
+    {
+      "fields": [
+        "ae"
+      ],
+      "id": 2,
+      "length": -1
+    },
+    {
+      "fields": [
+        "ab"
+      ],
+      "id": 3,
+      "length": 6
+    },
+    {
+      "fields": [
+        "ag"
+      ],
+      "id": 4,
+      "length": 10
+    },
+    {
+      "fields": [
+        "as"
+      ],
+      "id": 5,
+      "length": -2
+    },
+    {
+      "fields": [
+        "ax"
+      ],
+      "id": 6,
+      "length": 4
+    },
+    {
+      "fields": [
+        "ac"
+      ],
+      "id": 7,
+      "length": -2
+    },
+    {
+      "fields": [
+        "aa"
+      ],
+      "id": 8,
+      "length": 4
+    },
+    {
+      "fields": [
+        "ao"
+      ],
+      "id": 9,
+      "length": -2
+    },
+    {
+      "fields": [
+        "al"
+      ],
+      "id": 10,
+      "length": -2
+    },
+    {
+      "fields": [
+        "aj"
+      ],
+      "id": 11,
+      "length": -2
+    },
+    {
+      "fields": [
+        "ay"
+      ],
+      "id": 12,
+      "length": -2
+    },
+    {
+      "fields": [
+        "aq"
+      ],
+      "id": 13,
+      "length": 6
+    },
+    {
+      "fields": [
+        "ad"
+      ],
+      "id": 14,
+      "length": 2
+    },
+    {
+      "fields": [
+        "ap"
+      ],
+      "id": 15,
+      "length": 1
+    },
+    {
+      "fields": [
+        "au"
+      ],
+      "id": 16,
+      "length": 7
+    },
+    {
+      "fields": [
+        "ai"
+      ],
+      "id": 17,
+      "length": 0
+    },
+    {
+      "fields": [
+        "ar"
+      ],
+      "id": 18,
+      "length": 2
+    },
+    {
+      "fields": [
+        "aw"
+      ],
+      "id": 19,
+      "length": 2
+    },
+    {
+      "fields": [
+        "ak"
+      ],
+      "id": 20,
+      "length": 3
+    },
+    {
+      "fields": [
+        "av"
+      ],
+      "id": 21,
+      "length": -1
+    },
+    {
+      "fields": [
+        "at"
+      ],
+      "id": 22,
+      "length": 4
+    },
+    {
+      "fields": [
+        "an"
+      ],
+      "id": 23,
+      "length": -2
+    },
+    {
+      "fields": [
+        "am"
+      ],
+      "id": 24,
+      "length": -2
+    },
+    {
+      "fields": [
+        "ah"
+      ],
+      "id": 25,
+      "length": 0
+    },
+    {
+      "fields": [
+        "bn"
+      ],
+      "id": 26,
+      "length": -1
+    },
+    {
+      "fields": [
+        "bx"
+      ],
+      "id": 27,
+      "length": -2
+    },
+    {
+      "fields": [
+        "bc"
+      ],
+      "id": 28,
+      "length": 6
+    },
+    {
+      "fields": [
+        "bp"
+      ],
+      "id": 29,
+      "length": -2
+    },
+    {
+      "fields": [
+        "br"
+      ],
+      "id": 30,
+      "length": -2
+    },
+    {
+      "fields": [
+        "bm"
+      ],
+      "id": 31,
+      "length": 8
+    },
+    {
+      "fields": [
+        "bt"
+      ],
+      "id": 32,
+      "length": 1
+    },
+    {
+      "fields": [
+        "bg"
+      ],
+      "id": 33,
+      "length": 7
+    },
+    {
+      "fields": [
+        "bj"
+      ],
+      "id": 34,
+      "length": 4
+    },
+    {
+      "fields": [
+        "bk"
+      ],
+      "id": 35,
+      "length": 2
+    },
+    {
+      "fields": [
+        "bo"
+      ],
+      "id": 36,
+      "length": -2
+    },
+    {
+      "fields": [
+        "bu"
+      ],
+      "id": 37,
+      "length": 0
+    },
+    {
+      "fields": [
+        "ba"
+      ],
+      "id": 38,
+      "length": -2
+    },
+    {
+      "fields": [
+        "bw"
+      ],
+      "id": 39,
+      "length": -2
+    },
+    {
+      "fields": [
+        "bb"
+      ],
+      "id": 40,
+      "length": 5
+    },
+    {
+      "fields": [
+        "bi"
+      ],
+      "id": 41,
+      "length": 2
+    },
+    {
+      "fields": [
+        "be"
+      ],
+      "id": 42,
+      "length": 6
+    },
+    {
+      "fields": [
+        "by"
+      ],
+      "id": 43,
+      "length": -1
+    },
+    {
+      "fields": [
+        "bq"
+      ],
+      "id": 44,
+      "length": -1
+    },
+    {
+      "fields": [
+        "bf"
+      ],
+      "id": 45,
+      "length": 7
+    },
+    {
+      "fields": [
+        "bs"
+      ],
+      "id": 46,
+      "length": -2
+    },
+    {
+      "fields": [
+        "bd"
+      ],
+      "id": 47,
+      "length": 12
+    },
+    {
+      "fields": [
+        "bl"
+      ],
+      "id": 48,
+      "length": 14
+    },
+    {
+      "fields": [
+        "bv"
+      ],
+      "id": 49,
+      "length": -2
+    },
+    {
+      "fields": [
+        "bh"
+      ],
+      "id": 50,
+      "length": 8
+    },
+    {
+      "fields": [
+        "bz"
+      ],
+      "id": 51,
+      "length": 8
+    },
+    {
+      "fields": [
+        "cr"
+      ],
+      "id": 52,
+      "length": 20
+    },
+    {
+      "fields": [
+        "cu"
+      ],
+      "id": 53,
+      "length": -1
+    },
+    {
+      "fields": [
+        "cb"
+      ],
+      "id": 54,
+      "length": 5
+    },
+    {
+      "fields": [
+        "ct"
+      ],
+      "id": 55,
+      "length": 1
+    },
+    {
+      "fields": [
+        "cp"
+      ],
+      "id": 56,
+      "length": 1
+    },
+    {
+      "fields": [
+        "cq"
+      ],
+      "id": 57,
+      "length": 2
+    },
+    {
+      "fields": [
+        "cl"
+      ],
+      "id": 58,
+      "length": 0
+    },
+    {
+      "fields": [
+        "cd"
+      ],
+      "id": 59,
+      "length": 6
+    },
+    {
+      "fields": [
+        "cv"
+      ],
+      "id": 60,
+      "length": 4
+    },
+    {
+      "fields": [
+        "cs"
+      ],
+      "id": 61,
+      "length": 6
+    },
+    {
+      "fields": [
+        "cy"
+      ],
+      "id": 62,
+      "length": 5
+    },
+    {
+      "fields": [
+        "co"
+      ],
+      "id": 63,
+      "length": 7
+    },
+    {
+      "fields": [
+        "ck"
+      ],
+      "id": 64,
+      "length": 5
+    },
+    {
+      "fields": [
+        "ca"
+      ],
+      "id": 65,
+      "length": 4
+    },
+    {
+      "fields": [
+        "cc"
+      ],
+      "id": 66,
+      "length": -1
+    },
+    {
+      "fields": [
+        "cf"
+      ],
+      "id": 67,
+      "length": 6
+    },
+    {
+      "fields": [
+        "cn"
+      ],
+      "id": 68,
+      "length": 0
+    },
+    {
+      "fields": [
+        "ch"
+      ],
+      "id": 69,
+      "length": -2
+    },
+    {
+      "fields": [
+        "cz"
+      ],
+      "id": 70,
+      "length": 0
+    },
+    {
+      "fields": [
+        "cg"
+      ],
+      "id": 71,
+      "length": 5
+    },
+    {
+      "fields": [
+        "cw"
+      ],
+      "id": 72,
+      "length": 27
+    },
+    {
+      "fields": [
+        "cj"
+      ],
+      "id": 73,
+      "length": -1
+    },
+    {
+      "fields": [
+        "ci"
+      ],
+      "id": 74,
+      "length": -2
+    },
+    {
+      "fields": [
+        "cx"
+      ],
+      "id": 75,
+      "length": -2
+    },
+    {
+      "fields": [
+        "ce"
+      ],
+      "id": 76,
+      "length": 1
+    },
+    {
+      "fields": [
+        "cm"
+      ],
+      "id": 77,
+      "length": 0
+    },
+    {
+      "fields": [
+        "dc"
+      ],
+      "id": 78,
+      "length": 6
+    },
+    {
+      "fields": [
+        "dd"
+      ],
+      "id": 79,
+      "length": -1
+    },
+    {
+      "fields": [
+        "dm"
+      ],
+      "id": 80,
+      "length": -2
+    },
+    {
+      "fields": [
+        "dx"
+      ],
+      "id": 81,
+      "length": 10
+    },
+    {
+      "fields": [
+        "dy"
+      ],
+      "id": 82,
+      "length": 8
+    },
+    {
+      "fields": [
+        "di"
+      ],
+      "id": 83,
+      "length": 9
+    },
+    {
+      "fields": [
+        "du"
+      ],
+      "id": 84,
+      "length": 6
+    },
+    {
+      "fields": [
+        "dt"
+      ],
+      "id": 85,
+      "length": -1
+    },
+    {
+      "fields": [
+        "dr"
+      ],
+      "id": 86,
+      "length": 10
+    },
+    {
+      "fields": [
+        "dk"
+      ],
+      "id": 87,
+      "length": 7
+    },
+    {
+      "fields": [
+        "db"
+      ],
+      "id": 88,
+      "length": -2
+    },
+    {
+      "fields": [
+        "dw"
+      ],
+      "id": 89,
+      "length": 10
+    },
+    {
+      "fields": [
+        "dh"
+      ],
+      "id": 90,
+      "length": 8
+    },
+    {
+      "fields": [
+        "de"
+      ],
+      "id": 91,
+      "length": -2
+    },
+    {
+      "fields": [
+        "dz"
+      ],
+      "id": 92,
+      "length": 0
+    },
+    {
+      "fields": [
+        "dn"
+      ],
+      "id": 93,
+      "length": -2
+    },
+    {
+      "fields": [
+        "dv"
+      ],
+      "id": 94,
+      "length": 6
+    },
+    {
+      "fields": [
+        "do"
+      ],
+      "id": 95,
+      "length": 7
+    },
+    {
+      "fields": [
+        "dg"
+      ],
+      "id": 96,
+      "length": 9
+    },
+    {
+      "fields": [
+        "dl"
+      ],
+      "id": 97,
+      "length": -2
+    },
+    {
+      "fields": [
+        "dq"
+      ],
+      "id": 98,
+      "length": 5
+    },
+    {
+      "fields": [
+        "df"
+      ],
+      "id": 99,
+      "length": 28
+    },
+    {
+      "fields": [
+        "ds"
+      ],
+      "id": 100,
+      "length": 0
+    },
+    {
+      "fields": [
+        "dj"
+      ],
+      "id": 101,
+      "length": 9
+    },
+    {
+      "fields": [
+        "da"
+      ],
+      "id": 102,
+      "length": 3
+    },
+    {
+      "fields": [
+        "dp"
+      ],
+      "id": 103,
+      "length": 20
+    },
+    {
+      "fields": [
+        "ey"
+      ],
+      "id": 104,
+      "length": 0
+    },
+    {
+      "fields": [
+        "ea"
+      ],
+      "id": 105,
+      "length": 8
+    },
+    {
+      "fields": [
+        "ek"
+      ],
+      "id": 106,
+      "length": 16
+    },
+    {
+      "fields": [
+        "es"
+      ],
+      "id": 107,
+      "length": -2
+    },
+    {
+      "fields": [
+        "ej"
+      ],
+      "id": 108,
+      "length": 8
+    },
+    {
+      "fields": [
+        "ed"
+      ],
+      "id": 109,
+      "length": -1
+    },
+    {
+      "fields": [
+        "ev"
+      ],
+      "id": 110,
+      "length": 1
+    },
+    {
+      "fields": [
+        "el"
+      ],
+      "id": 111,
+      "length": 2
+    },
+    {
+      "fields": [
+        "eh"
+      ],
+      "id": 112,
+      "length": 1
+    },
+    {
+      "fields": [
+        "eg"
+      ],
+      "id": 113,
+      "length": 4
+    },
+    {
+      "fields": [
+        "en"
+      ],
+      "id": 114,
+      "length": 17
+    },
+    {
+      "fields": [
+        "ex"
+      ],
+      "id": 115,
+      "length": 8
+    },
+    {
+      "fields": [
+        "eq"
+      ],
+      "id": 116,
+      "length": 4
+    },
+    {
+      "fields": [
+        "er"
+      ],
+      "id": 117,
+      "length": 5
+    },
+    {
+      "fields": [
+        "eo"
+      ],
+      "id": 118,
+      "length": 3
+    },
+    {
+      "fields": [
+        "et"
+      ],
+      "id": 119,
+      "length": -2
+    },
+    {
+      "fields": [
+        "ew"
+      ],
+      "id": 120,
+      "length": 2
+    },
+    {
+      "fields": [
+        "eu"
+      ],
+      "id": 121,
+      "length": 2
+    },
+    {
+      "fields": [
+        "ef"
+      ],
+      "id": 122,
+      "length": 1
+    },
+    {
+      "fields": [
+        "em"
+      ],
+      "id": 123,
+      "length": 4
+    },
+    {
+      "fields": [
+        "ez"
+      ],
+      "id": 124,
+      "length": 14
+    },
+    {
+      "fields": [
+        "ei"
+      ],
+      "id": 125,
+      "length": -2
+    },
+    {
+      "fields": [
+        "ee"
+      ],
+      "id": 126,
+      "length": 3
+    },
+    {
+      "fields": [
+        "eb"
+      ],
+      "id": 127,
+      "length": 3
+    },
+    {
+      "fields": [
+        "ep"
+      ],
+      "id": 128,
+      "length": 11
+    },
+    {
+      "fields": [
+        "ec"
+      ],
+      "id": 129,
+      "length": -2
+    },
+    {
+      "fields": [
+        "fo"
+      ],
+      "id": 130,
+      "length": 11
+    },
+    {
+      "fields": [
+        "fl"
+      ],
+      "id": 131,
+      "length": 15
+    },
+    {
+      "fields": [
+        "fj"
+      ],
+      "id": 132,
+      "length": 8
+    },
+    {
+      "fields": [
+        "fd"
+      ],
+      "id": 133,
+      "length": 9
+    },
+    {
+      "fields": [
+        "fy"
+      ],
+      "id": 134,
+      "length": 9
+    },
+    {
+      "fields": [
+        "fg"
+      ],
+      "id": 135,
+      "length": 3
+    },
+    {
+      "fields": [
+        "fi"
+      ],
+      "id": 136,
+      "length": 4
+    },
+    {
+      "fields": [
+        "fb"
+      ],
+      "id": 137,
+      "length": 13
+    },
+    {
+      "fields": [
+        "fu"
+      ],
+      "id": 138,
+      "length": 1
+    },
+    {
+      "fields": [
+        "fz"
+      ],
+      "id": 139,
+      "length": -2
+    },
+    {
+      "fields": [
+        "fh"
+      ],
+      "id": 140,
+      "length": 4
+    },
+    {
+      "fields": [
+        "fq"
+      ],
+      "id": 141,
+      "length": -2
+    },
+    {
+      "fields": [
+        "fp"
+      ],
+      "id": 142,
+      "length": -2
+    },
+    {
+      "fields": [
+        "fs"
+      ],
+      "id": 143,
+      "length": 14
+    },
+    {
+      "fields": [
+        "fv"
+      ],
+      "id": 144,
+      "length": 9
+    },
+    {
+      "fields": [
+        "fn"
+      ],
+      "id": 145,
+      "length": 10
+    },
+    {
+      "fields": [
+        "fk"
+      ],
+      "id": 146,
+      "length": 8
+    },
+    {
+      "fields": [
+        "fx"
+      ],
+      "id": 147,
+      "length": 10
+    },
+    {
+      "fields": [
+        "fr"
+      ],
+      "id": 148,
+      "length": 9
+    },
+    {
+      "fields": [
+        "ft"
+      ],
+      "id": 149,
+      "length": 1
+    },
+    {
+      "fields": [
+        "ff"
+      ],
+      "id": 150,
+      "length": -2
+    },
+    {
+      "fields": [
+        "fe"
+      ],
+      "id": 151,
+      "length": 8
+    }
+  ],
+  "totalClassCount": 735,
+  "trace": {
+    "declaredField": "eo",
+    "declaredMultiplier": -1719371919,
+    "idField": "er",
+    "idMultiplier": -910918935,
+    "offsetMultiplier": -1095856699
+  }
+}

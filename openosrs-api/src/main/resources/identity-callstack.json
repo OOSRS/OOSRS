@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "status": "captured",
+  "source": "stock-runelite-reflect-memory",
+  "capturedAt": "2026-09-10T12:16:46Z",
+  "runeliteVersion": "1.12.38",
+  "revision": 240,
+  "injectedClientSha256": "7fdedf1194261cc5b99faa35e0d2b4e45b6d56665402ccbde7f3aa6207c3f947",
+  "runeliteClientSha256": "6dcd0da2fdbf48d35c3d8f666d801d05afa964030c553e806eb173dba97323d5",
+  "launcherVersion": "2.8.0",
+  "stack": "client1486ya\nclient16815az\nnrc.RuneLite287start\nnrc.RuneLite264main\nnrl.ReflectionLa+64lambda$launc+\njl.ThreadUnknown S+",
+  "stackSha256": "a609b89fc632edd6c7638478a63733387fd847ee0e2e11d01ff7f3fb695b637a",
+  "distinctStacks": 1,
+  "clientMode": "normal"
+}
