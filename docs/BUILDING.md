@@ -4,7 +4,7 @@
 
 - Java **21 JDK**, with `JAVA_HOME` pointing to it.
 - Git and internet access for the first build.
-- A desktop session for running the client.
+- Java **11 or newer** and a desktop session for running the client.
 
 The Gradle wrapper is included. No local Maven publications or private repositories are required.
 
@@ -13,7 +13,7 @@ git clone https://github.com/OOSRS/OOSRS.git
 cd OOSRS
 java -version
 ./gradlew :runelite-client:shadowJar
-java -jar runelite-client/build/libs/openosrs-client-1.0.0.jar
+java -jar runelite-client/build/libs/openosrs-client-1.0.1.jar
 ```
 
 Windows: replace `./gradlew` with `gradlew.bat`.
@@ -50,7 +50,7 @@ Open `openosrs-api/build/docs/javadoc/index.html` or `runelite-api/build/docs/ja
 
 ## Troubleshooting
 
-- **Wrong Java version:** confirm both `java -version` and `JAVA_HOME` select JDK 21.
+- **Wrong Java version:** use JDK 21 for builds; released client and launcher JARs run on Java 11 or newer.
 - **Dependency download failed:** check connectivity and retry. An invalid download never replaces a verified local game dependency.
 - **Checksum mismatch:** stop and report it; do not remove the verification step.
 - **Client does not start:** inspect `~/.openosrs/logs/`; launcher-specific logs live in `~/.openosrs/launcher/logs/`.

@@ -19,9 +19,9 @@ public final class OpenOSRSMain
 			System.out.println("OpenOSRS " + com.openosrs.client.OpenOSRS.SYSTEM_VERSION + " — Java " + Runtime.version().feature());
 			return;
 		}
-		if (Runtime.version().feature() != 21)
+		if (Runtime.version().feature() < 11)
 		{
-			throw new IllegalStateException("OpenOSRS requires Java 21.");
+			throw new IllegalStateException("OpenOSRS requires Java 11 or newer.");
 		}
 		if (!Boolean.getBoolean("openosrs.bootstrap.ready"))
 		{

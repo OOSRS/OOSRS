@@ -3,7 +3,7 @@ import org.gradle.api.tasks.SourceSetContainer
 
 allprojects {
     group = "com.openosrs"
-    version = "1.0.0"
+    version = "1.0.1"
 }
 
 plugins {
@@ -41,6 +41,7 @@ subprojects {
 
     tasks.withType<JavaCompile>().configureEach {
         options.encoding = "UTF-8"
+        options.release.set(11)
     }
 
     tasks.withType<AbstractArchiveTask>().configureEach {

@@ -29,6 +29,7 @@ docs = root / f"build/distributions/openosrs-javadocs-{version}.zip"
 shutil.copy2(docs, out / docs.name)
 revision = re.search(r"^revision=(\d+)$", (root / "gamepack.properties").read_text(), re.M).group(1)
 digest = hashlib.sha256(client.read_bytes()).hexdigest()
-(out / "update.properties").write_text(f"version={version}\nasset={client.name}\nsha256={digest}\njava=21\nrevision={revision}\n")
+# Launcher 1.0.0 uses the legacy Java 21 field; current launchers use the minimum.
+(out / "update.properties").write_text(f"version={version}\nasset={client.name}\nsha256={digest}\njava=21\nminimumJava=11\nrevision={revision}\n")
 (out / "SHA256SUMS").write_text("".join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.name}\n" for p in sorted(out.iterdir()) if p.is_file()))
 print(f"Prepared OpenOSRS {version}: {out}")

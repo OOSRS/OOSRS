@@ -156,7 +156,7 @@ tasks {
         val tokens = mapOf(
             "project.version" to ProjectVersions.rlVersion,
             "rs.version" to ProjectVersions.rsversion.toString(),
-            "open.osrs.version" to ProjectVersions.openosrsVersion,
+            "open.osrs.version" to project.version.toString(),
             "open.osrs.builddate" to "2026-09-10",
             "plugin.path" to (project.findProperty("pluginPath")?.toString() ?: "")
         )
