@@ -3,7 +3,7 @@ import org.gradle.api.tasks.SourceSetContainer
 
 allprojects {
     group = "com.openosrs"
-    version = "1.0.2"
+    version = "1.0.3"
 }
 
 plugins {

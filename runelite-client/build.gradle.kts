@@ -147,7 +147,7 @@ tasks {
             "project.version" to ProjectVersions.rlVersion,
             "rs.version" to ProjectVersions.rsversion.toString(),
             "open.osrs.version" to project.version.toString(),
-            "open.osrs.builddate" to "2026-09-10",
+            "open.osrs.builddate" to "2026-09-12",
             "plugin.path" to (project.findProperty("pluginPath")?.toString() ?: "")
         )
         inputs.properties(tokens)

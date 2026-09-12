@@ -540,6 +540,10 @@ public class ClientLoader implements Supplier<Object>
 				}
 			}
 
+			if (!net.openosrs.client.accounts.JagexLoginBridge.register(jar.toPath(), classLoader))
+			{
+				log.info("Profiles login is unavailable: account mappings do not match the loaded client");
+			}
 			return classLoader;
 		}
 	}

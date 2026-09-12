@@ -54,5 +54,5 @@ jobs:
           if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
             echo "Release already exists; published artifacts remain unchanged."
           else
-            gh release create "$GITHUB_REF_NAME" release-output/* --verify-tag --title "OpenOSRS $GITHUB_REF_NAME" --notes-file "docs/releases/${GITHUB_REF_NAME#v}.md" --generate-notes
+            gh release create "$GITHUB_REF_NAME" release-output/* --verify-tag --title "OpenOSRS $GITHUB_REF_NAME" --notes-file "docs/releases/${GITHUB_REF_NAME#v}.md"
           fi

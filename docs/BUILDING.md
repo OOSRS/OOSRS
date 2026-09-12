@@ -13,7 +13,7 @@ git clone https://github.com/OOSRS/OOSRS.git
 cd OOSRS
 java -version
 ./gradlew :runelite-client:shadowJar
-java -jar runelite-client/build/libs/openosrs-client-1.0.2.jar
+java -jar runelite-client/build/libs/openosrs-client-1.0.3.jar
 ```
 
 Windows: replace `./gradlew` with `gradlew.bat`.
