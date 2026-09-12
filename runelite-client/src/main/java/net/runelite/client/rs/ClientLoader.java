@@ -81,6 +81,7 @@ public class ClientLoader implements Supplier<Object>
 {
 	private static final String INJECTED_CLIENT_NAME = "/injected-client.oprs";
 	private static final int NUM_ATTEMPTS = 6;
+	private static final java.util.concurrent.locks.ReentrantLock CACHE_LOCK = new java.util.concurrent.locks.ReentrantLock();
 	private static File LOCK_FILE = new File(RuneLite.CACHE_DIR, "cache.lock");
 	private static File VANILLA_CACHE = new File(RuneLite.CACHE_DIR, "vanilla.cache");
 	private static File PATCHED_CACHE = new File(RuneLite.CACHE_DIR, "patched.cache");
@@ -133,7 +134,13 @@ public class ClientLoader implements Supplier<Object>
 
 			SplashScreen.stage(.05, null, "Waiting for other clients to start");
 
-			LOCK_FILE.getParentFile().mkdirs();
+			Files.createDirectories(LOCK_FILE.toPath().getParent());
+			try { CACHE_LOCK.lockInterruptibly(); }
+			catch (InterruptedException interrupted)
+			{
+				Thread.currentThread().interrupt();
+				throw new java.io.InterruptedIOException("Interrupted waiting for client cache");
+			}
 			ClassLoader classLoader;
 			try (FileChannel lockfile = FileChannel.open(LOCK_FILE.toPath(),
 				StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE);
@@ -144,7 +151,7 @@ public class ClientLoader implements Supplier<Object>
 					// so skip the legacy gamepack download/verification entirely.
 					SplashScreen.stage(.15, null, "Extracting Old School RuneScape");
 
-					File oprsInjected = new File(System.getProperty("user.home") + "/.openosrs/cache/injected-client.jar");
+					File oprsInjected = new File(RuneLite.CACHE_DIR, "injected-client.jar");
 					writeInjectedClient(oprsInjected);
 
 					SplashScreen.stage(.40, null, "Loading client");
@@ -154,6 +161,8 @@ public class ClientLoader implements Supplier<Object>
 				// in the jar. Otherwise the jar can change on disk and can break future classloads.
 				classLoader = createJarClassLoader(jarFile);
 			}
+
+			finally { CACHE_LOCK.unlock(); }
 
 			SplashScreen.stage(.465, "Starting", "Starting Old School RuneScape");
 
@@ -172,7 +181,7 @@ public class ClientLoader implements Supplier<Object>
 		{
 			log.error("Error loading RS!", e);
 
-			if (!checkOutages())
+			if (!Thread.currentThread().isInterrupted() && !checkOutages())
 			{
 				SwingUtilities.invokeLater(() -> FatalErrorDialog.showNetErrorWindow("loading the client", e));
 			}
@@ -182,107 +191,17 @@ public class ClientLoader implements Supplier<Object>
 
 	private RSConfig downloadConfig() throws IOException
 	{
-		HttpUrl url = HttpUrl.get(javConfigUrl);
-		IOException err = null;
-		// Jagex's CDN intermittently resets TLS for both JVM and curl fingerprints; world
-		// servers still serve jav_config reliably. Probe a few worlds via curl as pre-pass.
-		try
+		HttpUrl requested = HttpUrl.get(javConfigUrl);
+		try { return clientConfigLoader.fetch(requested); }
+		catch (IOException primary)
 		{
-			java.util.Random rng = new java.util.Random();
-			for (int i = 0; i < 8; i++)
-			{
-				int world = 300 + rng.nextInt(300); // stable non-f2p range
-				String wurl = "https://oldschool" + world + ".runescape.com/jav_config.ws";
-				ProcessBuilder pb = new ProcessBuilder("curl", "-sf", "--max-time", "8",
-					wurl, "-o", "/tmp/.oos_jav_config.ws");
-				if (pb.start().waitFor() != 0)
-				{
-					continue;
-				}
-				java.io.File f = new java.io.File("/tmp/.oos_jav_config.ws");
-				byte[] data = java.nio.file.Files.readAllBytes(f.toPath());
-				RSConfig config = ClientConfigLoader.parse(data);
-				if (config != null && !Strings.isNullOrEmpty(config.getCodeBase())
-					&& !Strings.isNullOrEmpty(config.getInitialClass()))
-				{
-					log.info("jav_config fetched via curl world fallback ({})", world);
-					return config;
-				}
-			}
+			if (Thread.currentThread().isInterrupted() || !javConfigUrl.equals(RuneLiteProperties.getJavConfig()))
+				throw primary;
+			// Visible fixed policy: the configured official endpoint, then its documented backup.
+			log.info("Primary client config unavailable; trying the configured backup");
+			try { return clientConfigLoader.fetch(HttpUrl.get(RuneLiteProperties.getJavConfigBackup())); }
+			catch (IOException backup) { primary.addSuppressed(backup); throw primary; }
 		}
-		catch (Exception e)
-		{
-			log.debug("curl world fallback failed", e);
-		}
-		for (int attempt = 0; attempt < NUM_ATTEMPTS; attempt++)
-		{
-			try
-			{
-				RSConfig config = clientConfigLoader.fetch(url);
-
-				if (Strings.isNullOrEmpty(config.getCodeBase()) || Strings.isNullOrEmpty(config.getInitialJar()) || Strings.isNullOrEmpty(config.getInitialClass()))
-				{
-					throw new IOException("Invalid or missing jav_config");
-				}
-
-				return config;
-			}
-			catch (IOException e)
-			{
-				log.info("Failed to get jav_config from host \"{}\" ({})", url.host(), e.getMessage());
-				if (checkOutages())
-				{
-					throw new OutageException(e);
-				}
-
-				if (!javConfigUrl.equals(RuneLiteProperties.getJavConfig()))
-				{
-					throw e;
-				}
-
-				String host = worldSupplier.get().getAddress();
-				url = url.newBuilder().host(host).build();
-				err = e;
-			}
-		}
-
-		log.info("Falling back to backup client config");
-
-		try
-		{
-			return downloadFallbackConfig();
-		}
-		catch (IOException ex)
-		{
-			log.debug("error downloading backup config", ex);
-			throw err; // use error from Jagex's servers
-		}
-	}
-
-	@Nonnull
-	private RSConfig downloadFallbackConfig() throws IOException
-	{
-		RSConfig backupConfig = clientConfigLoader.fetch(HttpUrl.get(RuneLiteProperties.getJavConfigBackup()));
-
-		if (Strings.isNullOrEmpty(backupConfig.getCodeBase()) || Strings.isNullOrEmpty(backupConfig.getInitialJar()) || Strings.isNullOrEmpty(backupConfig.getInitialClass()))
-		{
-			throw new IOException("Invalid or missing jav_config");
-		}
-
-		if (Strings.isNullOrEmpty(backupConfig.getRuneLiteGamepack()) || Strings.isNullOrEmpty(backupConfig.getRuneLiteWorldParam()))
-		{
-			throw new IOException("Backup config does not have RuneLite gamepack url");
-		}
-
-		// Randomize the codebase
-		World world = worldSupplier.get();
-		backupConfig.setCodebase("http://" + world.getAddress() + "/");
-
-		// Update the world applet parameter
-		Map<String, String> appletProperties = backupConfig.getAppletProperties();
-		appletProperties.put(backupConfig.getRuneLiteWorldParam(), Integer.toString(world.getId()));
-
-		return backupConfig;
 	}
 
 	private void updateVanilla(RSConfig config) throws IOException, VerificationException
@@ -543,29 +462,16 @@ public class ClientLoader implements Supplier<Object>
 
 	private void writeInjectedClient(File cachedInjected) throws IOException
 	{
-		String cachedHash = "";
-		try
+		byte[] current;
+		try (InputStream input = ClientLoader.class.getResourceAsStream(INJECTED_CLIENT_NAME))
 		{
-			cachedHash = com.google.common.io.Files.asByteSource(cachedInjected).hash(Hashing.sha256()).toString();
+			if (input == null) throw new IOException("Bundled client is missing");
+			current = ByteStreams.toByteArray(input);
 		}
-		catch (IOException ex)
-		{
-			if (!(ex instanceof FileNotFoundException))
-			{
-				log.error("Failed to calculate hash for cached file, falling back to vanilla", ex);
-				updateCheckMode = VANILLA;
-				return;
-			}
-		}
-
-		byte[] currentInjected = ByteStreams.toByteArray(ClientLoader.class.getResourceAsStream(INJECTED_CLIENT_NAME));
-		String currentHash = Hashing.sha256().hashBytes(currentInjected).toString();
-
-		if (!cachedInjected.exists() || !currentHash.equals(cachedHash))
-		{
-			cachedInjected.getParentFile().mkdirs();
-			Files.write(cachedInjected.toPath(), currentInjected);
-		}
+		String expected;
+		try { expected = net.openosrs.api.hooks.HooksFile.load().getJarSha256(); }
+		catch (RuntimeException error) { throw new IOException("Bundled client identity is unavailable", error); }
+		VerifiedClientCache.install(cachedInjected.toPath(), current, expected);
 	}
 
 	private ClassLoader createJarClassLoader(File jar) throws IOException, ClassNotFoundException

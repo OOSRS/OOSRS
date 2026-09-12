@@ -78,10 +78,15 @@ public class ApiTestPlugin extends Plugin
 
 	private int ticks;
 	private KeyListener hotkeyListener;
+	private volatile boolean active;
+	private volatile long generation;
+	@Inject private net.openosrs.api.dispatch.MenuDispatcher menuDispatcher;
 
 	@Override
 	protected void startUp() throws Exception
 	{
+		active = true;
+		generation++;
 		overlayManager.add(overlay);
 		hotkeyListener = new KeyListener()
 		{
@@ -122,17 +127,32 @@ public class ApiTestPlugin extends Plugin
 		};
 		keyManager.registerKeyListener(hotkeyListener);
 		log.info("API Test started (F9=attack NPC, F10=interact object, F11=walk, F12=packet dry-run)");
-		clientThread.invokeLater(this::resolveFullApiSurface);
+		queue(false, this::resolveFullApiSurface);
 
-		// P6 live proof fires at the LOGIN SCREEN: every packet-tier class is
+		// Startup diagnostics run at the LOGIN SCREEN: every packet-tier class is
 		// loaded by then and none of this touches the network. Server-facing
 		// gates stay behind login + explicit permission.
-		clientThread.invokeLater(() -> {
+		queue(false, () -> {
 			log.info("P6 rev={} dispatcher.available={}", client.getRevision(), packets.available());
 			log.info("P6 BIND: {}", packets.verifyBind());
 			log.info("P6 DRYRUN id82 (RESUME_PAUSEBUTTON, len 6): {}", packets.dryRunById(82, 0));
 		});
 	}
+
+    private void queue(boolean gameplay, Runnable action)
+    {
+        final long ownerGeneration = generation;
+        if (!active) return;
+        clientThread.invokeLater(() -> {
+            if (!active || generation != ownerGeneration) return;
+            if (!client.isClientThread() || (gameplay && client.getGameState() != GameState.LOGGED_IN))
+            {
+                lastActionResult = "Action rejected: client thread or login unavailable";
+                return;
+            }
+            action.run();
+        });
+    }
 
 	/** Resolve every public service once at startup so DI/API drift is visible. */
 	private void resolveFullApiSurface()
@@ -227,7 +247,7 @@ public class ApiTestPlugin extends Plugin
 			net.openosrs.api.OpenOSRS.movement().runEnabled();
 			net.openosrs.api.OpenOSRS.teleports().all();
 			net.openosrs.api.OpenOSRS.teleports().find("");
-			net.openosrs.api.OpenOSRS.delays().after(0).isReady();
+			net.openosrs.api.OpenOSRS.delays().after(0).isElapsed();
 			log.info("API reads pre-login safe: 35 public services");
 		}
 		catch (Throwable t)
@@ -239,6 +259,8 @@ public class ApiTestPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		active = false;
+		generation++;
 		if (hotkeyListener != null)
 		{
 			keyManager.unregisterKeyListener(hotkeyListener);
@@ -252,7 +274,9 @@ public class ApiTestPlugin extends Plugin
 	 * MenuAction.NPC_FIRST_OPTION: param0=worldViewId? param1=npcIndex, identifier=npcIndex.
 	 * Upstream convention for OPNPC1: identifier=npcIndex, param0=0, param1=npcIndex.
 	 */
-	public void testNpcAttack()
+	public void testNpcAttack() { queue(true, this::testNpcAttackOnClient); }
+
+	private void testNpcAttackOnClient()
 	{
 		try
 		{
@@ -263,12 +287,21 @@ public class ApiTestPlugin extends Plugin
 				log.warn("T1 F9: no NPC found");
 				return;
 			}
-			int idx = target.getIndex();
-			log.info("T1 F9: menuAction NPC_FIRST_OPTION idx={} name={}", idx, target.getName());
-			client.menuAction(idx, 0, MenuAction.NPC_FIRST_OPTION,
-				idx, -1, "Attack", target.getName());
-			lastActionResult = "F9 dispatched attack on " + target.getName() + " (idx=" + idx + ")";
-			log.info("T1 F9 dispatched OK");
+            net.runelite.api.NPCComposition definition = target.getTransformedComposition();
+            String[] actions = definition == null ? null : definition.getActions();
+            int option = -1;
+            if (actions != null) for (int i = 0; i < Math.min(actions.length, 5); i++)
+                if ("Attack".equalsIgnoreCase(actions[i])) { option = i; break; }
+            if (option < 0) { lastActionResult = "F9 rejected: Attack unavailable"; return; }
+            MenuAction[] choices = {MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
+                MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION};
+            net.runelite.api.WorldView view = target.getWorldView();
+            if (view == null || view != client.getTopLevelWorldView()
+                || view.npcs().byIndex(target.getIndex()) != target)
+            { lastActionResult = "F9 rejected: stale or unsupported target"; return; }
+            boolean submitted = menuDispatcher.dispatch(choices[option], target.getIndex(), 0, 0,
+                "Attack", target.getName(), -1, view.getId());
+            lastActionResult = "F9 " + (submitted ? "submitted" : "rejected");
 		}
 		catch (Throwable t)
 		{
@@ -278,15 +311,20 @@ public class ApiTestPlugin extends Plugin
 	}
 
 	/** T1b: interact with the nearest object via GAME_OBJECT_FIRST_OPTION. */
-	public void testObjectInteract()
+	public void testObjectInteract() { queue(true, this::testObjectInteractOnClient); }
+
+	private void testObjectInteractOnClient()
 	{
 		try
 		{
 			ObjectRef target = objects.all().stream()
 				.filter(candidate -> candidate.getActions().stream()
 					.anyMatch(a -> a != null && !a.trim().isEmpty()))
-				.findFirst().orElse(null);
-			if (target == null)
+				.filter(candidate -> candidate.getLocation() != null && movement.playerAt() != null
+                    && candidate.getLocation().getPlane() == movement.playerAt().getPlane())
+                .min(java.util.Comparator.comparingInt(candidate -> candidate.getLocation().distanceTo(movement.playerAt())))
+                .orElse(null);
+            if (target == null)
 			{
 				lastActionResult = "F10: no object found";
 				log.warn("T1 F10: no object found");
@@ -300,9 +338,8 @@ public class ApiTestPlugin extends Plugin
 				log.warn("T1 F10: object {} has no action", target.getName());
 				return;
 			}
-			objects.interact(target, action);
-			lastActionResult = "F10 dispatched " + action + " on " + target.getName();
-			log.info("T1 F10 dispatched OK action={} object={}", action, target.getName());
+			boolean submitted = objects.submitInteract(target, action);
+			lastActionResult = "F10 " + (submitted ? "submitted" : "rejected");
 		}
 		catch (Throwable t)
 		{
@@ -312,7 +349,9 @@ public class ApiTestPlugin extends Plugin
 	}
 
 	/** T1 movement probe: submit a one-tile native walk from the current player. */
-	public void testWalk()
+	public void testWalk() { queue(true, this::testWalkOnClient); }
+
+	private void testWalkOnClient()
 	{
 		try
 		{
@@ -327,7 +366,7 @@ public class ApiTestPlugin extends Plugin
 				at.getX() + 1, at.getY(), at.getPlane());
 			boolean sent = movement.walkTo(target);
 			lastActionResult = "F11 walk " + (sent ? "dispatched" : "rejected") + " to " + target;
-			log.info("T1 F11 walk {} target={}", sent ? "dispatched" : "rejected", target);
+			log.info("F11 walk {}", sent ? "submitted" : "rejected");
 		}
 		catch (Throwable t)
 		{
@@ -342,7 +381,9 @@ public class ApiTestPlugin extends Plugin
 	 * layout replay into a pooled buffer. Replaces the old T3 spike whose
 	 * hardcoded obf names were from an unrelated build.
 	 */
-	public void testPacketReflection()
+	public void testPacketReflection() { queue(false, this::testPacketReflectionOnClient); }
+
+	private void testPacketReflectionOnClient()
 	{
 		String bind = packets.verifyBind();
 		log.info("P6 SWEEP: {}", packets.dryRunAll());
@@ -383,7 +424,6 @@ public class ApiTestPlugin extends Plugin
 
 	int lastProbeResult = 0;
 
-	private boolean autoFired;
 
 	@Subscribe
 	public void onGameTick(GameTick tick)
@@ -393,21 +433,6 @@ public class ApiTestPlugin extends Plugin
 			return;
 		}
 
-		// P0-T1 spike driver: auto-fire the menuAction probe once, 20 ticks after
-		// login, when -Doos.autotest=1 is set (avoids focus-dependent hotkeys).
-		if (!autoFired && Boolean.getBoolean("oos.autotest"))
-		{
-			ticks++;
-			if (ticks >= 20)
-			{
-				autoFired = true;
-				clientThread.invokeLater(() -> {
-					testNpcAttack();
-					testPacketReflection();
-				});
-			}
-			return;
-		}
 
 		ticks++;
 		if (ticks % 10 != 1 || !config.verbose())

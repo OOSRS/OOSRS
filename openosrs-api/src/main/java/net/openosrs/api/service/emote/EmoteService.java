@@ -29,12 +29,12 @@ public class EmoteService
 			throw new IllegalArgumentException("emote name is required");
 		}
 		tabs.open(GameTab.EMOTES);
-		String needle = name.toLowerCase();
+		String needle = name.toLowerCase(java.util.Locale.ROOT);
 		for (WidgetRef widget : widgets.descendants(InterfaceID.Emote.CONTENTS))
 		{
 			String label = (widget.getName() == null ? "" : widget.getName()) + " "
 				+ (widget.getText() == null ? "" : widget.getText());
-			if (label.toLowerCase().contains(needle))
+			if (label.toLowerCase(java.util.Locale.ROOT).contains(needle))
 			{
 				widgets.click(widget);
 				return;

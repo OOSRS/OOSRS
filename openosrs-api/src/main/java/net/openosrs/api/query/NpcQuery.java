@@ -32,8 +32,8 @@ public final class NpcQuery extends Query<NpcRef, NpcQuery>
 
 	public NpcQuery nameContains(String text)
 	{
-		String needle = text == null ? "" : text.toLowerCase();
-		return keepIf(npc -> npc.getName() != null && npc.getName().toLowerCase().contains(needle));
+		String needle = text == null ? "" : text.toLowerCase(java.util.Locale.ROOT);
+		return keepIf(npc -> npc.getName() != null && npc.getName().toLowerCase(java.util.Locale.ROOT).contains(needle));
 	}
 
 	public NpcQuery withAction(String action)

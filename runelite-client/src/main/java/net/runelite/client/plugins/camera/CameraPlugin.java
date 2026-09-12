@@ -131,8 +131,9 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			Widget settingsInit = client.getWidget(WidgetInfo.SETTINGS_INIT);
 			if (settingsInit != null)
 			{
-				client.createScriptEvent(settingsInit.getOnLoadListener())
+				client.createScriptEventBuilder(settingsInit.getOnLoadListener())
 					.setSource(settingsInit)
+					.build()
 					.run();
 			}
 		});
@@ -159,8 +160,9 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			Widget settingsInit = client.getWidget(WidgetInfo.SETTINGS_INIT);
 			if (settingsInit != null)
 			{
-				client.createScriptEvent(settingsInit.getOnLoadListener())
+				client.createScriptEventBuilder(settingsInit.getOnLoadListener())
 					.setSource(settingsInit)
+					.build()
 					.run();
 			}
 		});
@@ -386,7 +388,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		switch (gameStateChanged.getGameState())
 		{
 			case HOPPING:
-				savedCameraYaw = client.getMapAngle();
+				savedCameraYaw = client.getCameraYawTarget();
 				break;
 			case LOGGED_IN:
 				if (savedCameraYaw != 0 && config.preserveYaw())

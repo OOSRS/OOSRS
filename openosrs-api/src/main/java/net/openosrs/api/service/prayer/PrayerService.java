@@ -41,21 +41,22 @@ public class PrayerService
 
 	public void toggle(Prayer prayer)
 	{
+		PrayerWidgetResolver.requireContext(client);
 		toggle(prayer, !isActive(prayer));
 	}
 
 	public void toggle(Prayer prayer, boolean enabled)
 	{
 		if (prayer == null) throw new IllegalArgumentException("prayer is required");
+		PrayerWidgetResolver.requireContext(client);
 		if (isActive(prayer) == enabled) return;
-		// The prayer book reuses the same 30 visible slots for the standard and
-		// Ruinous Powers books.  RuneLite's enum puts the 26 Ruinous entries
-		// after the 30 standard entries, so fold them back onto slots 0..25.
-		int slot = prayer.ordinal() >= 30 ? prayer.ordinal() - 30 : prayer.ordinal();
-		WidgetRef widget = widgets.get(InterfaceID.Prayerbook.PRAYER1 + slot);
-		if (widget == null) throw new IllegalStateException("prayer widget is not loaded");
-		widgets.click(widget);
+		WidgetRef widget = PrayerWidgetResolver.resolve(client, widgets, prayer, enabled);
+		widgets.interact(widget, enabled ? "Activate" : "Deactivate");
 	}
+
+	/** Submits only if the observed state differs; submission is not activation. */
+	public void ensureActive(Prayer prayer) { toggle(prayer, true); }
+	public void ensureInactive(Prayer prayer) { toggle(prayer, false); }
 
 	public boolean quickPrayerActive()
 	{
@@ -69,14 +70,16 @@ public class PrayerService
 
 	public void setQuickPrayerEnabled(boolean enabled)
 	{
+		PrayerWidgetResolver.requireContext(client);
 		if (quickPrayerActive() == enabled) return;
 		WidgetRef orb = widgets.get(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB.getId());
 		if (orb == null) throw new IllegalStateException("quick-prayer orb is not loaded");
-		widgets.click(orb);
+		widgets.interact(orb, enabled ? "Activate" : "Deactivate");
 	}
 
 	public void openQuickPrayerSetup()
 	{
+		PrayerWidgetResolver.requireContext(client);
 		WidgetRef orb = widgets.get(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB.getId());
 		if (orb == null) throw new IllegalStateException("quick-prayer orb is not loaded");
 		widgets.interact(orb, "Setup");

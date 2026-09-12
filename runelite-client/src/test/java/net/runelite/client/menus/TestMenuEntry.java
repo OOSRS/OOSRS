@@ -30,6 +30,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import net.runelite.api.Actor;
 import net.runelite.api.MenuAction;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
@@ -45,9 +46,11 @@ public class TestMenuEntry implements MenuEntry
 	private int param0;
 	private int param1;
 	private boolean forceLeftClick;
+	private int worldViewId;
+	private Consumer<MenuEntry> callback;
+	private Menu subMenu;
 	@Setter
 	private int itemOp = -1;
-	@Setter
 	private int itemId = -1;
 	@Setter
 	private Widget widget;
@@ -175,50 +178,17 @@ public class TestMenuEntry implements MenuEntry
 	@Override
 	public MenuEntry onClick(Consumer<MenuEntry> callback)
 	{
+		this.callback = callback;
 		return this;
 	}
 
-	@Override
-	public int getOpcode()
-	{
-		return this.type;
-	}
-
-	@Override
-	public void setOpcode(int opcode)
-	{
-		this.type = opcode;
-	}
-
-	@Override
-	public int getActionParam0()
-	{
-		return this.param0;
-	}
-
-	@Override
-	public void setActionParam0(int param0)
-	{
-		this.param0 = param0;
-	}
-
-	@Override
-	public int getActionParam1()
-	{
-		return this.param1;
-	}
-
-	@Override
-	public void setActionParam1(int param1)
-	{
-		this.param1 = param1;
-	}
-
-	@Override
-	public MenuAction getMenuAction()
-	{
-		return MenuAction.of(this.type);
-	}
+    @Override public Consumer<MenuEntry> onClick() { return callback; }
+    @Override public int getWorldViewId() { return worldViewId; }
+    @Override public MenuEntry setWorldViewId(int id) { worldViewId = id; return this; }
+    @Override public MenuEntry setItemId(int id) { itemId = id; return this; }
+    @Override public Menu getSubMenu() { return subMenu; }
+    @Override public Menu createSubMenu() { subMenu = new TestMenu(); return subMenu; }
+    @Override public void deleteSubMenu() { subMenu = null; }
 
 	@Override
 	public boolean isItemOp()

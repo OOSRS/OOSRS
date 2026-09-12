@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
+import net.openosrs.api.Quantity;
 import javax.inject.Singleton;
 import net.openosrs.api.dispatch.MenuDispatcher;
 import net.openosrs.api.service.dialogue.DialogueService;
@@ -76,8 +77,8 @@ public class BankService
 	public void close()
 	{
 		if (!isOpen()) return;
-		dispatcher.dispatch(MenuAction.WIDGET_CLOSE, 0, -1, InterfaceID.Bankmain.UNIVERSE,
-			"Close", "Bank", -1, 0);
+		dispatcher.submit(MenuAction.WIDGET_CLOSE, 0, -1, InterfaceID.Bankmain.UNIVERSE,
+			"Close", "Bank", -1, -1).requireSubmitted();
 	}
 
 	public List<BankItem> all()
@@ -115,32 +116,59 @@ public class BankService
 		return bank == null ? 0 : bank.count(id);
 	}
 
+	/** Legacy MAX_VALUE means All; negative quantities are rejected. */
+	@Deprecated
 	public void withdraw(BankItem item, int quantity)
 	{
+		withdraw(item, Quantity.fromLegacy(quantity));
+	}
+
+	public void withdraw(BankItem item, Quantity quantity)
+	{
+		java.util.Objects.requireNonNull(quantity, "quantity");
 		if (item == null) throw new IllegalArgumentException("bank item is required");
 		WidgetRef widget = bankWidget(item.getSlot(), item.getId());
 		String action = quantityAction("Withdraw", quantity);
-		widgets.interact(widget, action);
-		if (action.endsWith("X")) dialogue.enterAmount(quantity);
+		if (action.endsWith("X"))
+		{
+			WidgetRef origin = widget;
+			dialogue.requestAmount(quantity.getAmount(), 7, origin, () -> widgets.interact(origin, action),
+				action.substring(0, action.indexOf('-')).toLowerCase(java.util.Locale.ROOT));
+		}
+		else widgets.interact(widget, action);
 	}
 
 	public void withdraw(BankItem item)
 	{
-		withdraw(item, Integer.MAX_VALUE);
+		withdraw(item, Quantity.all());
 	}
 
+	/** Legacy MAX_VALUE means All; negative quantities are rejected. */
+	@Deprecated
 	public void deposit(InventoryItem item, int quantity)
 	{
+		deposit(item, Quantity.fromLegacy(quantity));
+	}
+
+	public void deposit(InventoryItem item, Quantity quantity)
+	{
+		java.util.Objects.requireNonNull(quantity, "quantity");
 		if (item == null) throw new IllegalArgumentException("inventory item is required");
+		item.requireCurrent(client);
 		WidgetRef widget = sideWidget(InterfaceID.Bankside.ITEMS, item.getSlot(), item.getId());
 		String action = quantityAction("Deposit", quantity);
-		widgets.interact(widget, action);
-		if (action.endsWith("X")) dialogue.enterAmount(quantity);
+		if (action.endsWith("X"))
+		{
+			WidgetRef origin = widget;
+			dialogue.requestAmount(quantity.getAmount(), 7, origin, () -> widgets.interact(origin, action),
+				action.substring(0, action.indexOf('-')).toLowerCase(java.util.Locale.ROOT));
+		}
+		else widgets.interact(widget, action);
 	}
 
 	public void deposit(InventoryItem item)
 	{
-		deposit(item, Integer.MAX_VALUE);
+		deposit(item, Quantity.all());
 	}
 
 	public void depositInventory()
@@ -196,10 +224,11 @@ public class BankService
 		return widget;
 	}
 
-	private static String quantityAction(String verb, int quantity)
+	private static String quantityAction(String verb, Quantity intent)
 	{
+		if (intent.isAll()) return verb + "-All";
+		int quantity = intent.getAmount();
 		if (quantity == 1 || quantity == 5 || quantity == 10) return verb + "-" + quantity;
-		if (quantity == Integer.MAX_VALUE || quantity < 0) return verb + "-All";
 		if (quantity <= 0) throw new IllegalArgumentException("quantity must be positive");
 		return verb + "-X";
 	}

@@ -85,10 +85,12 @@ class InventoryGridOverlay extends Overlay
 		}
 
 		final Widget inventoryWidget = draggingWidget.getParent();
+		if (inventoryWidget == null) return null;
 		final net.runelite.api.Point mouse = client.getMouseCanvasPosition();
 		final Point mousePoint = new Point(mouse.getX(), mouse.getY());
-		final int draggedItemIndex = draggingWidget.isIf3() ? draggingWidget.getIndex() : client.getIf1DraggedItemIndex();
+		final int draggedItemIndex = draggingWidget.getIndex();
 		final WidgetItem draggedItem = getWidgetItem(inventoryWidget, draggedItemIndex);
+		if (draggedItem == null) return null;
 		final Rectangle initialBounds = draggedItem.getCanvasBounds(false);
 
 		if (initialMousePoint == null)
@@ -97,7 +99,7 @@ class InventoryGridOverlay extends Overlay
 		}
 
 		if (draggedItem.getId() == -1
-			|| (draggingWidget.isIf3() ? client.getDragTime() : client.getItemPressedDuration()) < config.dragDelay() / Constants.CLIENT_TICK_LENGTH
+			|| client.getDragTime() < config.dragDelay() / Constants.CLIENT_TICK_LENGTH
 			|| !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
 		{
 			return null;
@@ -108,6 +110,7 @@ class InventoryGridOverlay extends Overlay
 		for (int i = 0; i < INVENTORY_SIZE; ++i)
 		{
 			final WidgetItem targetWidgetItem = getWidgetItem(inventoryWidget, i);
+			if (targetWidgetItem == null) continue;
 			final Rectangle bounds = targetWidgetItem.getCanvasBounds(false);
 			boolean inBounds = bounds.contains(mousePoint);
 
@@ -134,19 +137,18 @@ class InventoryGridOverlay extends Overlay
 
 	private Widget getDraggedWidget()
 	{
-		Widget widget = client.getIf1DraggedWidget(); // if1 drag
-		if (widget != null)
-		{
-			return widget;
-		}
-		return client.getDraggedWidget(); // if3 drag
+		// Revision 240 inventory slots use the native component drag path.
+		Widget widget = client.getDraggedWidget();
+		return widget != null && widget.isIf3() ? widget : null;
 	}
 
 	private static WidgetItem getWidgetItem(Widget parentWidget, int idx)
 	{
+		if (parentWidget == null || idx < 0) return null;
 		if (parentWidget.isIf3())
 		{
 			Widget wi = parentWidget.getChild(idx);
+			if (wi == null || wi.isHidden()) return null;
 			return new WidgetItem(wi.getItemId(), wi.getItemQuantity(), wi.getBounds(), parentWidget, wi.getBounds());
 		}
 		else

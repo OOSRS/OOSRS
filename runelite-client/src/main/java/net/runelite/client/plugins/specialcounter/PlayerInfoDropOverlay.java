@@ -89,7 +89,7 @@ class PlayerInfoDropOverlay extends Overlay
 				continue;
 			}
 
-			Player player = client.getCachedPlayers()[infoDrop.getPlayerIdx()];
+			Player player = infoDrop.resolvePlayer(client);
 			if (player == null)
 			{
 				continue;

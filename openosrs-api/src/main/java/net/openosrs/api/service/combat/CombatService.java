@@ -42,18 +42,25 @@ public class CombatService
 	public void attack(NpcRef npc) { npcs.interact(npc, "Attack"); }
 	public void attack(PlayerRef player) { players.interact(player, "Attack"); }
 
-	public boolean inCombat()
+	public enum CombatSignal { LOCAL_INTERACTION, NPC_TARGETING_LOCAL }
+
+	/** Heuristic only: talking/following can also produce interaction signals. */
+	public boolean inCombat() { return !combatSignals().isEmpty(); }
+
+	/** Observed reasons for the legacy heuristic, not proof of an active fight. */
+	public java.util.Set<CombatSignal> combatSignals()
 	{
+		if (!client.isClientThread()) throw new IllegalStateException("Combat reads require the client thread");
+		java.util.Set<CombatSignal> signals = java.util.EnumSet.noneOf(CombatSignal.class);
 		Player local = client.getLocalPlayer();
-		if (local == null) return false;
-		if (local.isInteracting()) return true;
+		if (local == null) return java.util.Collections.emptySet();
+		if (local.isInteracting()) signals.add(CombatSignal.LOCAL_INTERACTION);
 		java.util.List<NPC> npcs = client.getNpcs();
-		if (npcs == null) return false;
-		for (NPC npc : npcs)
+		if (npcs != null) for (NPC npc : npcs)
 		{
-			if (npc != null && npc.getInteracting() == local) return true;
+			if (npc != null && npc.getInteracting() == local) signals.add(CombatSignal.NPC_TARGETING_LOCAL);
 		}
-		return false;
+		return java.util.Collections.unmodifiableSet(signals);
 	}
 
 	public String targetName()

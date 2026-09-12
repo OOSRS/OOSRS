@@ -25,8 +25,14 @@
 package net.runelite.client.externalplugins;
 
 import java.lang.invoke.MethodHandles;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.util.ReflectUtil;
@@ -37,14 +43,37 @@ class ExternalPluginClassLoader extends URLClassLoader implements ReflectUtil.Pr
 	private final ExternalPluginManifest manifest;
 
 	@Getter
+	private final String[] plugins;
+
+	@Getter
 	@Setter
 	private MethodHandles.Lookup lookup;
 
-	ExternalPluginClassLoader(ExternalPluginManifest manifest, URL[] urls)
+	ExternalPluginClassLoader(ExternalPluginManifest manifest, URL[] urls, Gson gson) throws IOException
 	{
 		super(urls, ExternalPluginClassLoader.class.getClassLoader());
 		this.manifest = manifest;
-		ReflectUtil.installLookupHelper(this);
+		// Read entry points only from this verified JAR, never a parent resource.
+		try
+		{
+			URL resource = findResource("runelite_plugin.json");
+			if (resource == null) { throw new IOException("Plugin entry points are missing"); }
+			try (InputStream input = resource.openStream())
+			{
+				ExternalPluginManifest stub = gson.fromJson(new InputStreamReader(input, StandardCharsets.UTF_8), ExternalPluginManifest.class);
+				if (stub == null || stub.getPlugins() == null || stub.getPlugins().length == 0)
+				{
+					throw new IOException("Plugin entry points are invalid");
+				}
+				plugins = stub.getPlugins();
+			}
+			ReflectUtil.installLookupHelper(this);
+		}
+		catch (IOException | RuntimeException | LinkageError e)
+		{
+			try { close(); } catch (IOException cleanup) { e.addSuppressed(cleanup); }
+			throw new IOException("Unable to initialize plugin classloader", e);
+		}
 	}
 
 	@Override

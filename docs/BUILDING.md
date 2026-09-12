@@ -13,7 +13,7 @@ git clone https://github.com/OOSRS/OOSRS.git
 cd OOSRS
 java -version
 ./gradlew :runelite-client:shadowJar
-java -jar runelite-client/build/libs/openosrs-client-1.0.1.jar
+java -jar runelite-client/build/libs/openosrs-client-1.0.2.jar
 ```
 
 Windows: replace `./gradlew` with `gradlew.bat`.
@@ -31,6 +31,18 @@ Import the repository as a Gradle project in your IDE and select JDK 11. The reg
 ## Game dependency
 
 `gamepack.properties` pins the required version, game revision, and SHA-256. The `prepareGamepack` build task obtains that exact artifact and checks its content before replacing the local file. Generated runtime mappings are already included in source. Neither a newer dependency nor a new game revision can be substituted by editing only a version number.
+
+## Compatibility checks
+
+```sh
+xvfb-run -a ./gradlew verifyApiContracts verifyReleaseAbi
+```
+
+The release gate rejects new binary compatibility failures. Its revision- and hash-pinned
+[deferred list](../config/runtime-abi-deferred.json) contains 32 known legacy obligations
+(21 distinct signatures). It does not claim full compatibility. `./gradlew verifyRuntimeAbi`
+runs the strict check and reports those outstanding methods as failures.
+See [the release notes](releases/1.0.2.md) for affected methods.
 
 ## Release outputs
 

@@ -52,7 +52,8 @@ class RSConfig
 
 	String getInitialClass()
 	{
-		return classLoaderProperties.get("initial_class").replace(".class", "");
+		String name = classLoaderProperties.get("initial_class");
+		return name != null && name.endsWith(".class") ? name.substring(0, name.length() - 6) : name;
 	}
 
 	boolean isFallback()

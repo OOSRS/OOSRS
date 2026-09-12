@@ -137,13 +137,13 @@ public interface OpenOSRSConfig extends Config
 	@ConfigItem(
 		keyName = "localSync",
 		name = "Sync local instances",
-		description = "Enables multiple local instances of OpenOSRS to communicate (this enables syncing plugin state and config options)",
+		description = "Unavailable: legacy local synchronization is disabled pending authenticated transport.",
 		position = 7,
 		title = syncTitle
 	)
 	default boolean localSync()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigTitle(

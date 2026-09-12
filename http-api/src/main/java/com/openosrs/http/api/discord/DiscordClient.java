@@ -27,74 +27,86 @@
 package com.openosrs.http.api.discord;
 
 import com.google.gson.Gson;
-import java.io.IOException;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
-@Slf4j
-public class DiscordClient
+/** Cancellable webhook delivery with bounded, coordinated rate-limit retries. */
+public class DiscordClient implements AutoCloseable
 {
 	public static final Gson gson = new Gson();
 	private static final MediaType JSON = MediaType.parse("application/json");
-
-	public void message(HttpUrl url, DiscordMessage discordMessage)
+	private static final ScheduledThreadPoolExecutor RETRIES = new ScheduledThreadPoolExecutor(1, task ->
 	{
-		log.debug("Message being sent");
-		message(url, discordMessage, 0, 5);
+		Thread thread = new Thread(task, "OpenOSRS Discord retries"); thread.setDaemon(true); return thread;
+	});
+	static { RETRIES.setRemoveOnCancelPolicy(true); }
+	private static final DiscordRetryCoordinator SHARED = new DiscordRetryCoordinator(request ->
+	{
+		if (RuneLiteAPI.CLIENT == null) { throw new IllegalStateException("HTTP client is not initialized"); }
+		return RuneLiteAPI.CLIENT.newBuilder().retryOnConnectionFailure(false).followRedirects(false)
+			.callTimeout(30, TimeUnit.SECONDS).build().newCall(request);
+	}, (task, delay) ->
+	{
+		java.util.concurrent.ScheduledFuture<?> scheduled = RETRIES.schedule(task, delay, TimeUnit.NANOSECONDS);
+		return () -> scheduled.cancel(false);
+	}, System::nanoTime);
+	private final DiscordRetryCoordinator coordinator;
+	private final Set<SendHandle> deliveries = ConcurrentHashMap.newKeySet();
+	private volatile boolean closed;
+
+	public DiscordClient() { this(SHARED); }
+	public DiscordClient(DiscordRetryCoordinator coordinator) { this.coordinator = java.util.Objects.requireNonNull(coordinator); }
+
+	/** Legacy entrypoint. Close this client at plugin stop, or use send() and cancel its handle. */
+	public void message(HttpUrl url, DiscordMessage message) { send(url, message); }
+
+	public SendHandle send(HttpUrl url, DiscordMessage message)
+	{
+		java.util.Objects.requireNonNull(url); java.util.Objects.requireNonNull(message);
+		if (closed) { return completed(SendStatus.CANCELLED, "Discord client has closed"); }
+		Request request = new Request.Builder().url(url).post(RequestBody.create(JSON, gson.toJson(message))).build();
+		SendHandle handle = coordinator.submit(request, deliveries::remove);
+		deliveries.add(handle);
+		if (closed) { handle.cancel(); }
+		if (handle.isDone()) { deliveries.remove(handle); }
+		return handle;
 	}
-
-	private void message(HttpUrl url, DiscordMessage discordMessage, int retryAttempt, int maxAttempts)
+	@Override public void close()
 	{
-		RequestBody body = RequestBody.create(JSON, (gson.toJson(discordMessage)));
-		Request request = new Request.Builder()
-			.post(body)
-			.url(url)
-			.build();
-
-		log.debug("Attempting to message with {}", discordMessage);
-
-		RuneLiteAPI.CLIENT.newCall(request).enqueue(new Callback()
+		closed = true;
+		for (SendHandle handle : deliveries) { handle.cancel(); }
+		deliveries.clear();
+	}
+	public enum SendStatus
+	{
+		QUEUED(false), SENDING(false), RETRY_WAIT(false), SUCCEEDED(true), FAILED(true), TIMED_OUT(true), CANCELLED(true);
+		private final boolean terminal;
+		SendStatus(boolean terminal) { this.terminal = terminal; }
+		public boolean isTerminal() { return terminal; }
+	}
+	public interface SendHandle
+	{
+		SendStatus getStatus();
+		int getAttempts();
+		String getReason();
+		void cancel();
+		default boolean isDone() { return getStatus().isTerminal(); }
+	}
+	static SendHandle completed(SendStatus status, String reason)
+	{
+		return new SendHandle()
 		{
-
-			@Override
-			public void onFailure(Call call, IOException e)
-			{
-				log.warn("Unable to submit discord post.", e);
-				if (retryAttempt < maxAttempts)
-				{
-					message(url, discordMessage, retryAttempt + 1, maxAttempts);
-				}
-			}
-
-			@Override
-			public void onResponse(Call call, Response response) throws IOException
-			{
-				try
-				{
-					if (response.body() == null)
-					{
-						log.debug("API Call - Reponse was null.");
-						return;
-					}
-					if (response.body().string().contains("You are being rate limited") && retryAttempt < maxAttempts)
-					{
-						log.debug("You are being rate limited, retrying...");
-						message(url, discordMessage, retryAttempt + 1, maxAttempts);
-					}
-				}
-				finally
-				{
-					response.close();
-					log.debug("Submitted discord log record");
-				}
-			}
-		});
+			public SendStatus getStatus() { return status; }
+			public int getAttempts() { return 0; }
+			public String getReason() { return reason; }
+			public void cancel() { }
+		};
 	}
 }

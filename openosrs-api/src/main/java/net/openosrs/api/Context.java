@@ -19,36 +19,57 @@ import net.runelite.api.Client;
  */
 public final class Context
 {
-	private static volatile Injector injector;
-	private static volatile Client client;
+	private static final java.util.concurrent.atomic.AtomicReference<Snapshot> CURRENT = new java.util.concurrent.atomic.AtomicReference<>();
+	private static long generation;
 
-	private Context()
+	private Context() { }
+
+	/** Resolve all required state before publishing one coherent context. */
+	public static synchronized void init(Injector runeLiteInjector)
 	{
+		java.util.Objects.requireNonNull(runeLiteInjector, "injector");
+		Client resolved = java.util.Objects.requireNonNull(runeLiteInjector.getInstance(Client.class), "client");
+		CURRENT.set(new Snapshot(runeLiteInjector, resolved, ++generation));
 	}
 
-	public static void init(Injector runeLiteInjector)
+	/** Detach the static facade. Previously captured snapshots become unusable. */
+	public static synchronized void shutdown() { CURRENT.set(null); }
+
+	public static boolean isInitialized() { return CURRENT.get() != null; }
+
+	public static Snapshot capture()
 	{
-		injector = runeLiteInjector;
-		client = runeLiteInjector.getInstance(Client.class);
+		Snapshot state = CURRENT.get();
+		if (state == null) { throw new IllegalStateException("OpenOSRS API not initialized"); }
+		return state;
 	}
 
-	public static Client client()
+	public static Client client() { return capture().client(); }
+	public static <T> T getService(Class<T> type) { return capture().getService(type); }
+
+	/** Immutable injector/client pair. Its lifetime ends on replacement or shutdown. */
+	public static final class Snapshot
 	{
-		Client c = client;
-		if (c == null)
+		private final Injector injector;
+		private final Client client;
+		private final long generation;
+		private Snapshot(Injector injector, Client client, long generation)
 		{
-			throw new IllegalStateException("OpenOSRS API not initialized");
+			this.injector = injector; this.client = client; this.generation = generation;
 		}
-		return c;
-	}
-
-	public static <T> T getService(Class<T> type)
-	{
-		Injector i = injector;
-		if (i == null)
+		public boolean isActive() { return CURRENT.get() == this; }
+		public long getGeneration() { return generation; }
+		public Client client() { requireActive(); return client; }
+		public <T> T getService(Class<T> type)
 		{
-			throw new IllegalStateException("OpenOSRS API not initialized");
+			requireActive();
+			T service = injector.getInstance(java.util.Objects.requireNonNull(type));
+			requireActive();
+			return service;
 		}
-		return i.getInstance(type);
+		private void requireActive()
+		{
+			if (!isActive()) { throw new IllegalStateException("OpenOSRS API context has ended"); }
+		}
 	}
 }

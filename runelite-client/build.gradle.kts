@@ -37,12 +37,6 @@ plugins {
     java
 }
 
-repositories {
-    maven {
-        url = uri("https://repo.runelite.net")
-    }
-}
-
 description = "OpenOSRS Client"
 
 dependencies {
@@ -90,22 +84,18 @@ dependencies {
     }
     implementation(group = "org.pf4j", name = "pf4j-update", version = "2.3.0")
     // implementation(group = "com.google.archivepatcher", name = "archive-patch-applier", version= "1.0.4")
-    implementation(group = "net.runelite.gluegen", name = "gluegen-rt", version = "2.4.0-rc-20220318")
-    implementation(group = "net.runelite.jogl", name = "jogl-rl", version = "2.4.0-rc-20220318")
-    implementation(group = "net.runelite.jogl", name = "jogl-gldesktop-dbg", version = "2.4.0-rc-20220318")
-    implementation(group = "net.runelite.jocl", name = "jocl", version = "1.0")
+
+    // Renderer and native bridge from the exact RuneLite 1.12.38 source contract.
+    implementation("net.runelite:rlawt:1.8")
+    implementation("org.lwjgl:lwjgl:3.3.2")
+    implementation("org.lwjgl:lwjgl-opengl:3.3.2")
+    implementation("org.lwjgl:lwjgl-opencl:3.3.2")
+    for (platform in listOf("linux", "linux-arm64", "macos", "macos-arm64", "windows-x86", "windows", "windows-arm64")) {
+        runtimeOnly("org.lwjgl:lwjgl:3.3.2:natives-$platform")
+        runtimeOnly("org.lwjgl:lwjgl-opengl:3.3.2:natives-$platform")
+    }
 
     runtimeOnly(group = "net.runelite.pushingpixels", name = "trident", version = "1.5.00")
-    runtimeOnly(group = "net.runelite.gluegen", name = "gluegen-rt", version = "2.4.0-rc-20220318", classifier = "natives-linux-amd64")
-    runtimeOnly(group = "net.runelite.gluegen", name = "gluegen-rt", version = "2.4.0-rc-20220318", classifier = "natives-windows-amd64")
-    runtimeOnly(group = "net.runelite.gluegen", name = "gluegen-rt", version = "2.4.0-rc-20220318", classifier = "natives-windows-i586")
-    runtimeOnly(group = "net.runelite.gluegen", name = "gluegen-rt", version = "2.4.0-rc-20220318", classifier = "natives-macosx-universal")
-    runtimeOnly(group = "net.runelite.jogl", name = "jogl-rl", version = "2.4.0-rc-20220318", classifier = "natives-linux-amd64")
-    runtimeOnly(group = "net.runelite.jogl", name = "jogl-rl", version = "2.4.0-rc-20220318", classifier = "natives-windows-amd64")
-    runtimeOnly(group = "net.runelite.jogl", name = "jogl-rl", version = "2.4.0-rc-20220318", classifier = "natives-windows-i586")
-    runtimeOnly(group = "net.runelite.jogl", name = "jogl-rl", version = "2.4.0-rc-20220318", classifier = "natives-macosx-universal")
-    runtimeOnly(group = "net.runelite.jocl", name = "jocl", version = "1.0", classifier = "macos-x64")
-    runtimeOnly(group = "net.runelite.jocl", name = "jocl", version = "1.0", classifier = "macos-arm64")
 
     testAnnotationProcessor(group = "org.projectlombok", name = "lombok", version = ProjectVersions.lombokVersion)
 
@@ -182,5 +172,23 @@ tasks {
         dependsOn("classes")
         classpath = project.sourceSets.main.get().runtimeClasspath
         mainClass.set("net.openosrs.client.OpenOSRSMain")
+    }
+}
+
+// Inspect compiled outputs and the pinned binary without initializing game classes.
+for (gate in listOf("verifyRuntimeAbi", "verifyReleaseAbi")) {
+    tasks.register<JavaExec>(gate) {
+        group = "verification"
+        dependsOn("classes")
+        classpath = sourceSets.main.get().runtimeClasspath
+        mainClass.set("net.openosrs.api.tools.RuntimeAbiVerifier")
+        if (gate == "verifyReleaseAbi") {
+            systemProperty("openosrs.abiBaseline", rootProject.file("config/runtime-abi-deferred.json").absolutePath)
+        }
+        doFirst {
+            args(gamepack.absolutePath, rootProject.file("gamepack.properties").absolutePath,
+                layout.buildDirectory.file("reports/abi/${gate}.json").get().asFile.absolutePath)
+            args(sourceSets.main.get().runtimeClasspath.files.filter { it.exists() }.map { it.absolutePath })
+        }
     }
 }

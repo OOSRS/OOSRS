@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import net.runelite.client.RuneLite;
 
 /** Launches the client with the Java module access required by desktop plugins. */
@@ -42,8 +43,39 @@ public final class OpenOSRSMain
 			command.add(System.getProperty("java.class.path"));
 			command.add(OpenOSRSMain.class.getName());
 			command.addAll(Arrays.asList(args));
-			System.exit(new ProcessBuilder(command).inheritIO().start().waitFor());
+			System.exit(waitForChild(new ProcessBuilder(command).inheritIO().start()));
 		}
 		RuneLite.main(args);
+	}
+
+	static int waitForChild(Process child) throws InterruptedException
+	{
+		Thread cleanup = new Thread(() -> stopChild(child), "openosrs-child-cleanup");
+		Runtime runtime = Runtime.getRuntime();
+		runtime.addShutdownHook(cleanup);
+		try { return child.waitFor(); }
+		catch (InterruptedException interrupted)
+		{
+			stopChild(child);
+			Thread.currentThread().interrupt();
+			throw interrupted;
+		}
+		finally
+		{
+			try { runtime.removeShutdownHook(cleanup); }
+			catch (IllegalStateException shuttingDown) { /* The registered hook owns cleanup now. */ }
+		}
+	}
+
+	static void stopChild(Process child)
+	{
+		if (!child.isAlive()) return;
+		child.destroy();
+		try { if (!child.waitFor(5, TimeUnit.SECONDS)) child.destroyForcibly(); }
+		catch (InterruptedException interrupted)
+		{
+			child.destroyForcibly();
+			Thread.currentThread().interrupt();
+		}
 	}
 }

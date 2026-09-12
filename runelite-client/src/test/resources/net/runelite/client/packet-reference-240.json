@@ -1,0 +1,1361 @@
+{
+  "revision": 240,
+  "gamepackSha256": "7fdedf1194261cc5b99faa35e0d2b4e45b6d56665402ccbde7f3aa6207c3f947",
+  "referenceSha256": "0036b658ee779911d11f80ac4187df0d08ef77e0930247ab4f883a12cc901e04",
+  "source": "RLPlugins VitaLite runtime packet catalog; independent wire fixtures",
+  "packetCount": 39,
+  "fixtures": [
+    {
+      "name": "OP_WIDGET_TARGET_ON_GAME_OBJECT/0",
+      "id": 68,
+      "length": 15,
+      "roles": [
+        "ctrl",
+        "worldX",
+        "identifier",
+        "selectedWidgetId",
+        "slot",
+        "worldY",
+        "itemId"
+      ],
+      "values": [
+        0,
+        4660,
+        26505,
+        19088743,
+        291,
+        9029,
+        17767
+      ],
+      "hex": "8012346789012345672301452345e7"
+    },
+    {
+      "name": "OP_WIDGET_TARGET_ON_GAME_OBJECT/1",
+      "id": 68,
+      "length": 15,
+      "roles": [
+        "ctrl",
+        "worldX",
+        "identifier",
+        "selectedWidgetId",
+        "slot",
+        "worldY",
+        "itemId"
+      ],
+      "values": [
+        1,
+        4660,
+        26505,
+        19088743,
+        291,
+        9029,
+        17767
+      ],
+      "hex": "8112346789012345672301452345e7"
+    },
+    {
+      "name": "OP_WIDGET_TARGET_ON_NPC/0",
+      "id": 63,
+      "length": 11,
+      "roles": [
+        "ctrl",
+        "selectedWidgetId",
+        "slot",
+        "itemId",
+        "identifier"
+      ],
+      "values": [
+        0,
+        19088743,
+        291,
+        17767,
+        26505
+      ],
+      "hex": "80674523010123e7456709"
+    },
+    {
+      "name": "OP_WIDGET_TARGET_ON_NPC/1",
+      "id": 63,
+      "length": 11,
+      "roles": [
+        "ctrl",
+        "selectedWidgetId",
+        "slot",
+        "itemId",
+        "identifier"
+      ],
+      "values": [
+        1,
+        19088743,
+        291,
+        17767,
+        26505
+      ],
+      "hex": "7f674523010123e7456709"
+    },
+    {
+      "name": "OP_WIDGET_TARGET_ON_PLAYER/0",
+      "id": 45,
+      "length": 11,
+      "roles": [
+        "ctrl",
+        "slot",
+        "selectedWidgetId",
+        "itemId",
+        "identifier"
+      ],
+      "values": [
+        0,
+        291,
+        19088743,
+        17767,
+        26505
+      ],
+      "hex": "0023014567012367450967"
+    },
+    {
+      "name": "OP_WIDGET_TARGET_ON_PLAYER/1",
+      "id": 45,
+      "length": 11,
+      "roles": [
+        "ctrl",
+        "slot",
+        "selectedWidgetId",
+        "itemId",
+        "identifier"
+      ],
+      "values": [
+        1,
+        291,
+        19088743,
+        17767,
+        26505
+      ],
+      "hex": "ff23014567012367450967"
+    },
+    {
+      "name": "OP_WIDGET_TARGET_ON_GROUND_ITEM/0",
+      "id": 38,
+      "length": 15,
+      "roles": [
+        "worldX",
+        "selectedWidgetId",
+        "ctrl",
+        "slot",
+        "worldY",
+        "identifier",
+        "itemId"
+      ],
+      "values": [
+        4660,
+        19088743,
+        0,
+        291,
+        9029,
+        26505,
+        17767
+      ],
+      "hex": "123401234567802301c52309674567"
+    },
+    {
+      "name": "OP_WIDGET_TARGET_ON_GROUND_ITEM/1",
+      "id": 38,
+      "length": 15,
+      "roles": [
+        "worldX",
+        "selectedWidgetId",
+        "ctrl",
+        "slot",
+        "worldY",
+        "identifier",
+        "itemId"
+      ],
+      "values": [
+        4660,
+        19088743,
+        1,
+        291,
+        9029,
+        26505,
+        17767
+      ],
+      "hex": "1234012345677f2301c52309674567"
+    },
+    {
+      "name": "OP_WIDGET_TARGET_ON_WIDGET/0",
+      "id": 80,
+      "length": 16,
+      "roles": [
+        "itemId",
+        "selectedWidgetId",
+        "param0",
+        "identifier2",
+        "slot",
+        "targetWidgetID"
+      ],
+      "values": [
+        17767,
+        19088743,
+        1110,
+        30874,
+        291,
+        36984440
+      ],
+      "hex": "674501234567d604781aa30134027856"
+    },
+    {
+      "name": "OP_WIDGET_TARGET_ON_WIDGET/1",
+      "id": 80,
+      "length": 16,
+      "roles": [
+        "itemId",
+        "selectedWidgetId",
+        "param0",
+        "identifier2",
+        "slot",
+        "targetWidgetID"
+      ],
+      "values": [
+        17767,
+        19088743,
+        1110,
+        30874,
+        291,
+        36984440
+      ],
+      "hex": "674501234567d604781aa30134027856"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_1/0",
+      "id": 57,
+      "length": 3,
+      "roles": [
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        0,
+        26505
+      ],
+      "hex": "006789"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_1/1",
+      "id": 57,
+      "length": 3,
+      "roles": [
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        1,
+        26505
+      ],
+      "hex": "ff6789"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_2/0",
+      "id": 21,
+      "length": 3,
+      "roles": [
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        0,
+        26505
+      ],
+      "hex": "808967"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_2/1",
+      "id": 21,
+      "length": 3,
+      "roles": [
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        1,
+        26505
+      ],
+      "hex": "7f8967"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_3/0",
+      "id": 36,
+      "length": 3,
+      "roles": [
+        "identifier",
+        "ctrl"
+      ],
+      "values": [
+        26505,
+        0
+      ],
+      "hex": "670980"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_3/1",
+      "id": 36,
+      "length": 3,
+      "roles": [
+        "identifier",
+        "ctrl"
+      ],
+      "values": [
+        26505,
+        1
+      ],
+      "hex": "670981"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_4/0",
+      "id": 64,
+      "length": 3,
+      "roles": [
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        0,
+        26505
+      ],
+      "hex": "806789"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_4/1",
+      "id": 64,
+      "length": 3,
+      "roles": [
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        1,
+        26505
+      ],
+      "hex": "7f6789"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_5/0",
+      "id": 52,
+      "length": 3,
+      "roles": [
+        "identifier",
+        "ctrl"
+      ],
+      "values": [
+        26505,
+        0
+      ],
+      "hex": "670980"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_5/1",
+      "id": 52,
+      "length": 3,
+      "roles": [
+        "identifier",
+        "ctrl"
+      ],
+      "values": [
+        26505,
+        1
+      ],
+      "hex": "670981"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_6/0",
+      "id": 4,
+      "length": 3,
+      "roles": [
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        0,
+        26505
+      ],
+      "hex": "808967"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_6/1",
+      "id": 4,
+      "length": 3,
+      "roles": [
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        1,
+        26505
+      ],
+      "hex": "818967"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_7/0",
+      "id": 50,
+      "length": 3,
+      "roles": [
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        0,
+        26505
+      ],
+      "hex": "808967"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_7/1",
+      "id": 50,
+      "length": 3,
+      "roles": [
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        1,
+        26505
+      ],
+      "hex": "818967"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_8/0",
+      "id": 41,
+      "length": 3,
+      "roles": [
+        "identifier",
+        "ctrl"
+      ],
+      "values": [
+        26505,
+        0
+      ],
+      "hex": "670900"
+    },
+    {
+      "name": "OP_PLAYER_ACTION_8/1",
+      "id": 41,
+      "length": 3,
+      "roles": [
+        "identifier",
+        "ctrl"
+      ],
+      "values": [
+        26505,
+        1
+      ],
+      "hex": "670901"
+    },
+    {
+      "name": "OP_GAME_OBJECT_ACTION_1/0",
+      "id": 74,
+      "length": 8,
+      "roles": [
+        "ctrl",
+        "worldY",
+        "subop",
+        "worldX",
+        "identifier"
+      ],
+      "values": [
+        0,
+        9029,
+        2,
+        4660,
+        26505
+      ],
+      "hex": "80c52302b4126709"
+    },
+    {
+      "name": "OP_GAME_OBJECT_ACTION_1/1",
+      "id": 74,
+      "length": 8,
+      "roles": [
+        "ctrl",
+        "worldY",
+        "subop",
+        "worldX",
+        "identifier"
+      ],
+      "values": [
+        1,
+        9029,
+        3,
+        4660,
+        26505
+      ],
+      "hex": "7fc52303b4126709"
+    },
+    {
+      "name": "OP_GAME_OBJECT_ACTION_2/0",
+      "id": 90,
+      "length": 8,
+      "roles": [
+        "worldY",
+        "subop",
+        "ctrl",
+        "identifier",
+        "worldX"
+      ],
+      "values": [
+        9029,
+        2,
+        0,
+        26505,
+        4660
+      ],
+      "hex": "2345fe8067893412"
+    },
+    {
+      "name": "OP_GAME_OBJECT_ACTION_2/1",
+      "id": 90,
+      "length": 8,
+      "roles": [
+        "worldY",
+        "subop",
+        "ctrl",
+        "identifier",
+        "worldX"
+      ],
+      "values": [
+        9029,
+        3,
+        1,
+        26505,
+        4660
+      ],
+      "hex": "2345fd7f67893412"
+    },
+    {
+      "name": "OP_GAME_OBJECT_ACTION_3/0",
+      "id": 8,
+      "length": 8,
+      "roles": [
+        "subop",
+        "ctrl",
+        "worldY",
+        "identifier",
+        "worldX"
+      ],
+      "values": [
+        2,
+        0,
+        9029,
+        26505,
+        4660
+      ],
+      "hex": "7e8023c509671234"
+    },
+    {
+      "name": "OP_GAME_OBJECT_ACTION_3/1",
+      "id": 8,
+      "length": 8,
+      "roles": [
+        "subop",
+        "ctrl",
+        "worldY",
+        "identifier",
+        "worldX"
+      ],
+      "values": [
+        3,
+        1,
+        9029,
+        26505,
+        4660
+      ],
+      "hex": "7d7f23c509671234"
+    },
+    {
+      "name": "OP_GAME_OBJECT_ACTION_4/0",
+      "id": 69,
+      "length": 8,
+      "roles": [
+        "ctrl",
+        "identifier",
+        "worldY",
+        "subop",
+        "worldX"
+      ],
+      "values": [
+        0,
+        26505,
+        9029,
+        2,
+        4660
+      ],
+      "hex": "8089672345821234"
+    },
+    {
+      "name": "OP_GAME_OBJECT_ACTION_4/1",
+      "id": 69,
+      "length": 8,
+      "roles": [
+        "ctrl",
+        "identifier",
+        "worldY",
+        "subop",
+        "worldX"
+      ],
+      "values": [
+        1,
+        26505,
+        9029,
+        3,
+        4660
+      ],
+      "hex": "8189672345831234"
+    },
+    {
+      "name": "OP_GAME_OBJECT_ACTION_5/0",
+      "id": 77,
+      "length": 8,
+      "roles": [
+        "worldY",
+        "worldX",
+        "subop",
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        9029,
+        4660,
+        2,
+        0,
+        26505
+      ],
+      "hex": "4523123482800967"
+    },
+    {
+      "name": "OP_GAME_OBJECT_ACTION_5/1",
+      "id": 77,
+      "length": 8,
+      "roles": [
+        "worldY",
+        "worldX",
+        "subop",
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        9029,
+        4660,
+        3,
+        1,
+        26505
+      ],
+      "hex": "45231234837f0967"
+    },
+    {
+      "name": "OP_NPC_ACTION_1/0",
+      "id": 59,
+      "length": 4,
+      "roles": [
+        "identifier",
+        "subop",
+        "ctrl"
+      ],
+      "values": [
+        26505,
+        2,
+        0
+      ],
+      "hex": "89670280"
+    },
+    {
+      "name": "OP_NPC_ACTION_1/1",
+      "id": 59,
+      "length": 4,
+      "roles": [
+        "identifier",
+        "subop",
+        "ctrl"
+      ],
+      "values": [
+        26505,
+        3,
+        1
+      ],
+      "hex": "89670381"
+    },
+    {
+      "name": "OP_NPC_ACTION_2/0",
+      "id": 87,
+      "length": 4,
+      "roles": [
+        "identifier",
+        "subop",
+        "ctrl"
+      ],
+      "values": [
+        26505,
+        2,
+        0
+      ],
+      "hex": "89678280"
+    },
+    {
+      "name": "OP_NPC_ACTION_2/1",
+      "id": 87,
+      "length": 4,
+      "roles": [
+        "identifier",
+        "subop",
+        "ctrl"
+      ],
+      "values": [
+        26505,
+        3,
+        1
+      ],
+      "hex": "8967837f"
+    },
+    {
+      "name": "OP_NPC_ACTION_3/0",
+      "id": 43,
+      "length": 4,
+      "roles": [
+        "identifier",
+        "ctrl",
+        "subop"
+      ],
+      "values": [
+        26505,
+        0,
+        2
+      ],
+      "hex": "896780fe"
+    },
+    {
+      "name": "OP_NPC_ACTION_3/1",
+      "id": 43,
+      "length": 4,
+      "roles": [
+        "identifier",
+        "ctrl",
+        "subop"
+      ],
+      "values": [
+        26505,
+        1,
+        3
+      ],
+      "hex": "89677ffd"
+    },
+    {
+      "name": "OP_NPC_ACTION_4/0",
+      "id": 35,
+      "length": 4,
+      "roles": [
+        "ctrl",
+        "subop",
+        "identifier"
+      ],
+      "values": [
+        0,
+        2,
+        26505
+      ],
+      "hex": "80026709"
+    },
+    {
+      "name": "OP_NPC_ACTION_4/1",
+      "id": 35,
+      "length": 4,
+      "roles": [
+        "ctrl",
+        "subop",
+        "identifier"
+      ],
+      "values": [
+        1,
+        3,
+        26505
+      ],
+      "hex": "7f036709"
+    },
+    {
+      "name": "OP_NPC_ACTION_5/0",
+      "id": 73,
+      "length": 4,
+      "roles": [
+        "subop",
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        2,
+        0,
+        26505
+      ],
+      "hex": "02006789"
+    },
+    {
+      "name": "OP_NPC_ACTION_5/1",
+      "id": 73,
+      "length": 4,
+      "roles": [
+        "subop",
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        3,
+        1,
+        26505
+      ],
+      "hex": "03ff6789"
+    },
+    {
+      "name": "OP_GROUND_ITEM_ACTION_1/0",
+      "id": 112,
+      "length": 8,
+      "roles": [
+        "subop",
+        "worldX",
+        "worldY",
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        2,
+        4660,
+        9029,
+        0,
+        26505
+      ],
+      "hex": "fe12b4c523806789"
+    },
+    {
+      "name": "OP_GROUND_ITEM_ACTION_1/1",
+      "id": 112,
+      "length": 8,
+      "roles": [
+        "subop",
+        "worldX",
+        "worldY",
+        "ctrl",
+        "identifier"
+      ],
+      "values": [
+        3,
+        4660,
+        9029,
+        1,
+        26505
+      ],
+      "hex": "fd12b4c5237f6789"
+    },
+    {
+      "name": "OP_GROUND_ITEM_ACTION_2/0",
+      "id": 113,
+      "length": 8,
+      "roles": [
+        "subop",
+        "worldY",
+        "identifier",
+        "worldX",
+        "ctrl"
+      ],
+      "values": [
+        2,
+        9029,
+        26505,
+        4660,
+        0
+      ],
+      "hex": "fe2345670912b480"
+    },
+    {
+      "name": "OP_GROUND_ITEM_ACTION_2/1",
+      "id": 113,
+      "length": 8,
+      "roles": [
+        "subop",
+        "worldY",
+        "identifier",
+        "worldX",
+        "ctrl"
+      ],
+      "values": [
+        3,
+        9029,
+        26505,
+        4660,
+        1
+      ],
+      "hex": "fd2345670912b481"
+    },
+    {
+      "name": "OP_GROUND_ITEM_ACTION_3/0",
+      "id": 22,
+      "length": 8,
+      "roles": [
+        "worldX",
+        "ctrl",
+        "subop",
+        "identifier",
+        "worldY"
+      ],
+      "values": [
+        4660,
+        0,
+        2,
+        26505,
+        9029
+      ],
+      "hex": "12b4000289672345"
+    },
+    {
+      "name": "OP_GROUND_ITEM_ACTION_3/1",
+      "id": 22,
+      "length": 8,
+      "roles": [
+        "worldX",
+        "ctrl",
+        "subop",
+        "identifier",
+        "worldY"
+      ],
+      "values": [
+        4660,
+        1,
+        3,
+        26505,
+        9029
+      ],
+      "hex": "12b4ff0389672345"
+    },
+    {
+      "name": "OP_GROUND_ITEM_ACTION_4/0",
+      "id": 65,
+      "length": 8,
+      "roles": [
+        "subop",
+        "ctrl",
+        "worldY",
+        "identifier",
+        "worldX"
+      ],
+      "values": [
+        2,
+        0,
+        9029,
+        26505,
+        4660
+      ],
+      "hex": "fe80c52367093412"
+    },
+    {
+      "name": "OP_GROUND_ITEM_ACTION_4/1",
+      "id": 65,
+      "length": 8,
+      "roles": [
+        "subop",
+        "ctrl",
+        "worldY",
+        "identifier",
+        "worldX"
+      ],
+      "values": [
+        3,
+        1,
+        9029,
+        26505,
+        4660
+      ],
+      "hex": "fd7fc52367093412"
+    },
+    {
+      "name": "OP_GROUND_ITEM_ACTION_5/0",
+      "id": 75,
+      "length": 8,
+      "roles": [
+        "identifier",
+        "subop",
+        "worldX",
+        "ctrl",
+        "worldY"
+      ],
+      "values": [
+        26505,
+        2,
+        4660,
+        0,
+        9029
+      ],
+      "hex": "09670234128023c5"
+    },
+    {
+      "name": "OP_GROUND_ITEM_ACTION_5/1",
+      "id": 75,
+      "length": 8,
+      "roles": [
+        "identifier",
+        "subop",
+        "worldX",
+        "ctrl",
+        "worldY"
+      ],
+      "values": [
+        26505,
+        3,
+        4660,
+        1,
+        9029
+      ],
+      "hex": "09670334127f23c5"
+    },
+    {
+      "name": "OP_WALK/0",
+      "id": 102,
+      "length": -1,
+      "roles": [
+        "5",
+        "worldY",
+        "ctrl",
+        "worldX"
+      ],
+      "values": [
+        5,
+        9029,
+        0,
+        4660
+      ],
+      "hex": "05c52300b412"
+    },
+    {
+      "name": "OP_WALK/1",
+      "id": 102,
+      "length": -1,
+      "roles": [
+        "5",
+        "worldY",
+        "ctrl",
+        "worldX"
+      ],
+      "values": [
+        5,
+        9029,
+        1,
+        4660
+      ],
+      "hex": "05c523ffb412"
+    },
+    {
+      "name": "OP_WIDGET_ACTION/0",
+      "id": 1,
+      "length": 9,
+      "roles": [
+        "widgetId",
+        "childId",
+        "itemId",
+        "type"
+      ],
+      "values": [
+        72775834,
+        837,
+        17767,
+        1
+      ],
+      "hex": "0456789a0345456701"
+    },
+    {
+      "name": "OP_WIDGET_ACTION/1",
+      "id": 1,
+      "length": 9,
+      "roles": [
+        "widgetId",
+        "childId",
+        "itemId",
+        "type"
+      ],
+      "values": [
+        72775834,
+        837,
+        17767,
+        2
+      ],
+      "hex": "0456789a0345456702"
+    },
+    {
+      "name": "OP_MOUSE_CLICK/0",
+      "id": 40,
+      "length": 7,
+      "roles": [
+        "0",
+        "y",
+        "mouseInfo",
+        "x"
+      ],
+      "values": [
+        0,
+        1110,
+        13398,
+        837
+      ],
+      "hex": "00d6043456c503"
+    },
+    {
+      "name": "OP_MOUSE_CLICK/1",
+      "id": 40,
+      "length": 7,
+      "roles": [
+        "0",
+        "y",
+        "mouseInfo",
+        "x"
+      ],
+      "values": [
+        0,
+        1110,
+        13398,
+        837
+      ],
+      "hex": "00d6043456c503"
+    },
+    {
+      "name": "OP_WIDGET_ACTION_SUBOP/0",
+      "id": 95,
+      "length": 10,
+      "roles": [
+        "widgetId",
+        "childId",
+        "itemId",
+        "type",
+        "subOp"
+      ],
+      "values": [
+        72775834,
+        837,
+        17767,
+        1,
+        2
+      ],
+      "hex": "0456789a034545670102"
+    },
+    {
+      "name": "OP_WIDGET_ACTION_SUBOP/1",
+      "id": 95,
+      "length": 10,
+      "roles": [
+        "widgetId",
+        "childId",
+        "itemId",
+        "type",
+        "subOp"
+      ],
+      "values": [
+        72775834,
+        837,
+        17767,
+        2,
+        3
+      ],
+      "hex": "0456789a034545670203"
+    },
+    {
+      "name": "OP_RESUME_COUNTDIALOG/0",
+      "id": 62,
+      "length": 4,
+      "roles": [
+        "count"
+      ],
+      "values": [
+        305419896
+      ],
+      "hex": "12345678"
+    },
+    {
+      "name": "OP_RESUME_COUNTDIALOG/1",
+      "id": 62,
+      "length": 4,
+      "roles": [
+        "count"
+      ],
+      "values": [
+        305419896
+      ],
+      "hex": "12345678"
+    },
+    {
+      "name": "OP_RESUME_NAMEDIALOG/0",
+      "id": 70,
+      "length": -1,
+      "roles": [
+        "length",
+        "var7"
+      ],
+      "values": [
+        5,
+        "A€ŒŸ"
+      ],
+      "hex": "0541808c9f00"
+    },
+    {
+      "name": "OP_RESUME_NAMEDIALOG/1",
+      "id": 70,
+      "length": -1,
+      "roles": [
+        "length",
+        "var7"
+      ],
+      "values": [
+        255,
+        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      ],
+      "hex": "ff787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787800"
+    },
+    {
+      "name": "OP_RESUME_OBJDIALOG/0",
+      "id": 3,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        4660
+      ],
+      "hex": "1234"
+    },
+    {
+      "name": "OP_RESUME_OBJDIALOG/1",
+      "id": 3,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        4660
+      ],
+      "hex": "1234"
+    },
+    {
+      "name": "OP_RESUME_PAUSEBUTTON/0",
+      "id": 82,
+      "length": 6,
+      "roles": [
+        "widgetID",
+        "optionIndex"
+      ],
+      "values": [
+        54880137,
+        1383
+      ],
+      "hex": "03456789e705"
+    },
+    {
+      "name": "OP_RESUME_PAUSEBUTTON/1",
+      "id": 82,
+      "length": 6,
+      "roles": [
+        "widgetID",
+        "optionIndex"
+      ],
+      "values": [
+        54880137,
+        1383
+      ],
+      "hex": "03456789e705"
+    },
+    {
+      "name": "OP_WIDGET_DRAG/0",
+      "id": 39,
+      "length": 16,
+      "roles": [
+        "slot",
+        "widgetId2",
+        "slot2",
+        "widgetId",
+        "itemId2",
+        "itemId"
+      ],
+      "values": [
+        291,
+        90671531,
+        564,
+        72775834,
+        22136,
+        17767
+      ],
+      "hex": "01a3056789ab02340456789a56f8e745"
+    },
+    {
+      "name": "OP_WIDGET_DRAG/1",
+      "id": 39,
+      "length": 16,
+      "roles": [
+        "slot",
+        "widgetId2",
+        "slot2",
+        "widgetId",
+        "itemId2",
+        "itemId"
+      ],
+      "values": [
+        291,
+        90671531,
+        564,
+        72775834,
+        22136,
+        17767
+      ],
+      "hex": "01a3056789ab02340456789a56f8e745"
+    },
+    {
+      "name": "OP_RESUME_STRINGDIALOG/0",
+      "id": 54,
+      "length": -1,
+      "roles": [
+        "length",
+        "var7"
+      ],
+      "values": [
+        5,
+        "A€ŒŸ"
+      ],
+      "hex": "0541808c9f00"
+    },
+    {
+      "name": "OP_RESUME_STRINGDIALOG/1",
+      "id": 54,
+      "length": -1,
+      "roles": [
+        "length",
+        "var7"
+      ],
+      "values": [
+        255,
+        "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      ],
+      "hex": "ff787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787800"
+    },
+    {
+      "name": "OP_SET_HEADING/0",
+      "id": 109,
+      "length": 1,
+      "roles": [
+        "heading"
+      ],
+      "values": [
+        127
+      ],
+      "hex": "ff"
+    },
+    {
+      "name": "OP_SET_HEADING/1",
+      "id": 109,
+      "length": 1,
+      "roles": [
+        "heading"
+      ],
+      "values": [
+        127
+      ],
+      "hex": "ff"
+    }
+  ]
+}

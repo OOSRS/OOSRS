@@ -35,23 +35,23 @@ public enum Prayer
 	/**
 	 * Thick Skin (Level 1, Defence).
 	 */
-	THICK_SKIN(VarbitID.PRAYER_THICKSKIN, 5.0),
+	THICK_SKIN(VarbitID.PRAYER_THICKSKIN, 5.0 / 3.0),
 	/**
 	 * Burst of Strength (Level 4, Strength).
 	 */
-	BURST_OF_STRENGTH(VarbitID.PRAYER_BURSTOFSTRENGTH, 5.0),
+	BURST_OF_STRENGTH(VarbitID.PRAYER_BURSTOFSTRENGTH, 5.0 / 3.0),
 	/**
 	 * Clarity of Thought (Level 7, Attack).
 	 */
-	CLARITY_OF_THOUGHT(VarbitID.PRAYER_CLARITYOFTHOUGHT, 5.0),
+	CLARITY_OF_THOUGHT(VarbitID.PRAYER_CLARITYOFTHOUGHT, 5.0 / 3.0),
 	/**
 	 * Sharp Eye (Level 8, Ranging).
 	 */
-	SHARP_EYE(VarbitID.PRAYER_SHARPEYE, 5.0),
+	SHARP_EYE(VarbitID.PRAYER_SHARPEYE, 5.0 / 3.0),
 	/**
 	 * Mystic Will (Level 9, Magic).
 	 */
-	MYSTIC_WILL(VarbitID.PRAYER_MYSTICWILL, 5.0),
+	MYSTIC_WILL(VarbitID.PRAYER_MYSTICWILL, 5.0 / 3.0),
 	/**
 	 * Rock Skin (Level 10, Defence).
 	 */
@@ -67,15 +67,15 @@ public enum Prayer
 	/**
 	 * Rapid Restore (Level 19, Stats).
 	 */
-	RAPID_RESTORE(VarbitID.PRAYER_RAPIDRESTORE, 60.0),
+	RAPID_RESTORE(VarbitID.PRAYER_RAPIDRESTORE, 5.0 / 3.0),
 	/**
 	 * Rapid Heal (Level 22, Hitpoints).
 	 */
-	RAPID_HEAL(VarbitID.PRAYER_RAPIDHEAL, 60.0),
+	RAPID_HEAL(VarbitID.PRAYER_RAPIDHEAL, 10.0 / 3.0),
 	/**
 	 * Protect Item (Level 25).
 	 */
-	PROTECT_ITEM(VarbitID.PRAYER_PROTECTITEM, 60.0),
+	PROTECT_ITEM(VarbitID.PRAYER_PROTECTITEM, 10.0 / 3.0),
 	/**
 	 * Hawk Eye (Level 26, Ranging).
 	 */
@@ -131,15 +131,15 @@ public enum Prayer
 	/**
 	 * Chivalry (Level 60, Defence/Strength/Attack).
 	 */
-	CHIVALRY(VarbitID.PRAYER_CHIVALRY, 40.0),
+	CHIVALRY(VarbitID.PRAYER_CHIVALRY, 20.0),
 	/**
 	 * Deadeye (Level 62, Ranging/Damage/Defence).
 	 */
-	DEADEYE(VarbitID.PRAYER_DEADEYE, 0.25),
+	DEADEYE(VarbitID.PRAYER_DEADEYE, 20.0),
 	/**
 	 * Mystic Vigour (Level 63, Magic/Magic Def./Defence).
 	 */
-	MYSTIC_VIGOUR(VarbitID.PRAYER_MYSTICVIGOUR, 0.25),
+	MYSTIC_VIGOUR(VarbitID.PRAYER_MYSTICVIGOUR, 20.0),
 	/**
 	 * Piety (Level 70, Defence/Strength/Attack).
 	 */
@@ -147,7 +147,7 @@ public enum Prayer
 	/**
 	 * Preserve (Level 55).
 	 */
-	PRESERVE(VarbitID.PRAYER_PRESERVE, 60.0),
+	PRESERVE(VarbitID.PRAYER_PRESERVE, 10.0 / 3.0),
 	/**
 	 * Rigour (Level 74, Ranging/Damage/Defence).
 	 */
@@ -275,6 +275,10 @@ public enum Prayer
 		return varbit;
 	}
 
+	/**
+	 * Prayer points consumed per minute at zero prayer bonus. Standard prayer
+	 * values use the RuneLite 1.12.38 drain effects (effect * 5 / 3).
+	 */
 	public double getDrainRate()
 	{
 		return drainRate;

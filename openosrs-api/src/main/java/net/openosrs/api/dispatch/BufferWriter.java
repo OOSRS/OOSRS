@@ -3,7 +3,8 @@ package net.openosrs.api.dispatch;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-/** Writes packet payloads without depending on unavailable injected accessors. */
+/** Legacy internal encoder retained for compatibility; active dispatch uses the native buffer. */
+@Deprecated
 final class BufferWriter
 {
 	private static final Charset CP_1252 = Charset.forName("windows-1252");

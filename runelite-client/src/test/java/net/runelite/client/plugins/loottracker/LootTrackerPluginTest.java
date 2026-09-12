@@ -143,7 +143,15 @@ public class LootTrackerPluginTest
 	public void setUp()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		org.mockito.Mockito.lenient().when(client.macroExpand(org.mockito.ArgumentMatchers.anyString()))
+			.thenAnswer(call -> call.getArgument(0));
 
+		net.runelite.api.WorldView view = mock(net.runelite.api.WorldView.class);
+		when(client.getWorldView(anyInt())).thenReturn(view);
+		when(client.getTopLevelWorldView()).thenReturn(view);
+		when(client.findWorldViewFromWorldPoint(any())).thenReturn(view);
+		when(view.getSizeX()).thenReturn(104);
+		when(view.getSizeY()).thenReturn(104);
 		Player player = mock(Player.class);
 		when(player.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
@@ -286,8 +294,8 @@ public class LootTrackerPluginTest
 		when(itemManager.getItemComposition(ItemID.MAHOGANY_SEED)).thenReturn(compSeed);
 		when(compSeed.getHaPrice()).thenReturn(2_102);
 
-		when(client.getBaseX()).thenReturn(3232);
-		when(client.getBaseY()).thenReturn(4320);
+		when(client.getTopLevelWorldView().getBaseX()).thenReturn(3232);
+		when(client.getTopLevelWorldView().getBaseY()).thenReturn(4320);
 		LocalPoint localPoint = new LocalPoint(0, 0);
 		when(client.getLocalPlayer().getLocalLocation()).thenReturn(localPoint);
 

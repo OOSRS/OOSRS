@@ -37,6 +37,8 @@ import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.HitsplatID;
+import net.runelite.client.testfixtures.TestHitsplat;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -186,6 +188,10 @@ public class SlayerPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		net.runelite.api.WorldView view = mock(net.runelite.api.WorldView.class);
+		when(client.getWorldView(org.mockito.ArgumentMatchers.anyInt())).thenReturn(view);
+		when(client.getTopLevelWorldView()).thenReturn(view);
+		when(client.macroExpand(org.mockito.ArgumentMatchers.anyString())).thenAnswer(call -> call.getArgument(0));
 	}
 
 	@Test
@@ -902,7 +908,7 @@ public class SlayerPluginTest
 		slayerPlugin.onGameTick(new GameTick());
 
 		// Damage both npcs
-		Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.DAMAGE_ME, 1, 1);
+		Hitsplat hitsplat = new TestHitsplat(HitsplatID.DAMAGE_ME, 1, 1);
 		HitsplatApplied hitsplatApplied = new HitsplatApplied();
 		hitsplatApplied.setHitsplat(hitsplat);
 		hitsplatApplied.setActor(npc1);

@@ -60,7 +60,7 @@ public class ChatMessageManagerTest
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
-	private String[] sstack;
+	private Object[] sstack;
 	private int[] istack;
 
 	@Before
@@ -78,7 +78,8 @@ public class ChatMessageManagerTest
 		when(tbl.get(anyLong())).thenReturn(messageNode);
 		when(client.getMessages()).thenReturn(tbl);
 
-		sstack = new String[]{
+		sstack = new Object[]{
+			42, // An unrelated object-stack value must survive chat callbacks.
 			"",
 			name,
 			message,
@@ -88,8 +89,8 @@ public class ChatMessageManagerTest
 			0, // splitpmbox
 			1
 		};
-		when(client.getStringStack()).thenReturn(sstack);
-		when(client.getStringStackSize()).thenReturn(sstack.length);
+		when(client.getObjectStack()).thenReturn(sstack);
+		when(client.getObjectStackSize()).thenReturn(sstack.length);
 		when(client.getIntStack()).thenReturn(istack);
 		when(client.getIntStackSize()).thenReturn(istack.length);
 
@@ -108,8 +109,9 @@ public class ChatMessageManagerTest
 
 		setupVm(ChatMessageType.GAMEMESSAGE, "", "Your dodgy necklace protects you. It has <col=ff0000>1</col> charge left.");
 		chatMessageManager.colorChatMessage();
+		assertEquals(42, sstack[0]);
 
-		assertEquals("<col=b20000>Your dodgy necklace protects you. It has <col=ff0000>1<col=b20000> charge left.</col>", sstack[2]);
+		assertEquals("<col=b20000>Your dodgy necklace protects you. It has <col=ff0000>1<col=b20000> charge left.</col>", sstack[3]);
 	}
 
 	@Test
@@ -130,8 +132,9 @@ public class ChatMessageManagerTest
 		when(localPlayer.getName()).thenReturn(localPlayerName);
 
 		chatMessageManager.colorChatMessage();
+		assertEquals(42, sstack[0]);
 
-		assertEquals("<col=b20000>" + friendName + "</col>", sstack[1]);
+		assertEquals("<col=b20000>" + friendName + "</col>", sstack[2]);
 	}
 
 	@Test
@@ -153,8 +156,9 @@ public class ChatMessageManagerTest
 		when(localPlayer.getName()).thenReturn(localPlayerName);
 
 		chatMessageManager.colorChatMessage();
+		assertEquals(42, sstack[0]);
 
-		assertEquals("<col=b20000>" + friendName + "</col>", sstack[1]);
+		assertEquals("<col=b20000>" + friendName + "</col>", sstack[2]);
 	}
 
 	@Test
@@ -205,8 +209,9 @@ public class ChatMessageManagerTest
 		when(messageNode.getRuneLiteFormatMessage()).thenReturn("<colHIGHLIGHT><u>rsn</u><colNORMAL> received a drop: 8 x Bronze bolts (16 coins).");
 
 		chatMessageManager.colorChatMessage();
+		assertEquals(42, sstack[0]);
 
 		// | <chat color> <highlight color>
-		assertEquals("|<col=ff0000><col=0000ff><u>rsn</u><col=ff0000> received a drop: 8 x Bronze bolts (16 coins).</col>", sstack[2]);
+		assertEquals("|<col=ff0000><col=0000ff><u>rsn</u><col=ff0000> received a drop: 8 x Bronze bolts (16 coins).</col>", sstack[3]);
 	}
 }

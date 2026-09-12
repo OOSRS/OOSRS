@@ -34,6 +34,9 @@ import org.jgroups.util.Util;
 @Singleton
 public class Groups implements Receiver
 {
+    /** Legacy Java-object multicast is quarantined, including previously enabled configurations. */
+    public static boolean isLegacyTransportSupported() { return false; }
+
 	@Inject
 	private OpenOSRSConfig openOSRSConfig;
 	@Inject
@@ -53,6 +56,7 @@ public class Groups implements Receiver
 
 	public boolean init()
 	{
+		if (!isLegacyTransportSupported()) { return false; }
 		try (final InputStream is = RuneLite.class.getResourceAsStream("/udp-openosrs.xml"))
 		{
 			channel = new JChannel(is)
@@ -67,14 +71,16 @@ public class Groups implements Receiver
 		{
 			log.error("Failed to initialize groups, disabling so we don't crash.", ex);
 			// just in case the event bus was the thing that threw the error
-			eventBus.unregister(this);
+			if (eventBus != null) eventBus.unregister(this);
+			if (channel != null) channel.close();
 			channel = null;
 			return false;
 		}
 		catch (Exception ex)
 		{
 			log.error("Unforeseen exception while initializing groups, disabling.", ex);
-			eventBus.unregister(this);
+			if (eventBus != null) eventBus.unregister(this);
+			if (channel != null) channel.close();
 			channel = null;
 			return false;
 		}
@@ -100,6 +106,7 @@ public class Groups implements Receiver
 
 	public void sendConfig(Address destination, ConfigChanged configChanged)
 	{
+		if (!isLegacyTransportSupported()) { return ; }
 		if (!openOSRSConfig.localSync() || OpenOSRSSplashScreen.showing() || instanceCount < 2)
 		{
 			return;
@@ -122,6 +129,7 @@ public class Groups implements Receiver
 
 	public void sendString(String command)
 	{
+		if (!isLegacyTransportSupported()) { return ; }
 		String[] messageObject = command.split(";");
 		String pluginId = messageObject[1];
 
@@ -141,6 +149,7 @@ public class Groups implements Receiver
 
 	public void send(Address destination, String command)
 	{
+		if (!isLegacyTransportSupported()) { return ; }
 		if (!openOSRSConfig.localSync() || OpenOSRSSplashScreen.showing() || instanceCount < 2 || channel == null)
 		{
 			return;
@@ -159,6 +168,7 @@ public class Groups implements Receiver
 	@Override
 	public void viewAccepted(View view)
 	{
+		if (!isLegacyTransportSupported()) { return ; }
 		members = view.getMembers();
 		instanceCount = members.size();
 	}
@@ -166,6 +176,7 @@ public class Groups implements Receiver
 	@Override
 	public void receive(Message message)
 	{
+		if (!isLegacyTransportSupported()) { return ; }
 		if (OpenOSRSSplashScreen.showing())
 		{
 			return;

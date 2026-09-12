@@ -30,6 +30,33 @@ public class DialogueService
 		this.packets = packets;
 	}
 
+	@Inject private net.openosrs.api.operation.OperationLeases leases;
+	private void requireChatboxAccess()
+	{
+		if (leases != null) leases.requireAccess(net.openosrs.api.operation.OperationLeases.Resource.CHATBOX);
+	}
+
+	@Inject private AmountInputService amountInputs;
+
+	public AmountInputService amountInputs()
+	{
+		return amountInputs != null ? amountInputs : net.openosrs.api.Context.getService(AmountInputService.class);
+	}
+
+	/** Opens X and waits for its own numeric prompt before native submission. */
+	public AmountInputService.Operation requestAmount(int amount, int mode, WidgetRef origin,
+		Runnable open, String promptWord)
+	{
+		java.util.Objects.requireNonNull(origin, "origin");
+		return amountInputs().begin(net.openosrs.api.operation.OperationOwner.currentOrNew(), amount, mode, open,
+			() -> {
+				for (WidgetRef current : widgets.descendants(origin.getId()))
+					if (origin.isSameWidget(current) && origin.getItemId() == current.getItemId()
+						&& origin.getItemQuantity() == current.getItemQuantity()) return true;
+				return false;
+			}, title -> title.contains(promptWord) || ("quantity".equals(promptWord) && title.contains("how many")) || ("price".equals(promptWord) && title.contains("how much")));
+	}
+
 	public boolean canContinue()
 	{
 		return continueWidget() != null;
@@ -40,8 +67,60 @@ public class DialogueService
 		return !options().isEmpty();
 	}
 
+	/** Immutable visible dialogue state for transition checks; no game action. */
+	public Snapshot snapshot()
+	{
+		List<WidgetRef> controls = new ArrayList<>();
+		for (int component : CONTINUE_COMPONENTS)
+		{
+			// Include speaker/body text as well as the continue button.
+			for (WidgetRef widget : widgets.descendants(component & 0xffff0000))
+				if (widget.isVisible()) controls.add(widget);
+		}
+		controls.addAll(options());
+		return new Snapshot(controls);
+	}
+
+	/** Match a known speaker/body/header before consuming a delayed dialogue step. */
+	public boolean containsText(String expected)
+	{
+		if (expected == null || expected.trim().isEmpty()) return false;
+		String needle = strip(expected).toLowerCase(java.util.Locale.ROOT);
+		for (WidgetRef control : snapshot().controls)
+			if (strip(control.getText()).toLowerCase(java.util.Locale.ROOT).contains(needle)) return true;
+		for (WidgetRef control : widgets.descendants(InterfaceID.Chatmenu.OPTIONS))
+			if (control.isVisible() && strip(control.getText()).toLowerCase(java.util.Locale.ROOT).contains(needle)) return true;
+		return false;
+	}
+
+	public boolean hasOption(String text)
+	{
+		if (text == null || text.trim().isEmpty()) return false;
+		String needle = text.trim().toLowerCase(java.util.Locale.ROOT);
+		return options().stream().filter(option -> strip(option.getText()).toLowerCase(java.util.Locale.ROOT).contains(needle)).count() == 1;
+	}
+
+	public static final class Snapshot
+	{
+		private final List<WidgetRef> controls;
+		private Snapshot(List<WidgetRef> controls) { this.controls = java.util.Collections.unmodifiableList(new ArrayList<>(controls)); }
+		public boolean sameAs(Snapshot other)
+		{
+			if (other == null || controls.size() != other.controls.size()) return false;
+			for (int i = 0; i < controls.size(); i++)
+			{
+				WidgetRef a = controls.get(i), b = other.controls.get(i);
+				if (!a.isSameWidget(b) || a.getId() != b.getId() || a.getIndex() != b.getIndex()
+					|| !java.util.Objects.equals(a.getText(), b.getText()) || !java.util.Objects.equals(a.getName(), b.getName())
+					|| !a.getActions().equals(b.getActions())) return false;
+			}
+			return true;
+		}
+	}
+
 	public void continueDialogue()
 	{
+		requireChatboxAccess();
 		WidgetRef widget = continueWidget();
 		if (widget == null) throw new IllegalStateException("no continue dialogue is visible");
 		widgets.continueDialogue(widget);
@@ -53,7 +132,8 @@ public class DialogueService
 		for (WidgetRef widget : widgets.descendants(InterfaceID.Chatmenu.OPTIONS))
 		{
 			String text = strip(widget.getText());
-			if (!widget.isVisible() || text.isEmpty() || text.toLowerCase().contains("choose an option")) continue;
+			if (!widget.isVisible() || widget.getId() != InterfaceID.Chatmenu.OPTIONS || widget.getIndex() < 1
+				|| text.isEmpty() || text.toLowerCase(java.util.Locale.ROOT).contains("choose an option")) continue;
 			result.add(widget);
 		}
 		return result;
@@ -61,44 +141,45 @@ public class DialogueService
 
 	public void choose(String text)
 	{
+		requireChatboxAccess();
 		if (text == null || text.trim().isEmpty())
 		{
 			throw new IllegalArgumentException("dialogue option text is required");
 		}
-		String needle = text.toLowerCase();
+		String needle = text.trim().toLowerCase(java.util.Locale.ROOT);
+		WidgetRef match = null;
 		for (WidgetRef option : options())
 		{
-			if (strip(option.getText()).toLowerCase().contains(needle))
+			if (strip(option.getText()).toLowerCase(java.util.Locale.ROOT).contains(needle))
 			{
-				widgets.click(option);
-				return;
+				if (match != null) throw new IllegalArgumentException("dialogue option is ambiguous: " + text);
+				match = option;
 			}
 		}
-		throw new IllegalArgumentException("dialogue option unavailable: " + text);
+		if (match == null) throw new IllegalArgumentException("dialogue option unavailable: " + text);
+		widgets.continueDialogue(match);
 	}
 
 	public void choose(int oneBasedIndex)
 	{
+		requireChatboxAccess();
 		List<WidgetRef> options = options();
 		if (oneBasedIndex < 1 || oneBasedIndex > options.size())
 		{
 			throw new IllegalArgumentException("dialogue option index unavailable: " + oneBasedIndex);
 		}
-		widgets.click(options.get(oneBasedIndex - 1));
+		widgets.continueDialogue(options.get(oneBasedIndex - 1));
 	}
 
+	/** Submit only an already visible native numeric input. Prefer requestAmount for delayed X. */
 	public void enterAmount(int amount)
 	{
-		if (amount < 0) throw new IllegalArgumentException("amount must be non-negative");
-		// Resolve the semantic opcode from the exact active hooks.
-		if (!packets.send("RESUME_P_COUNTDIALOG", amount))
-		{
-			throw new IllegalStateException("count dialogue packet was not accepted");
-		}
+		amountInputs().submitCurrent(amount);
 	}
 
 	public void enterName(String name)
 	{
+		requireChatboxAccess();
 		if (name == null || name.indexOf('\0') >= 0 || name.length() > 254)
 		{
 			throw new IllegalArgumentException("name must contain at most 254 characters and no NUL");
@@ -112,6 +193,7 @@ public class DialogueService
 
 	public void enterObject(int itemId)
 	{
+		requireChatboxAccess();
 		if (itemId < 0) throw new IllegalArgumentException("item id must be non-negative");
 		// The active layout owns the item-id encoding.
 		if (!packets.send("RESUME_P_OBJDIALOG", itemId))

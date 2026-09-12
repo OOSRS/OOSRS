@@ -16,10 +16,21 @@ public final class WidgetRef
 	private final String text;
 	private final boolean visible;
 	private final List<String> actions;
+	private final java.lang.ref.WeakReference<net.runelite.api.widgets.Widget> source;
+	private final net.openosrs.api.state.ClientSceneState.Snapshot context;
 
 	WidgetRef(int id, int parentId, int index, int itemId, int itemQuantity,
 		String name, String text, boolean visible, List<String> actions)
 	{
+		this(id, parentId, index, itemId, itemQuantity, name, text, visible, actions, null, null);
+	}
+
+	WidgetRef(int id, int parentId, int index, int itemId, int itemQuantity,
+		String name, String text, boolean visible, List<String> actions,
+		net.runelite.api.widgets.Widget source, net.openosrs.api.state.ClientSceneState.Snapshot context)
+	{
+		this.source = new java.lang.ref.WeakReference<>(source);
+		this.context = context;
 		this.id = id;
 		this.parentId = parentId;
 		this.index = index;
@@ -31,6 +42,9 @@ public final class WidgetRef
 		this.actions = Collections.unmodifiableList(new ArrayList<>(actions));
 	}
 
+	net.runelite.api.widgets.Widget liveIdentity() { return source.get(); }
+	net.openosrs.api.state.ClientSceneState.Snapshot context() { return context; }
+
 	public int getId() { return id; }
 	public int getParentId() { return parentId; }
 	public int getIndex() { return index; }
@@ -40,6 +54,12 @@ public final class WidgetRef
 	public String getText() { return text; }
 	public boolean isVisible() { return visible; }
 	public List<String> getActions() { return actions; }
+
+	/** Compares the captured native identity, not just a reusable component ID. */
+	public boolean isSameWidget(WidgetRef other)
+	{
+		return other != null && source.get() != null && source.get() == other.source.get();
+	}
 
 	public boolean hasAction(String action)
 	{

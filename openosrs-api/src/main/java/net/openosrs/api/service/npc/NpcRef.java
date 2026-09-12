@@ -10,6 +10,7 @@ public final class NpcRef
 {
 	private final int id;
 	private final int index;
+	private final net.openosrs.api.state.ActorLifetimes.Identity identity;
 	private final int worldViewId;
 	private final String name;
 	private final int combatLevel;
@@ -19,6 +20,13 @@ public final class NpcRef
 	NpcRef(int id, int index, int worldViewId, String name, int combatLevel,
 		WorldPoint location, List<String> actions)
 	{
+		this(id, index, worldViewId, name, combatLevel, location, actions, null);
+	}
+
+	NpcRef(int id, int index, int worldViewId, String name, int combatLevel,
+		WorldPoint location, List<String> actions, net.openosrs.api.state.ActorLifetimes.Identity identity)
+	{
+		this.identity = identity;
 		this.id = id;
 		this.index = index;
 		this.worldViewId = worldViewId;
@@ -67,4 +75,11 @@ public final class NpcRef
 	{
 		return NpcService.actionIndex(actions, action) >= 0;
 	}
+	/** Rejects despawn, index/object reuse, scene changes and detached snapshots. */
+	public void requireCurrent(net.runelite.api.Client client)
+	{
+		if (identity == null || !identity.isCurrent(client))
+			throw new IllegalStateException("Actor snapshot no longer identifies a live target");
+	}
+
 }

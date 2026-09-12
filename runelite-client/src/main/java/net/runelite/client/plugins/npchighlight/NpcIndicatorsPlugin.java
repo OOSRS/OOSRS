@@ -137,7 +137,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	/**
 	 * NPC ids marked with the Tag option
 	 */
-	private final Set<Integer> npcTags = new HashSet<>();
+	private final Set<NPC> npcTags = java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
 
 	/**
 	 * Tagged NPCs that spawned this tick, which need to be verified that
@@ -212,6 +212,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			event.getGameState() == GameState.HOPPING)
 		{
 			highlightedNpcs.clear();
+			npcTags.clear();
 			deadNpcsToDisplay.clear();
 			memorizedNpcs.forEach((id, npc) -> npc.setDiedOnTick(-1));
 			lastPlayerLocation = null;
@@ -263,15 +264,17 @@ public class NpcIndicatorsPlugin extends Plugin
 					.setTarget(event.getTarget())
 					.setIdentifier(event.getIdentifier())
 					.setType(MenuAction.RUNELITE)
-					.onClick(this::tag);
+					.setWorldViewId(menuEntry.getWorldViewId())
+					.onClick(entry -> tag(entry, npc));
 			}
 
 			MenuEntry i = client.createMenuEntry(-1)
-				.setOption(npcTags.contains(npc.getIndex()) ? UNTAG : TAG)
+				.setOption(npcTags.contains(npc) ? UNTAG : TAG)
 				.setTarget(event.getTarget())
 				.setIdentifier(event.getIdentifier())
 				.setType(MenuAction.RUNELITE)
-				.onClick(this::tag);
+				.setWorldViewId(menuEntry.getWorldViewId())
+					.onClick(entry -> tag(entry, npc));
 		}
 		else
 		{
@@ -294,20 +297,20 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 	}
 
-	private void tag(MenuEntry entry)
+	private void tag(MenuEntry entry, NPC expected)
 	{
 		final int id = entry.getIdentifier();
-		final NPC[] cachedNPCs = client.getCachedNPCs();
-		final NPC npc = cachedNPCs[id];
+		final NPC npc = net.runelite.api.ActorLookup.npc(client, entry.getWorldViewId(), id);
 
-		if (npc == null || npc.getName() == null)
+		// The menu was created for this exact actor instance, not a later reuse of its index.
+		if (npc == null || npc != expected || npc.getName() == null)
 		{
 			return;
 		}
 
 		if (entry.getOption().equals(TAG) || entry.getOption().equals(UNTAG))
 		{
-			final boolean removed = npcTags.remove(id);
+			final boolean removed = npcTags.remove(npc);
 
 			if (removed)
 			{
@@ -322,7 +325,7 @@ public class NpcIndicatorsPlugin extends Plugin
 				if (!client.isInInstancedRegion())
 				{
 					memorizeNpc(npc);
-					npcTags.add(id);
+					npcTags.add(npc);
 				}
 				highlightedNpcs.put(npc, highlightedNpc(npc));
 			}
@@ -348,7 +351,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		if (npcTags.contains(npc.getIndex()))
+		if (npcTags.contains(npc))
 		{
 			memorizeNpc(npc);
 			highlightedNpcs.put(npc, highlightedNpc(npc));
@@ -371,6 +374,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		final NPC npc = npcDespawned.getNpc();
+		npcTags.remove(npc);
 
 		if (memorizedNpcs.containsKey(npc.getIndex()))
 		{
@@ -393,7 +397,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		if (npcTags.contains(npc.getIndex())
+		if (npcTags.contains(npc)
 			|| highlightMatchesNPCName(npcName))
 		{
 			highlightedNpcs.put(npc, highlightedNpc(npc));
@@ -526,7 +530,7 @@ public class NpcIndicatorsPlugin extends Plugin
 				continue;
 			}
 
-			if (npcTags.contains(npc.getIndex()))
+			if (npcTags.contains(npc))
 			{
 				highlightedNpcs.put(npc, highlightedNpc(npc));
 				continue;

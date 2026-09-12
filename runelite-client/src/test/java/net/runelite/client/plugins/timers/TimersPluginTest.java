@@ -92,6 +92,8 @@ public class TimersPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		org.mockito.Mockito.lenient().when(client.macroExpand(org.mockito.ArgumentMatchers.anyString()))
+			.thenAnswer(call -> call.getArgument(0));
 	}
 
 	@Test

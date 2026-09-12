@@ -25,111 +25,124 @@
  */
 package net.runelite.client.rs;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.InterruptedIOException;
 import java.nio.charset.StandardCharsets;
-import lombok.AllArgsConstructor;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-@AllArgsConstructor
 class ClientConfigLoader
 {
-	private final OkHttpClient okHttpClient;
+    private static final int MAX_BYTES = 256 * 1024;
+    private static final int TIMEOUT_MILLIS = 15000;
+    private final int timeoutMillis;
+    private final OkHttpClient okHttpClient;
 
-	RSConfig fetch(HttpUrl url, byte[] raw) throws IOException
-	{
-		return parse(raw);
-	}
+    ClientConfigLoader(OkHttpClient client)
+    {
+        this(client, TIMEOUT_MILLIS);
+    }
 
-	RSConfig fetch(HttpUrl url) throws IOException
-	{
-		final Request request = new Request.Builder()
-			.url(url)
-			.build();
+    ClientConfigLoader(OkHttpClient client, int timeoutMillis)
+    {
+        if (timeoutMillis <= 0) throw new IllegalArgumentException("Positive timeout required");
+        this.timeoutMillis = timeoutMillis;
+        okHttpClient = client.newBuilder().callTimeout(timeoutMillis, TimeUnit.MILLISECONDS)
+            .retryOnConnectionFailure(false).build();
+    }
 
-		final RSConfig config = new RSConfig();
+    RSConfig fetch(HttpUrl url, byte[] raw) throws IOException { return parse(raw); }
 
-		try (Response response = okHttpClient.newCall(request).execute())
-		{
-			if (!response.isSuccessful())
-			{
-				throw new IOException("Unsuccessful response: " + response.message());
-			}
+    RSConfig fetch(HttpUrl url) throws IOException
+    {
+        if (Thread.currentThread().isInterrupted()) throw new InterruptedIOException("Config fetch interrupted");
+        Call call = okHttpClient.newCall(new Request.Builder().url(url).build());
+        CompletableFuture<RSConfig> result = new CompletableFuture<>();
+        call.enqueue(new Callback()
+        {
+            @Override public void onFailure(Call failed, IOException error) { result.completeExceptionally(error); }
+            @Override public void onResponse(Call completed, Response response)
+            {
+                try (Response closed = response)
+                {
+                    if (!response.isSuccessful() || response.body() == null)
+                        throw new IOException("Config request failed: HTTP " + response.code());
+                    if (response.body().contentLength() > MAX_BYTES) throw new IOException("Config response too large");
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    InputStream input = response.body().byteStream();
+                    byte[] chunk = new byte[8192];
+                    int count;
+                    while ((count = input.read(chunk)) != -1)
+                    {
+                        if (count > MAX_BYTES - bytes.size()) throw new IOException("Config response too large");
+                        bytes.write(chunk, 0, count);
+                    }
+                    RSConfig config = parse(bytes.toByteArray());
+                    validate(config);
+                    result.complete(config);
+                }
+                catch (IOException | RuntimeException error) { result.completeExceptionally(error); }
+            }
+        });
+        try { return result.get(timeoutMillis, TimeUnit.MILLISECONDS); }
+        catch (InterruptedException error)
+        {
+            call.cancel(); result.cancel(false); Thread.currentThread().interrupt();
+            InterruptedIOException failure = new InterruptedIOException("Config fetch interrupted");
+            failure.initCause(error); throw failure;
+        }
+        catch (TimeoutException error)
+        {
+            call.cancel(); result.cancel(false);
+            throw new java.net.SocketTimeoutException("Config fetch exceeded total time budget");
+        }
+        catch (ExecutionException error)
+        {
+            Throwable cause = error.getCause();
+            if (cause instanceof IOException) throw (IOException) cause;
+            throw new IOException("Invalid config response", cause);
+        }
+    }
 
-			String str;
-			final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream(), StandardCharsets.UTF_8));
-			while ((str = in.readLine()) != null)
-			{
-				int idx = str.indexOf('=');
+    static RSConfig parse(byte[] raw) throws IOException
+    {
+        if (raw == null || raw.length > MAX_BYTES) throw new IOException("Missing or oversized config");
+        // jav_config is served as ISO-8859-1, including the copyright byte in msg lines.
+        String text = new String(raw, StandardCharsets.ISO_8859_1);
+        RSConfig config = new RSConfig();
+        for (String line : text.split("\\r?\\n"))
+        {
+            int separator = line.indexOf('=');
+            if (separator < 0) continue;
+            if (separator == 0) throw new IOException("Empty config key");
+            String key = line.substring(0, separator), value = line.substring(separator + 1);
+            if (key.equals("msg")) continue;
+            if (key.equals("param"))
+            {
+                separator = value.indexOf('=');
+                if (separator <= 0) throw new IOException("Malformed config parameter");
+                config.getAppletProperties().put(value.substring(0, separator), value.substring(separator + 1));
+            }
+            else config.getClassLoaderProperties().put(key, value);
+        }
+        return config;
+    }
 
-				if (idx == -1)
-				{
-					continue;
-				}
-
-				String s = str.substring(0, idx);
-
-				switch (s)
-				{
-					case "param":
-						str = str.substring(idx + 1);
-						idx = str.indexOf('=');
-						s = str.substring(0, idx);
-
-						config.getAppletProperties().put(s, str.substring(idx + 1));
-						break;
-					case "msg":
-						// ignore
-						break;
-					default:
-						config.getClassLoaderProperties().put(s, str.substring(idx + 1));
-						break;
-				}
-			}
-		}
-
-		return config;
-	}
-
-	static RSConfig parse(byte[] raw) throws IOException
-	{
-		final RSConfig config = new RSConfig();
-		BufferedReader in = new BufferedReader(new InputStreamReader(new java.io.ByteArrayInputStream(raw), StandardCharsets.UTF_8));
-
-		String str;
-		while ((str = in.readLine()) != null)
-		{
-			int idx = str.indexOf('=');
-
-			if (idx == -1)
-			{
-				continue;
-			}
-
-			String s = str.substring(0, idx);
-
-			switch (s)
-			{
-				case "param":
-					str = str.substring(idx + 1);
-					idx = str.indexOf('=');
-					s = str.substring(0, idx);
-
-					config.getAppletProperties().put(s, str.substring(idx + 1));
-					break;
-				case "msg":
-					// ignore
-					break;
-				default:
-					config.getClassLoaderProperties().put(s, str.substring(idx + 1));
-					break;
-			}
-		}
-
-		return config;
-	}
+    private static void validate(RSConfig config) throws IOException
+    {
+        if (config.getCodeBase() == null || HttpUrl.parse(config.getCodeBase()) == null
+            || config.getInitialJar() == null || config.getInitialJar().isEmpty()
+            || config.getInitialClass() == null || config.getInitialClass().isEmpty())
+            throw new IOException("Invalid or missing jav_config fields");
+    }
 }

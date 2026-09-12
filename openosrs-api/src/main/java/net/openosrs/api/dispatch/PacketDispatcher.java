@@ -43,6 +43,10 @@ public class PacketDispatcher
 {
 	private final Client client;
 	private final Hooks hooks;
+    // Private detached snapshot. Never exposed or mutated after publication.
+    private final HooksFile metadata;
+    private final String metadataFailure;
+    private volatile Binding scratchBinding;
 	private volatile Binding binding;
 	private volatile boolean disabled;
 
@@ -51,12 +55,31 @@ public class PacketDispatcher
 	{
 		this.client = client;
 		this.hooks = hooks;
+        HooksFile snapshot = null;
+        String failure = null;
+        try
+        {
+            HooksFile supplied = hooks.file();
+            if (supplied != null)
+            {
+                snapshot = supplied.copy();
+                snapshot.validate();
+            }
+            else failure = "validated hooks are unavailable";
+        }
+        catch (RuntimeException ex)
+        {
+            snapshot = null;
+            failure = "invalid hooks metadata";
+        }
+        metadata = snapshot;
+        metadataFailure = failure;
 	}
 
 	/** True only when hooks loaded AND bind-time verification succeeded. */
 	public boolean available()
 	{
-		if (disabled || !hooks.isPacketTierAvailable())
+		if (!client.isClientThread() || disabled || metadata == null || !hooks.isPacketTierAvailable())
 		{
 			return false;
 		}
@@ -74,6 +97,7 @@ public class PacketDispatcher
 	/** True once the Isaac cipher is seeded (i.e. we are logged in). */
 	public boolean cipherReady()
 	{
+		if (!client.isClientThread() || disabled || !hooks.isPacketTierAvailable()) return false;
 		Binding b = binding;
 		if (b == null)
 		{
@@ -97,6 +121,8 @@ public class PacketDispatcher
 	 */
 	public String verifyBind()
 	{
+        if (!client.isClientThread()) return "REJECTED: client thread required";
+        if (metadata == null || !hooks.isPacketTierAvailable()) return "DISABLED: validated hooks are unavailable";
 		try
 		{
 			Binding b = binding();
@@ -112,103 +138,65 @@ public class PacketDispatcher
 		}
 	}
 
-	/**
-	 * Replay one packet's VERIFIED layout against a STANDALONE scratch
-	 * buffer and report the exact byte count written.
-	 *
-	 * CRITICAL SAFETY NOTE (learned live 2026-08-26): we intentionally do
-	 * NOT call the real node factory here. The factory writes the
-	 * cipher-encrypted packet header, consuming one ISAAC keystream value
-	 * per call; burning keystream without transmitting desyncs the client
-	 * from the server and causes a disconnect. Scratch buffers are fully
-	 * isolated: no pool, no writer, no cipher, no network.
-	 *
-	 * The layout width sum is the hard proof. The injected client may store the
-	 * public offset through an obfuscation multiplier, so a raw reflective
-	 * offset delta is diagnostic only and never revokes a structurally valid
-	 * layout.
-	 */
-	public String dryRunById(int id, Object... values)
-	{
-		try
-		{
-			HooksFile.PacketDef packet = hooks.file() == null ? null : hooks.file().packetById(id);
-			if (packet == null)
-			{
-				return "no packet with id " + id;
-			}
-			if (packet.getWrites() == null || (packet.getWrites().isEmpty() && packet.getLength() != 0))
-			{
-				return "id " + id + " has no verified layout";
-			}
-			Binding b = binding();
-			Object scratch = b.newScratchBuffer();
-			List<Method> ops = b.layoutMethods(packet);
-			int before = b.bufferOffset.getInt(scratch);
-			for (int i = 0; i < ops.size(); i++)
-			{
-				Method op = ops.get(i);
-				try
-				{
-					Object value = i < values.length && values[i] != null ? values[i] : 0;
-				Object[] args = b.fillArgs(op.getParameterTypes(), value, scratch);
-					if (args == null)
-					{
-						return "INCONCLUSIVE id=" + id + " at write " + (i + 1)
-							+ ": buffer-valued operation requires captured arguments";
-					}
-					op.invoke(scratch, args);
-				}
-				catch (ReflectiveOperationException | IllegalArgumentException e)
-				{
-					Throwable cause = e instanceof java.lang.reflect.InvocationTargetException
-						? ((java.lang.reflect.InvocationTargetException) e).getTargetException()
-						: e;
-					return "FAILED id=" + id + " at write " + (i + 1) + "/"
-						+ ops.size() + " (" + op.getName() + "): " + cause;
-				}
-			}
-			int after = b.bufferOffset.getInt(scratch);
-			int delta = after - before;
-			int widthSum = 0;
-			for (HooksFile.WriteOp w : packet.getWrites())
-			{
-				widthSum += w.getW() != null
-					? Integer.parseInt(w.getW().substring(1)) : 0;
-			}
-			boolean widthsHonest = delta == widthSum;
-			boolean lengthHonest = packet.getLength() == null
-				|| packet.getLength() < 0 || delta == packet.getLength();
-			if (!widthsHonest || !lengthHonest)
-			{
-				return "INCONCLUSIVE id=" + id + ": raw offset delta=" + delta
-					+ "B, static layout=" + widthSum + "B, declared " + packet.getLength()
-					+ " (obfuscated offset; layout remains structurally trusted)";
-			}
-			return "OK id=" + id + " bytes=" + delta
-				+ " declaredLen=" + packet.getLength() + " (scratch-verified)";
-		}
-		catch (ReflectiveOperationException | RuntimeException e)
-		{
-			Throwable cause = e instanceof java.lang.reflect.InvocationTargetException
-				? ((java.lang.reflect.InvocationTargetException) e).getTargetException()
-				: e;
-			return "dry-run FAILED: " + cause;
-		}
-	}
+    /** Replay only payload writes on a fresh byte-array-backed buffer. No live binding. */
+    public String dryRunById(int id, Object... values)
+    {
+        if (metadata == null) return "DISABLED: " + metadataFailure;
+        HooksFile.PacketDef packet = metadata.packetById(id);
+        if (packet == null) return "no packet with id " + id;
+        if (packet.getWrites() == null) return "QUARANTINE id=" + id + ": no verified layout";
+        try
+        {
+            Binding b = scratchBinding();
+            Object scratch = b.newScratchBuffer();
+            List<Method> ops = b.layoutMethods(packet);
+            values = values == null ? new Object[0] : values;
+            if (values.length != 0 && values.length != ops.size())
+                return "REJECTED id=" + id + ": payload arity mismatch";
+            int before = b.offset(scratch);
+            for (int i = 0; i < ops.size(); i++)
+            {
+                Method op = ops.get(i);
+                Object value = values.length == 0
+                    ? (java.util.Arrays.asList(op.getParameterTypes()).contains(String.class) ? "" : 0)
+                    : values[i];
+                if (!b.acceptsValue(op, value)) return "REJECTED id=" + id + ": invalid payload value";
+                if (!Modifier.isStatic(op.getModifiers()) && !op.getDeclaringClass().isInstance(scratch))
+                    return "INCONCLUSIVE id=" + id + ": operation requires packet-buffer state";
+                op.invoke(Modifier.isStatic(op.getModifiers()) ? null : scratch,
+                    b.fillArgs(op.getParameterTypes(), value, scratch));
+            }
+            int delta = b.offset(scratch) - before;
+            if (delta < 0 || delta > b.payload(scratch).length)
+                return "FAILED id=" + id + ": decoded offset outside scratch buffer";
+            if (packet.getLength() < 0)
+                return "INCONCLUSIVE id=" + id + " bytes=" + delta + ": variable framing requires a packet-specific fixture";
+            if (delta != packet.getLength())
+                return "FAILED id=" + id + ": payload bytes=" + delta + " declaredLen=" + packet.getLength();
+            return "OK id=" + id + " bytes=" + delta + " (isolated scratch payload only)";
+        }
+        catch (ReflectiveOperationException | RuntimeException | LinkageError ex)
+        {
+            return "FAILED id=" + id + ": scratch " + ex.getClass().getSimpleName();
+        }
+    }
 
 	/**
-	 * Dry-run EVERY packet that carries a layout. One login funds the whole
-	 * table's verification: returns "ok=N fail=M" plus up to ten distinct
-	 * failure signatures for offline fixing.
+	 * Dry-run each mapped payload without login or live writer/cipher access.
+	 * Variable framing is reported separately from fixed payload checks.
 	 */
 	public String dryRunAll()
-	{
+    {
+        HooksFile snapshot = metadata;
+        if (snapshot == null || snapshot.getPackets() == null)
+        {
+            return "DISABLED: validated hooks are unavailable";
+        }
 		int ok = 0;
 		int inconclusive = 0;
 		int noLayout = 0;
 		Map<String, Integer> failures = new java.util.TreeMap<>();
-		for (HooksFile.PacketDef p : hooks.file().getPackets())
+		for (HooksFile.PacketDef p : snapshot.getPackets())
 		{
 			if (p.getWrites() == null || (p.getWrites().isEmpty() && p.getLength() != 0))
 			{
@@ -224,10 +212,6 @@ public class PacketDispatcher
 			{
 				ok++;
 			}
-			else if (r.startsWith("QUARANTINE"))
-			{
-				// counted in failures below with its signature
-			}
 			else
 			{
 				String sig = r.contains("(") ? r.substring(r.indexOf('('))
@@ -238,7 +222,7 @@ public class PacketDispatcher
 		StringBuilder sb = new StringBuilder("ok=").append(ok)
 			.append(" inconclusive=").append(inconclusive)
 			.append(" noLayout=").append(noLayout)
-			.append(" failed=").append(hooks.file().getPackets().size() - ok - inconclusive - noLayout);
+			.append(" failed=").append(snapshot.getPackets().size() - ok - inconclusive - noLayout);
 		int shown = 0;
 		for (Map.Entry<String, Integer> e : failures.entrySet())
 		{
@@ -259,23 +243,24 @@ public class PacketDispatcher
 	 */
 	public boolean send(String packetName, Object... values)
 	{
-		return dispatch(hooks.file() == null ? null : hooks.file().packetByName(packetName), values);
+		return dispatch(metadata == null ? null : metadata.packetByName(packetName), values);
 	}
 
 	/** Send a packet by opcode when a revision table has no semantic name. */
 	public boolean sendById(int id, Object... values)
 	{
-		return dispatch(hooks.file() == null ? null : hooks.file().packetById(id), values);
+		return dispatch(metadata == null ? null : metadata.packetById(id), values);
 	}
 
 	private boolean dispatch(HooksFile.PacketDef packet, Object[] values)
 	{
-		values = values == null ? new Object[0] : values;
+		values = values == null ? new Object[0] : values.clone();
 		if (!client.isClientThread())
 		{
 			log.warn("packet dispatch must run on the client thread");
 			return false;
 		}
+		if (client.getGameState() != net.runelite.api.GameState.LOGGED_IN) return false;
 		if (!available())
 		{
 			log.debug("packet tier unavailable");
@@ -292,25 +277,12 @@ public class PacketDispatcher
 				+ "guess payload structure", packet.getId());
 			return false;
 		}
+		boolean factoryInvoked = false;
 		try
 		{
 			Binding b = binding();
-			List<Method> ops = b.layoutMethods(packet);
-			if (values.length != ops.size())
-			{
-				log.warn("packet id {} requires {} payload values (one per verified write), got {}; refusing before factory",
-					packet.getId(), ops.size(), values.length);
-				return false;
-			}
-			for (int i = 0; i < ops.size(); i++)
-			{
-				if (!b.acceptsValue(ops.get(i), values[i]))
-				{
-					log.warn("packet id {} has an invalid value at write {}; refusing before factory",
-						packet.getId(), i);
-					return false;
-				}
-			}
+            byte[] payload = b.encodePayload(packet, values);
+            int size = payload.length;
 			Object packetInstance = b.packetField(packet.getFields().get(0)).get(null);
 			if (packetInstance == null)
 			{
@@ -322,27 +294,45 @@ public class PacketDispatcher
 				log.debug("packet dispatch refused before factory: cipher is not seeded");
 				return false;
 			}
+            factoryInvoked = true;
 			Object node = b.factory.invoke(null, packetInstance, cipher);
 			if (!b.nodeClass.isInstance(node))
 			{
 				throw new IllegalStateException("factory returned no node");
 			}
 			Object buffer = b.nodeBuffer.get(node);
-			for (int i = 0; i < ops.size(); i++)
-			{
-				Method op = ops.get(i);
-				op.invoke(buffer, b.fillArgs(op.getParameterTypes(), values[i], buffer));
-			}
+            int start = b.offset(buffer);
+            byte[] destination = b.payload(buffer);
+            if (start < 0 || start > destination.length - size)
+            {
+                disabled = true;
+                throw new IllegalStateException("native packet buffer capacity mismatch");
+            }
+            System.arraycopy(payload, 0, destination, start, size);
+            b.bufferOffset.setInt(buffer, b.bufferOffset.getInt(buffer) + size * b.offsetIncrement);
 			b.queue.invoke(b.writer, node, b.garbage);
 			log.debug("packet id {} enqueued", packet.getId());
 			return true;
 		}
 		catch (ReflectiveOperationException | RuntimeException e)
 		{
+            if (factoryInvoked) disabled = true;
 			log.warn("packet dispatch failed for id {}: {}", packet.getId(), e.toString());
 			return false;
 		}
 	}
+
+    /** Framing is separate from the number of stores made by a buffer method. */
+    static boolean validPayloadSize(int declared, byte[] bytes, int size)
+    {
+        if (size < 0 || size > bytes.length) return false;
+        if (declared >= 0) return size == declared;
+        if (declared == -1)
+            return size >= 1 && size <= 256 && (bytes[0] & 255) == size - 1;
+        // Explicit API size budget, below the pinned native 10000-byte allocation.
+        return declared == -2 && size >= 2 && size <= 8192
+            && (((bytes[0] & 255) << 8) | (bytes[1] & 255)) == size - 2;
+    }
 
 	/*
 	 * Argument filling moved to Binding.fillArgs — needs buffer-family types
@@ -352,12 +342,27 @@ public class PacketDispatcher
 	// binding
 	// ------------------------------------------------------------------
 
-	private Binding binding() throws ReflectiveOperationException
-	{
+	private Binding scratchBinding() throws ReflectiveOperationException
+    {
+        Binding current = scratchBinding;
+        if (current != null) return current;
+        synchronized (this)
+        {
+            if (scratchBinding == null) scratchBinding = new Binding(client, metadata, false);
+            return scratchBinding;
+        }
+    }
+
+    private Binding binding() throws ReflectiveOperationException
+    {
+        if (!client.isClientThread()) throw new IllegalStateException("client thread required");
+        if (metadata == null || !hooks.isPacketTierAvailable()) throw new IllegalStateException("hooks unavailable or stale revision");
 		Binding current = binding;
 		if (current != null)
 		{
-			return current;
+            if (current.writerField.get(Modifier.isStatic(current.writerField.getModifiers()) ? null : client) == current.writer)
+                return current;
+            binding = null; // A replacement writer belongs to a new binding, never the old session cache.
 		}
 		synchronized (this)
 		{
@@ -369,7 +374,7 @@ public class PacketDispatcher
 			{
 				try
 				{
-					binding = new Binding(client, hooks.file());
+					binding = new Binding(client, metadata, true);
 				}
 				catch (ReflectiveOperationException | RuntimeException e)
 				{
@@ -393,16 +398,20 @@ public class PacketDispatcher
 		private final Class<?> bufferClass;
 		private final List<Class<?>> bufferFamilyClasses;
 		private final Object writer;
+        private final Field writerField;
 		private final Field cipherField;
 		private final Method factory;
 		private final Method queue;
 		private final int garbage;
 		private final Field nodeBuffer;
 		private final Field bufferOffset;
-		private final Map<String, Field> packetFields = new HashMap<>();
-		private final Map<Integer, List<Method>> layoutCache = new HashMap<>();
+        private final Field bufferPayload;
+        private final int offsetMultiplier;
+        private final int offsetIncrement;
+		private final Map<String, Field> packetFields;
+		private final Map<Integer, List<Method>> layoutCache;
 
-		private Binding(Client client, HooksFile file) throws ReflectiveOperationException
+		private Binding(Client client, HooksFile file, boolean live) throws ReflectiveOperationException
 		{
 			ClassLoader loader = client.getClass().getClassLoader();
 			HooksFile.Families fam = file.getFamilies();
@@ -411,7 +420,7 @@ public class PacketDispatcher
 			packetClass = loader.loadClass(fam.getClientPacket());
 			nodeClass = loader.loadClass(fam.getPacketBufferNode());
 			bufferClass = loader.loadClass(fam.getBuffer());
-			Class<?> isaacClass = loader.loadClass(fam.getIsaac());
+			Class<?> isaacClass = live ? loader.loadClass(fam.getIsaac()) : null;
 
 			// structural gate: packet family statics count matches the table
 			int statics = 0;
@@ -430,47 +439,46 @@ public class PacketDispatcher
 					+ file.getPackets().size() + " — stale hooks for this jar");
 			}
 
-			// writer + cipher instances
-			Field writerField = findField(client.getClass(), sp.getClientWriterField());
-			writer = writerField.get(Modifier.isStatic(writerField.getModifiers()) ? null : client);
-			if (writer == null)
-			{
-				throw new IllegalStateException("packet writer instance unavailable");
-			}
-			if (!sp.getWriterClass().equals(writer.getClass().getName()))
-			{
-				throw new IllegalStateException("writer class mismatch: expected "
-					+ sp.getWriterClass() + " got " + writer.getClass().getName());
-			}
-			cipherField = findField(writer.getClass(), sp.getWriterCipherField());
-			Object seeded = cipherField.get(writer);
-			// The cipher is seeded during the login handshake; before login it
-			// is legitimately null. Type-check only what exists now — live
-			// reads re-check on every use (see cipher()).
-			if (seeded != null && !isaacClass.isInstance(seeded))
-			{
-				throw new IllegalStateException("cipher field type mismatch: "
-					+ seeded.getClass().getName() + " is not " + isaacClass.getName());
-			}
-
-			// factory: try each discovered signature until one binds
-			factory = resolveFactory(loader, file);
-			queue = findMethod(writer.getClass(), sp.getAddNodeMethod(),
-				new Class<?>[] {nodeClass, int.class});
-			if (Modifier.isStatic(queue.getModifiers()) || queue.getReturnType() != void.class)
-			{
-				throw new IllegalStateException("queue method must be instance void(node,int): "
-					+ queue);
-			}
-			long garbageValue = sp.getGarbageConstant();
-			if (garbageValue < Integer.MIN_VALUE || garbageValue > Integer.MAX_VALUE)
-			{
-				throw new IllegalStateException("queue garbage constant does not fit int: "
-					+ garbageValue);
-			}
-			garbage = (int) garbageValue;
-			nodeBuffer = findField(nodeClass, sp.getNodeBufferField());
-			bufferOffset = findField(bufferClass, fam.getBufferOffsetField());
+            // Scratch mode resolves buffer metadata only. It never reads these live fields.
+            if (live)
+            {
+                writerField = findField(client.getClass(), sp.getClientWriterField());
+                writer = writerField.get(Modifier.isStatic(writerField.getModifiers()) ? null : client);
+                if (writer == null || !sp.getWriterClass().equals(writer.getClass().getName()))
+                    throw new IllegalStateException("packet writer unavailable or incompatible");
+                cipherField = findField(writer.getClass(), sp.getWriterCipherField());
+                if (Modifier.isStatic(cipherField.getModifiers()) || cipherField.getType() != isaacClass)
+                    throw new IllegalStateException("cipher field descriptor mismatch");
+                factory = resolveFactory(loader, file);
+                queue = findMethodByDesc(writer.getClass(), sp.getAddNodeMethod(), sp.getAddNodeDescriptor());
+                if (queue == null || Modifier.isStatic(queue.getModifiers()) != sp.isAddNodeStatic()
+                    || sp.isAddNodeStatic() || queue.getReturnType() != void.class)
+                    throw new IllegalStateException("queue descriptor/staticness mismatch");
+                long constant = sp.getGarbageConstant();
+                if (constant < Integer.MIN_VALUE || constant > Integer.MAX_VALUE)
+                    throw new IllegalStateException("queue constant outside int range");
+                garbage = (int) constant;
+            }
+            else
+            {
+                writer = null;
+                writerField = null;
+                cipherField = null;
+                factory = null;
+                queue = null;
+                garbage = 0;
+            }
+            nodeBuffer = findField(nodeClass, sp.getNodeBufferField());
+            bufferOffset = findField(bufferClass, fam.getBufferOffsetField());
+            bufferPayload = findField(bufferClass, fam.getBufferPayloadField());
+            if (file.getTrace() == null) throw new IllegalStateException("offset decoder metadata missing");
+            // Trace metadata stores the encoded increment, not its modular inverse.
+            offsetIncrement = file.getTrace().getOffsetMultiplier();
+            offsetMultiplier = java.math.BigInteger.valueOf(Integer.toUnsignedLong(offsetIncrement))
+                .modInverse(java.math.BigInteger.ONE.shiftLeft(32)).intValue();
+            if (Modifier.isStatic(bufferPayload.getModifiers()) || bufferPayload.getType() != byte[].class
+                || Modifier.isStatic(bufferOffset.getModifiers()) || Modifier.isStatic(nodeBuffer.getModifiers()))
+                throw new IllegalStateException("buffer field descriptor/staticness mismatch");
 
 			bufferFamilyClasses = new ArrayList<>();
 			bufferFamilyClasses.add(bufferClass);
@@ -492,24 +500,28 @@ public class PacketDispatcher
 					+ " is outside discovered buffer family");
 			}
 
-			// every layout method must exist on the buffer family
-			for (HooksFile.PacketDef p : file.getPackets())
-			{
-				if (p.getWrites() == null)
-				{
-					continue;
-				}
-				for (HooksFile.WriteOp op : p.getWrites())
-				{
-					if (resolveBufferMethod(op) == null)
-					{
-						throw new IllegalStateException("layout method '" + op.getM()
-							+ op.getD() + "' not found on buffer family for packet id "
-							+ p.getId());
-					}
-				}
-			}
-		}
+            Map<String, Field> fields = new HashMap<>();
+            Map<Integer, List<Method>> layouts = new HashMap<>();
+            for (HooksFile.PacketDef p : file.getPackets())
+            {
+                Field field = findField(packetClass, p.getFields().get(0));
+                if (!Modifier.isStatic(field.getModifiers()) || field.getType() != packetClass)
+                    throw new IllegalStateException("invalid packet field descriptor");
+                fields.put(p.getFields().get(0), field);
+                if (p.getWrites() == null) continue;
+                List<Method> methods = new ArrayList<>();
+                for (HooksFile.WriteOp op : p.getWrites())
+                {
+                    Method method = resolveBufferMethod(op);
+                    if (method == null || method.getReturnType() != void.class)
+                        throw new IllegalStateException("missing payload method for id=" + p.getId());
+                    methods.add(method);
+                }
+                layouts.put(p.getId(), List.copyOf(methods));
+            }
+            packetFields = Map.copyOf(fields);
+            layoutCache = Map.copyOf(layouts);
+        }
 
 		private Method resolveFactory(ClassLoader loader, HooksFile file)
 			throws ReflectiveOperationException
@@ -527,14 +539,16 @@ public class PacketDispatcher
 				String name = spec.substring(0, spec.indexOf('('));
 				try
 				{
-					Method m = owner.getDeclaredMethod(name, packetType, cipherType);
-					m.setAccessible(true);
+					Method m = findMethodByDesc(owner, name, spec.substring(spec.indexOf('(')));
+                    if (m == null || m.getDeclaringClass() != owner
+                        || !java.util.Arrays.equals(m.getParameterTypes(), new Class<?>[]{packetType, cipherType})) continue;
+                    m.setAccessible(true);
 					if (Modifier.isStatic(m.getModifiers()) && m.getReturnType().equals(nodeType))
 					{
 						return m;
 					}
 				}
-				catch (NoSuchMethodException ex)
+				catch (RuntimeException ex)
 				{
 					last = new RuntimeException(ex);
 				}
@@ -561,7 +575,10 @@ public class PacketDispatcher
 							return false;
 						}
 					}
-					else if (!type.isPrimitive() || type == boolean.class || !(value instanceof Number))
+					else if ((type != int.class && type != long.class)
+                        || !(value instanceof Byte || value instanceof Short || value instanceof Integer || value instanceof Long)
+                        || (type == int.class && (((Number) value).longValue() < Integer.MIN_VALUE
+                            || ((Number) value).longValue() > Integer.MAX_VALUE)))
 					{
 						return false;
 					}
@@ -672,67 +689,69 @@ public class PacketDispatcher
 			return args;
 		}
 
-		/**
-		 * Fresh standalone packet-buffer. Isolated by construction: never
-		 * handed to the writer, never enqueued, discarded afterwards.
-		 */
-		Object newScratchBuffer() throws ReflectiveOperationException
-		{
-			Class<?> sub = bufferFamilyClasses.stream()
-				.filter(c -> !c.equals(bufferClass))
-				.findFirst().orElse(bufferClass);
-			java.lang.reflect.Constructor<?> ctor = null;
-			for (java.lang.reflect.Constructor<?> c : sub.getDeclaredConstructors())
-			{
-				if (c.getParameterCount() == 1 && c.getParameterTypes()[0] == int.class)
-				{
-					ctor = c;
-					break;
-				}
-			}
-			if (ctor == null)
-			{
-				throw new IllegalStateException("no (int) ctor on " + sub.getName());
-			}
-			ctor.setAccessible(true);
-			return ctor.newInstance(4096);
-		}
+        /** The byte[] constructor uses our array, never the game byte-array pool. */
+        Object newScratchBuffer() throws ReflectiveOperationException
+        {
+            return newScratchBuffer(8192);
+        }
 
-		/** Live cipher read — the instance appears at login, never cache it. */
-		Object cipher() throws ReflectiveOperationException
-		{
-			return cipherField.get(writer);
-		}
+        Object newScratchBuffer(int capacity) throws ReflectiveOperationException
+        {
+            java.lang.reflect.Constructor<?> constructor = bufferClass.getDeclaredConstructor(byte[].class);
+            constructor.setAccessible(true);
+            return constructor.newInstance((Object) new byte[capacity]);
+        }
 
-		Field packetField(String name) throws ReflectiveOperationException
-		{
-			Field cached = packetFields.get(name);
-			if (cached != null)
-			{
-				return cached;
-			}
-			Field f = findField(packetClass, name);
-			if (!Modifier.isStatic(f.getModifiers()) || !f.getType().equals(packetClass))
-			{
-				throw new IllegalStateException("packet field is not a static "
-					+ packetClass.getName() + ": " + name);
-			}
-			packetFields.put(name, f);
-			return f;
-		}
+        /** Shared by live dispatch and offline fixtures; never consumes an ISAAC value. */
+        byte[] encodePayload(HooksFile.PacketDef packet, Object[] values) throws ReflectiveOperationException
+        {
+            List<Method> ops = layoutMethods(packet);
+            if (values.length != ops.size()) throw new IllegalArgumentException("payload arity mismatch");
+            Object scratch = newScratchBuffer(packet.getLength() >= 0 ? packet.getLength() : 8192);
+            for (int i = 0; i < ops.size(); i++)
+            {
+                Method op = ops.get(i);
+                if (!acceptsValue(op, values[i])) throw new IllegalArgumentException("unsupported payload value");
+                if (!Modifier.isStatic(op.getModifiers()) && !op.getDeclaringClass().isInstance(scratch))
+                    throw new IllegalArgumentException("operation requires packet-buffer state");
+                op.invoke(Modifier.isStatic(op.getModifiers()) ? null : scratch,
+                    fillArgs(op.getParameterTypes(), values[i], scratch));
+            }
+            int size = offset(scratch);
+            byte[] bytes = payload(scratch);
+            if (!validPayloadSize(packet.getLength(), bytes, size))
+                throw new IllegalArgumentException("payload length or variable framing mismatch");
+            return java.util.Arrays.copyOf(bytes, size);
+        }
 
-		/** Resolve + cache the concrete Methods for one packet's layout. */
-		List<Method> layoutMethods(HooksFile.PacketDef packet)
-		{
-			return layoutCache.computeIfAbsent(packet.getId(), k -> {
-				List<Method> out = new ArrayList<>();
-				for (HooksFile.WriteOp op : packet.getWrites())
-				{
-					out.add(resolveBufferMethod(op));
-				}
-				return out;
-			});
-		}
+        int offset(Object buffer) throws IllegalAccessException
+        {
+            return bufferOffset.getInt(buffer) * offsetMultiplier;
+        }
+
+        byte[] payload(Object buffer) throws IllegalAccessException
+        {
+            return (byte[]) bufferPayload.get(buffer);
+        }
+
+        Object cipher() throws ReflectiveOperationException
+        {
+            return cipherField.get(writer);
+        }
+
+        Field packetField(String name)
+        {
+            Field field = packetFields.get(name);
+            if (field == null) throw new IllegalArgumentException("unknown packet field");
+            return field;
+        }
+
+        List<Method> layoutMethods(HooksFile.PacketDef packet)
+        {
+            List<Method> methods = layoutCache.get(packet.getId());
+            if (methods == null) throw new IllegalArgumentException("unverified payload layout");
+            return methods;
+        }
 
 		private Method resolveBufferMethod(HooksFile.WriteOp op)
 		{
@@ -835,22 +854,5 @@ public class PacketDispatcher
 			return m;
 		}
 
-		private static Method findMethodLenient(Class<?> type, String name)
-		{
-			Class<?> cursor = type;
-			while (cursor != null)
-			{
-				for (Method m : cursor.getDeclaredMethods())
-				{
-					if (m.getName().equals(name))
-					{
-						m.setAccessible(true);
-						return m;
-					}
-				}
-				cursor = cursor.getSuperclass();
-			}
-			return null;
-		}
 	}
 }

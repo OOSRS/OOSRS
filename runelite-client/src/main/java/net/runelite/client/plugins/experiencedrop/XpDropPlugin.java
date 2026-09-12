@@ -330,16 +330,16 @@ public class XpDropPlugin extends Plugin
 			&& config.showdamagedrops() == XpDropConfig.DamageMode.IN_XP_DROP
 			&& damage > 0)
 		{
-			final String[] stringStack = client.getStringStack();
-			final int stringStackSize = client.getStringStackSize();
+			final Object[] objectStack = client.getObjectStack();
+			final int objectStackSize = client.getObjectStackSize();
 
 			String builder =
-				stringStack[stringStackSize - 1]
+				objectStack[objectStackSize - 1]
 					+ ColorUtil.colorTag(config.getDamageColor())
 					+ " ("
 					+ damage
 					+ ")";
-			stringStack[stringStackSize - 1] = builder;
+			objectStack[objectStackSize - 1] = builder;
 		}
 	}
 

@@ -279,26 +279,26 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		String eventName = event.getEventName();
 
 		int[] intStack = client.getIntStack();
-		String[] stringStack = client.getStringStack();
+		Object[] objectStack = client.getObjectStack();
 		int intStackSize = client.getIntStackSize();
-		int stringStackSize = client.getStringStackSize();
+		int objectStackSize = client.getObjectStackSize();
 
 		tabInterface.handleScriptEvent(event);
 
 		switch (eventName)
 		{
 			case "setSearchBankInputText":
-				stringStack[stringStackSize - 1] = SEARCH_BANK_INPUT_TEXT;
+				objectStack[objectStackSize - 1] = SEARCH_BANK_INPUT_TEXT;
 				break;
 			case "setSearchBankInputTextFound":
 			{
 				int matches = intStack[intStackSize - 1];
-				stringStack[stringStackSize - 1] = String.format(SEARCH_BANK_INPUT_TEXT_FOUND, matches);
+				objectStack[objectStackSize - 1] = String.format(SEARCH_BANK_INPUT_TEXT_FOUND, matches);
 				break;
 			}
 			case "bankSearchFilter":
 				final int itemId = intStack[intStackSize - 1];
-				final String searchfilter = stringStack[stringStackSize - 1];
+				final String searchfilter = (String) objectStack[objectStackSize - 1];
 
 				// This event only fires when the bank is in search mode. It will fire even if there is no search
 				// input. We prevent having a tag tab open while also performing a normal search, so if a tag tab

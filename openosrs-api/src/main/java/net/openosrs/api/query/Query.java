@@ -2,9 +2,7 @@ package net.openosrs.api.query;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -64,58 +62,38 @@ public abstract class Query<T, Q extends Query<T, Q>>
 		return self();
 	}
 
+	private java.util.stream.Stream<T> results()
+	{
+		java.util.stream.Stream<T> stream = source.get().stream().filter(item ->
+		{
+			for (Predicate<T> filter : filters) if (!filter.test(item)) return false;
+			return true;
+		});
+		if (distinct) stream = stream.distinct();
+		if (comparator != null) stream = stream.sorted(comparator);
+		return stream.skip(skip).limit(limit);
+	}
+
 	public List<T> list()
 	{
-		List<T> result = new ArrayList<>();
-		for (T item : source.get())
-		{
-			boolean keep = true;
-			for (Predicate<T> filter : filters)
-			{
-				if (!filter.test(item))
-				{
-					keep = false;
-					break;
-				}
-			}
-			if (keep)
-			{
-				result.add(item);
-			}
-		}
-		if (distinct)
-		{
-			Set<T> unique = new LinkedHashSet<>(result);
-			result = new ArrayList<>(unique);
-		}
-		if (comparator != null)
-		{
-			result.sort(comparator);
-		}
-		int from = Math.min(skip, result.size());
-		int to = from + Math.min(limit, result.size() - from);
-		return new ArrayList<>(result.subList(from, to));
+		return results().collect(java.util.stream.Collectors.toCollection(ArrayList::new));
 	}
 
 	public T first()
 	{
-		List<T> result = list();
-		return result.isEmpty() ? null : result.get(0);
+		// Iterator preserves the legacy nullable-first contract; findFirst rejects null.
+		java.util.Iterator<T> items = results().iterator();
+		return items.hasNext() ? items.next() : null;
 	}
 
 	public T last()
 	{
-		List<T> result = list();
-		return result.isEmpty() ? null : result.get(result.size() - 1);
+		java.util.Iterator<T> items = results().iterator();
+		T last = null;
+		while (items.hasNext()) last = items.next();
+		return last;
 	}
 
-	public int count()
-	{
-		return list().size();
-	}
-
-	public boolean exists()
-	{
-		return first() != null;
-	}
+	public int count() { return Math.toIntExact(results().count()); }
+	public boolean exists() { return first() != null; }
 }

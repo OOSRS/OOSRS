@@ -145,6 +145,13 @@ public class RuneLiteModule extends AbstractModule
 
 	@Provides
 	@Singleton
+	net.openosrs.api.concurrent.ClientExecutor provideApiClientExecutor(net.openosrs.client.ApiClientExecutor executor)
+	{
+		return executor;
+	}
+
+	@Provides
+	@Singleton
 	@Nullable
 	Object provideGameStub()
 	{

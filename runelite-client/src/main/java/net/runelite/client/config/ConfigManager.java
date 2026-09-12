@@ -99,7 +99,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.RuneScapeProfileChanged;
-import net.runelite.client.plugins.OPRSExternalPluginManager;
+import net.runelite.client.plugins.PluginClassLoaderRegistry;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.config.ConfigEntry;
@@ -128,6 +128,9 @@ public class ConfigManager
 	private final EventBus eventBus;
 	private final OkHttpClient okHttpClient;
 	private final Gson gson;
+
+	@Inject
+	private PluginClassLoaderRegistry classLoaderRegistry = new PluginClassLoaderRegistry();
 
 	private AccountSession session;
 	private ConfigClient configClient;
@@ -882,7 +885,7 @@ public class ConfigManager
 					return null;
 				}
 
-				enumClass = findEnumClass(str, OPRSExternalPluginManager.pluginClassLoaders);
+				enumClass = findEnumClass(str, new ArrayList<>(classLoaderRegistry.snapshot()));
 
 				EnumSet enumSet = EnumSet.noneOf(enumClass);
 				for (String s : splitStr)
@@ -1034,9 +1037,9 @@ public class ConfigManager
 
 	public static Class<? extends Enum> findEnumClass(String clasz, ArrayList<ClassLoader> classLoaders)
 	{
-		StringBuilder transformedString = new StringBuilder();
 		for (ClassLoader cl : classLoaders)
 		{
+			StringBuilder transformedString = new StringBuilder();
 			try
 			{
 				String[] strings = clasz.substring(0, clasz.indexOf("{")).split("\\.");

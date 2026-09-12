@@ -48,6 +48,7 @@ public class AnimationSmoothingPlugin extends Plugin
 
 	@Inject
 	private AnimationSmoothingConfig config;
+	private boolean supported;
 
 	@Provides
 	AnimationSmoothingConfig getConfig(ConfigManager configManager)
@@ -58,12 +59,16 @@ public class AnimationSmoothingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		supported = hasNativeInterpolation(client.getClass());
+		if (!supported)
+			throw new IllegalStateException("Animation smoothing is unavailable in this gamepack; native animation remains active");
 		update();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		if (!supported) return;
 		client.setInterpolatePlayerAnimations(false);
 		client.setInterpolateNpcAnimations(false);
 		client.setInterpolateObjectAnimations(false);
@@ -72,7 +77,7 @@ public class AnimationSmoothingPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals(CONFIG_GROUP))
+		if (supported && event.getGroup().equals(CONFIG_GROUP))
 		{
 			update();
 		}
@@ -83,5 +88,18 @@ public class AnimationSmoothingPlugin extends Plugin
 		client.setInterpolatePlayerAnimations(config.smoothPlayerAnimations());
 		client.setInterpolateNpcAnimations(config.smoothNpcAnimations());
 		client.setInterpolateObjectAnimations(config.smoothObjectAnimations());
+	}
+
+	static boolean hasNativeInterpolation(Class<?> type)
+	{
+		for (String name : new String[]{"setInterpolatePlayerAnimations", "setInterpolateNpcAnimations", "setInterpolateObjectAnimations"})
+		{
+			try
+			{
+				if (java.lang.reflect.Modifier.isAbstract(type.getMethod(name, boolean.class).getModifiers())) return false;
+			}
+			catch (NoSuchMethodException missing) { return false; }
+		}
+		return true;
 	}
 }

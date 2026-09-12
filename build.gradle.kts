@@ -3,7 +3,7 @@ import org.gradle.api.tasks.SourceSetContainer
 
 allprojects {
     group = "com.openosrs"
-    version = "1.0.1"
+    version = "1.0.2"
 }
 
 plugins {
@@ -11,22 +11,6 @@ plugins {
 }
 
 subprojects {
-    repositories {
-        exclusiveContent {
-            forRepository {
-                maven {
-                    url = uri("https://repo.runelite.net")
-                }
-            }
-            filter {
-                includeModule("net.runelite", "discord")
-                includeModule("net.runelite", "orange-extensions")
-            }
-        }
-
-        mavenCentral()
-    }
-
     apply(plugin = "java-library")
 
     project.extra["gitCommit"] = "restored-2026"
@@ -97,5 +81,23 @@ tasks.register<Zip>("apiDocs") {
 
 tasks.register("releaseArtifacts") {
     group = "openosrs"
+    check(providers.gradleProperty("allowMavenLocal").orNull != "true") { "Release artifacts cannot use mavenLocal" }
     dependsOn(":runelite-client:shadowJar", ":openosrs-api:sourcesJar", ":runelite-api:sourcesJar", "apiDocs")
+}
+
+tasks.register("verifyRuntimeAbi") {
+    group = "verification"
+    dependsOn(":runelite-client:verifyRuntimeAbi")
+}
+
+tasks.register("verifyReleaseAbi") {
+    group = "verification"
+    dependsOn(":runelite-client:verifyReleaseAbi")
+}
+
+tasks.register<Exec>("verifyApiContracts") {
+    group = "verification"
+    dependsOn(":openosrs-api:test", ":runelite-client:test")
+    commandLine("python3", rootProject.file("scripts/check_test_counts.py"))
+    workingDir(rootProject.projectDir)
 }

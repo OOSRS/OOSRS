@@ -31,6 +31,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
 import com.google.common.io.Files;
+import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -42,9 +43,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import javax.inject.Inject;
@@ -59,6 +60,8 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
@@ -87,9 +90,19 @@ public class ExternalPluginManager
 	private final ConfigManager configManager;
 	private final ExternalPluginClient externalPluginClient;
 	private final ScheduledExecutorService executor;
-	public static PluginManager pluginManager;
+	/** @deprecated Compatibility pointer to the first manager; internal operations use the injected instance. */
+	@Deprecated
+	public static volatile PluginManager pluginManager;
+	private final PluginManager ownedPluginManager;
 	private final EventBus eventBus;
 	private final OkHttpClient okHttpClient;
+	private final Gson gson;
+	private final Object telemetryLock = new Object();
+	@Inject
+	private net.runelite.client.plugins.PluginLifecycle lifecycle = new net.runelite.client.plugins.PluginLifecycle();
+	private ScheduledFuture<?> usageSubmission;
+	private long telemetryGeneration;
+	private volatile boolean shuttingDown;
 
 	@Inject
 	private ExternalPluginManager(
@@ -98,45 +111,132 @@ public class ExternalPluginManager
 		ScheduledExecutorService executor,
 		PluginManager pluginManager,
 		EventBus eventBus,
-		OkHttpClient okHttpClient
+		OkHttpClient okHttpClient,
+		Gson gson
 	)
 	{
 		this.configManager = configManager;
 		this.externalPluginClient = externalPluginClient;
 		this.executor = executor;
-		this.pluginManager = pluginManager;
+		this.ownedPluginManager = pluginManager;
+		synchronized (ExternalPluginManager.class)
+		{
+			if (ExternalPluginManager.pluginManager == null) ExternalPluginManager.pluginManager = pluginManager;
+		}
 		this.eventBus = eventBus;
 		this.okHttpClient = okHttpClient;
+		this.gson = gson;
 
-		executor.scheduleWithFixedDelay(() -> externalPluginClient.submitPlugins(getInstalledExternalPlugins()),
-			new Random().nextInt(60), 180, TimeUnit.MINUTES);
+		updateTelemetryConsent();
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if ("runelite".equals(event.getGroup()) && "sharePluginUsage".equals(event.getKey())) { updateTelemetryConsent(); }
+	}
+
+	@Subscribe
+	public void onClientShutdown(ClientShutdown event)
+	{
+		synchronized (ExternalPluginManager.class)
+		{
+			if (pluginManager == ownedPluginManager) pluginManager = null;
+		}
+		synchronized (telemetryLock)
+		{
+			shuttingDown = true;
+			stopTelemetry();
+		}
+		lifecycle.close();
+	}
+
+	private void updateTelemetryConsent()
+	{
+		boolean enabled = Boolean.TRUE.equals(configManager.getConfiguration("runelite", "sharePluginUsage", Boolean.class));
+		synchronized (telemetryLock)
+		{
+			if (!enabled || shuttingDown) { stopTelemetry(); return; }
+			if (usageSubmission != null) { return; }
+			externalPluginClient.setPluginSubmissionEnabled(true);
+			long generation = ++telemetryGeneration;
+			usageSubmission = executor.scheduleWithFixedDelay(() -> submitPluginUsage(generation), 180, 180, TimeUnit.MINUTES);
+		}
+	}
+
+	private void submitPluginUsage(long generation)
+	{
+		try
+		{
+			List<String> installed = getInstalledExternalPlugins();
+			synchronized (telemetryLock)
+			{
+				if (!shuttingDown && generation == telemetryGeneration && usageSubmission != null)
+				{
+					externalPluginClient.submitPlugins(installed);
+				}
+			}
+		}
+		catch (RuntimeException e) { log.debug("Optional plugin usage submission failed"); }
+	}
+
+	private void stopTelemetry()
+	{
+		++telemetryGeneration;
+		if (usageSubmission != null) { usageSubmission.cancel(false); usageSubmission = null; }
+		externalPluginClient.setPluginSubmissionEnabled(false);
 	}
 
 	public void loadExternalPlugins() throws PluginInstantiationException
 	{
-		refreshPlugins();
-
-		if (builtinExternals != null)
+		updateTelemetryConsent();
+		try
 		{
-			// builtin external's don't actually have a manifest or a separate classloader...
-			pluginManager.loadPlugins(Lists.newArrayList(builtinExternals), null);
+			lifecycle.call(() ->
+			{
+				refreshPluginsNow();
+				if (!shuttingDown && builtinExternals != null)
+					ownedPluginManager.loadPlugins(Lists.newArrayList(builtinExternals), null);
+				return null;
+			});
+		}
+		catch (java.util.concurrent.CompletionException failure)
+		{
+			if (failure.getCause() instanceof PluginInstantiationException)
+				throw (PluginInstantiationException) failure.getCause();
+			throw failure;
 		}
 	}
 
 	@Subscribe
 	public void onSessionOpen(SessionOpen event)
 	{
-		executor.submit(this::refreshPlugins);
+		updateTelemetryConsent();
+		queueLifecycle(this::refreshPluginsNow);
 	}
 
 	@Subscribe
 	public void onSessionClose(SessionClose event)
 	{
-		executor.submit(this::refreshPlugins);
+		updateTelemetryConsent();
+		queueLifecycle(this::refreshPluginsNow);
 	}
 
 	private void refreshPlugins()
 	{
+		lifecycle.call(() -> { refreshPluginsNow(); return null; });
+	}
+
+	private void queueLifecycle(Runnable operation)
+	{
+		if (shuttingDown) return;
+		lifecycle.submit(() -> { if (!shuttingDown) operation.run(); return null; })
+			.exceptionally(failure -> { log.warn("External plugin lifecycle operation failed", failure); return null; });
+	}
+
+	private void refreshPluginsNow()
+	{
+		if (shuttingDown) return;
 		if (safeMode)
 		{
 			log.debug("External plugins are disabled in safe mode!");
@@ -144,7 +244,7 @@ public class ExternalPluginManager
 		}
 
 		Multimap<ExternalPluginManifest, Plugin> loadedExternalPlugins = HashMultimap.create();
-		for (Plugin p : pluginManager.getPlugins())
+		for (Plugin p : ownedPluginManager.getPlugins())
 		{
 			ExternalPluginManifest m = getExternalPluginManifest(p.getClass());
 			if (m != null)
@@ -224,13 +324,14 @@ public class ExternalPluginManager
 
 				for (ExternalPluginManifest manifest : needsDownload)
 				{
-					HttpUrl url = RuneLiteProperties.getPluginHubBase().newBuilder()
-						.addPathSegment(manifest.getInternalName())
-						.addPathSegment(manifest.getCommit() + ".jar")
-						.build();
+					HttpUrl url = externalPluginClient.getJarURL(manifest);
 
 					try (Response res = okHttpClient.newCall(new Request.Builder().url(url).build()).execute())
 					{
+						if (!res.isSuccessful())
+						{
+							throw new IOException("Unable to download plugin: HTTP " + res.code());
+						}
 						int fdownloaded = downloaded;
 						downloaded += manifest.getSize();
 						HashingInputStream his = new HashingInputStream(Hashing.sha256(),
@@ -271,32 +372,20 @@ public class ExternalPluginManager
 			// list of loaded external plugins that aren't in the manifest
 			Collection<Plugin> remove = loadedExternalPlugins.values();
 
+			Set<String> failedStops = new HashSet<>();
 			for (Plugin p : remove)
 			{
-				log.info("Stopping external plugin \"{}\"", p.getClass());
-				try
+				if (!stopAndRemove(p))
 				{
-					SwingUtilities.invokeAndWait(() ->
-					{
-						try
-						{
-							pluginManager.stopPlugin(p);
-						}
-						catch (Exception e)
-						{
-							throw new RuntimeException(e);
-						}
-					});
+					ExternalPluginManifest old = getExternalPluginManifest(p.getClass());
+					if (old != null) failedStops.add(old.getInternalName());
 				}
-				catch (InterruptedException | InvocationTargetException e)
-				{
-					log.warn("Unable to stop external plugin \"{}\"", p.getClass().getName(), e);
-				}
-				pluginManager.remove(p);
 			}
+			if (Thread.currentThread().isInterrupted()) return;
 
 			for (ExternalPluginManifest manifest : add)
 			{
+				if (failedStops.contains(manifest.getInternalName())) continue;
 				// I think this can't happen, but just in case
 				if (!manifest.isValid())
 				{
@@ -304,22 +393,23 @@ public class ExternalPluginManager
 					continue;
 				}
 
-				log.info("Loading external plugin \"{}\" version \"{}\" commit \"{}\"", manifest.getInternalName(), manifest.getVersion(), manifest.getCommit());
+				log.info("Loading external plugin \"{}\" version \"{}\" hash \"{}\"", manifest.getInternalName(), manifest.getVersion(), manifest.getJarHash());
 
 				List<Plugin> newPlugins = null;
+				ExternalPluginClassLoader cl = null;
 				try
 				{
-					ClassLoader cl = new ExternalPluginClassLoader(manifest, new URL[]{manifest.getJarFile().toURI().toURL()});
+					cl = new ExternalPluginClassLoader(manifest, new URL[]{manifest.getJarFile().toURI().toURL()}, gson);
 					List<Class<?>> clazzes = new ArrayList<>();
-					for (String className : manifest.getPlugins())
+					for (String className : cl.getPlugins())
 					{
 						clazzes.add(cl.loadClass(className));
 					}
 
-					List<Plugin> newPlugins2 = newPlugins = pluginManager.loadPlugins(clazzes, null);
+					List<Plugin> newPlugins2 = newPlugins = ownedPluginManager.loadPlugins(clazzes, null);
 					if (!startup)
 					{
-						pluginManager.loadDefaultPluginConfiguration(newPlugins);
+						ownedPluginManager.loadDefaultPluginConfiguration(newPlugins);
 
 						SwingUtilities.invokeAndWait(() ->
 						{
@@ -327,7 +417,7 @@ public class ExternalPluginManager
 							{
 								for (Plugin p : newPlugins2)
 								{
-									pluginManager.startPlugin(p);
+									ownedPluginManager.startPlugin(p);
 								}
 							}
 							catch (PluginInstantiationException e)
@@ -345,31 +435,11 @@ public class ExternalPluginManager
 				{
 					log.warn("Unable to start or load external plugin \"{}\"", manifest.getInternalName(), e);
 					if (newPlugins != null)
-					{
-						for (Plugin p : newPlugins)
-						{
-							try
-							{
-								SwingUtilities.invokeAndWait(() ->
-								{
-									try
-									{
-										pluginManager.stopPlugin(p);
-									}
-									catch (Exception e2)
-									{
-										throw new RuntimeException(e2);
-									}
-								});
-							}
-							catch (InterruptedException | InvocationTargetException e2)
-							{
-								log.info("Unable to fully stop plugin \"{}\"", manifest.getInternalName(), e2);
-							}
-							pluginManager.remove(p);
-						}
-					}
+						for (Plugin p : newPlugins) stopAndRemove(p);
+					if (e instanceof InterruptedException) Thread.currentThread().interrupt();
 				}
+				finally { if (cl != null) closeUnusedLoader(cl); }
+
 			}
 
 			if (!startup)
@@ -386,6 +456,38 @@ public class ExternalPluginManager
 		}
 	}
 
+	boolean stopAndRemove(Plugin plugin)
+	{
+		try
+		{
+			SwingUtilities.invokeAndWait(() ->
+			{
+				try
+				{
+					ownedPluginManager.stopPlugin(plugin);
+					ownedPluginManager.remove(plugin);
+				}
+				catch (PluginInstantiationException failure) { throw new java.util.concurrent.CompletionException(failure); }
+			});
+			if (plugin.getClass().getClassLoader() instanceof ExternalPluginClassLoader)
+				closeUnusedLoader((ExternalPluginClassLoader) plugin.getClass().getClassLoader());
+			return true;
+		}
+		catch (InterruptedException | InvocationTargetException failure)
+		{
+			if (failure instanceof InterruptedException) Thread.currentThread().interrupt();
+			log.warn("Unable to stop external plugin {}", plugin.getClass().getName(), failure);
+			return false;
+		}
+	}
+
+	private void closeUnusedLoader(ExternalPluginClassLoader loader)
+	{
+		if (ownedPluginManager.getPlugins().stream().anyMatch(plugin -> plugin.getClass().getClassLoader() == loader)) return;
+		try { loader.close(); }
+		catch (IOException failure) { log.warn("Unable to close external plugin loader", failure); }
+	}
+
 	public List<String> getInstalledExternalPlugins()
 	{
 		String externalPluginsStr = configManager.getConfiguration(RuneLiteConfig.GROUP_NAME, PLUGIN_LIST_KEY);
@@ -394,27 +496,33 @@ public class ExternalPluginManager
 
 	public void install(String key)
 	{
-		Set<String> plugins = new HashSet<>(getInstalledExternalPlugins());
-		if (plugins.add(key))
+		queueLifecycle(() ->
 		{
-			configManager.setConfiguration(RuneLiteConfig.GROUP_NAME, PLUGIN_LIST_KEY, Text.toCSV(plugins));
-			executor.submit(this::refreshPlugins);
-		}
+			Set<String> plugins = new HashSet<>(getInstalledExternalPlugins());
+			if (plugins.add(key))
+			{
+				configManager.setConfiguration(RuneLiteConfig.GROUP_NAME, PLUGIN_LIST_KEY, Text.toCSV(plugins));
+				refreshPluginsNow();
+			}
+		});
 	}
 
 	public void remove(String key)
 	{
-		Set<String> plugins = new HashSet<>(getInstalledExternalPlugins());
-		if (plugins.remove(key))
+		queueLifecycle(() ->
 		{
-			configManager.setConfiguration(RuneLiteConfig.GROUP_NAME, PLUGIN_LIST_KEY, Text.toCSV(plugins));
-			executor.submit(this::refreshPlugins);
-		}
+			Set<String> plugins = new HashSet<>(getInstalledExternalPlugins());
+			if (plugins.remove(key))
+			{
+				configManager.setConfiguration(RuneLiteConfig.GROUP_NAME, PLUGIN_LIST_KEY, Text.toCSV(plugins));
+				refreshPluginsNow();
+			}
+		});
 	}
 
 	public void update()
 	{
-		executor.submit(this::refreshPlugins);
+		queueLifecycle(this::refreshPluginsNow);
 	}
 
 	public static ExternalPluginManifest getExternalPluginManifest(Class<? extends Plugin> plugin)

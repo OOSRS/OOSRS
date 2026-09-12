@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.WorldView;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -100,10 +101,16 @@ public class ClueScrollPluginTest
 	@Bind
 	TagManager tagManager;
 
+	@Mock
+	private WorldView worldView;
+
 	@Before
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		when(client.getTopLevelWorldView()).thenReturn(worldView);
+		org.mockito.Mockito.lenient().when(worldView.getSizeX()).thenReturn(104);
+		org.mockito.Mockito.lenient().when(worldView.getSizeY()).thenReturn(104);
 	}
 
 	@Test
@@ -118,7 +125,6 @@ public class ClueScrollPluginTest
 		when(client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT)).thenReturn(clueWidget);
 		when(client.getLocalPlayer()).thenReturn(localPlayer);
 		when(client.getPlane()).thenReturn(0);
-		when(client.getCachedNPCs()).thenReturn(new NPC[] {});
 		when(config.displayHintArrows()).thenReturn(true);
 
 		// The hint arrow should be reset each game tick from when the clue is read onward
@@ -136,8 +142,8 @@ public class ClueScrollPluginTest
 
 		// Move to SW of DRAYNOR_WHEAT_FIELD (hint arrow should be visible here)
 		when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(3105, 3265, 0));
-		when(client.getBaseX()).thenReturn(3056);
-		when(client.getBaseY()).thenReturn(3216);
+		when(worldView.getBaseX()).thenReturn(3056);
+		when(worldView.getBaseY()).thenReturn(3216);
 		plugin.onGameTick(new GameTick());
 		verify(client, times(++clueSetupHintArrowClears)).clearHintArrow();
 		verify(client).setHintArrow(HotColdLocation.DRAYNOR_WHEAT_FIELD.getWorldPoint());
@@ -156,7 +162,6 @@ public class ClueScrollPluginTest
 	@Test
 	public void testSTASHMarkerPersistence()
 	{
-		when(client.getCachedNPCs()).thenReturn(new NPC[] {});
 
 		// Set up emote clue
 		final Widget clueWidget = mock(Widget.class);

@@ -26,16 +26,23 @@ public class PlayerService
 
 	private final Client client;
 	private final MenuDispatcher dispatcher;
+	private final net.openosrs.api.state.ActorLifetimes lifetimes;
 
-	@Inject
 	public PlayerService(Client client, MenuDispatcher dispatcher)
 	{
+		this(client, dispatcher, net.openosrs.api.state.ActorLifetimes.forClient(client));
+	}
+
+	@Inject public PlayerService(Client client, MenuDispatcher dispatcher, net.openosrs.api.state.ActorLifetimes lifetimes)
+	{
+		this.lifetimes = lifetimes;
 		this.client = client;
 		this.dispatcher = dispatcher;
 	}
 
 	public List<PlayerRef> all()
 	{
+		if (!client.isClientThread()) throw new IllegalStateException("Actor reads require the client thread");
 		List<PlayerRef> result = new ArrayList<>();
 		String[] actions = client.getPlayerOptions();
 		List<String> actionList = new ArrayList<>();
@@ -47,7 +54,7 @@ public class PlayerService
 			if (player == null) continue;
 			WorldView view = player.getWorldView();
 			result.add(new PlayerRef(player.getId(), view == null ? 0 : view.getId(), player.getName(),
-				player.getCombatLevel(), player.getWorldLocation(), actionList));
+				player.getCombatLevel(), player.getWorldLocation(), actionList, lifetimes.capture(player)));
 		}
 		return result;
 	}
@@ -67,7 +74,12 @@ public class PlayerService
 	public void interact(PlayerRef player, String action)
 	{
 		if (player == null) throw new IllegalArgumentException("player is required");
+		player.requireCurrent(client);
 		int index = actionIndex(player.getActions(), action);
+		String[] currentActions = client.getPlayerOptions();
+		if (currentActions == null || index < 0 || index >= currentActions.length
+			|| !java.util.Objects.equals(currentActions[index], player.getActions().get(index)))
+			throw new IllegalStateException("Player actions changed");
 		if (index < 0 || index >= ACTIONS.length)
 		{
 			throw new IllegalArgumentException("player action unavailable: " + action);
@@ -79,8 +91,8 @@ public class PlayerService
 			MenuAction current = MenuAction.of(currentTypes[index]);
 			if (current != MenuAction.UNKNOWN) menuAction = current;
 		}
-		dispatcher.dispatch(menuAction, player.getIndex(), 0, 0,
-			action, player.getName(), -1, player.getWorldViewId());
+		dispatcher.submit(menuAction, player.getIndex(), 0, 0,
+			action, player.getName(), -1, player.getWorldViewId()).requireSubmitted();
 	}
 
 	public void follow(PlayerRef player) { interact(player, "Follow"); }

@@ -34,6 +34,8 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.HitsplatID;
+import net.runelite.client.testfixtures.TestHitsplat;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -123,16 +125,16 @@ public class SpecialCounterPluginTest
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
 
 		// Set up special attack energy
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(100);
+		when(client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(100);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 
 		// Set up item image for spec info drop
 		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB));
 	}
 
-	private static HitsplatApplied hitsplat(Actor target, Hitsplat.HitsplatType type)
+	private static HitsplatApplied hitsplat(Actor target, int type)
 	{
-		Hitsplat hitsplat = new Hitsplat(type, type == Hitsplat.HitsplatType.DAMAGE_ME ? 1 : 0, 42);
+		Hitsplat hitsplat = new TestHitsplat(type, type == HitsplatID.DAMAGE_ME ? 1 : 0, 42);
 		HitsplatApplied hitsplatApplied = new HitsplatApplied();
 		hitsplatApplied.setActor(target);
 		hitsplatApplied.setHitsplat(hitsplat);
@@ -148,13 +150,13 @@ public class SpecialCounterPluginTest
 		when(client.getLocalPlayer()).thenReturn(player);
 
 		// spec npc
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
+		when(client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		lenient().when(player.getInteracting()).thenReturn(target);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
 
 		// hit 1
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, HitsplatID.DAMAGE_ME));
 
 		verify(infoBoxManager).addInfoBox(any(SpecialCounter.class));
 	}
@@ -168,16 +170,16 @@ public class SpecialCounterPluginTest
 		when(client.getLocalPlayer()).thenReturn(player);
 
 		// spec npc
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
+		when(client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		lenient().when(player.getInteracting()).thenReturn(target);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
 
 		// block 0
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.BLOCK_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, HitsplatID.BLOCK_ME));
 
 		// hit 1
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, HitsplatID.DAMAGE_ME));
 
 		verify(infoBoxManager, never()).addInfoBox(any(SpecialCounter.class));
 	}
@@ -195,13 +197,13 @@ public class SpecialCounterPluginTest
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
 
 		// tick 2: spec fires and un-interact npc
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
+		when(client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		lenient().when(player.getInteracting()).thenReturn(null);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, null));
 
 		// tick 3: hit 1
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, HitsplatID.DAMAGE_ME));
 
 		verify(infoBoxManager).addInfoBox(any(SpecialCounter.class));
 	}
@@ -220,16 +222,16 @@ public class SpecialCounterPluginTest
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, targetA));
 
 		// tick 2: spec npc B
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
+		when(client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		lenient().when(player.getInteracting()).thenReturn(targetB);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, targetB));
 
 		// tick 3: hitsplat A, hitsplat B
-		specialCounterPlugin.onHitsplatApplied(hitsplat(targetA, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(targetA, HitsplatID.DAMAGE_ME));
 		verify(infoBoxManager, never()).addInfoBox(any(SpecialCounter.class));
 
-		specialCounterPlugin.onHitsplatApplied(hitsplat(targetB, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(targetB, HitsplatID.DAMAGE_ME));
 		verify(infoBoxManager).addInfoBox(any(SpecialCounter.class));
 	}
 
@@ -247,13 +249,13 @@ public class SpecialCounterPluginTest
 		when(client.getLocalPlayer()).thenReturn(player);
 
 		// spec npc
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
+		when(client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		lenient().when(player.getInteracting()).thenReturn(targetA);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, targetA));
 
 		// hit 1
-		specialCounterPlugin.onHitsplatApplied(hitsplat(targetA, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(targetA, HitsplatID.DAMAGE_ME));
 
 		verify(infoBoxManager).addInfoBox(any(SpecialCounter.class));
 
@@ -261,7 +263,7 @@ public class SpecialCounterPluginTest
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, targetB));
 
 		// hit 1
-		specialCounterPlugin.onHitsplatApplied(hitsplat(targetB, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(targetB, HitsplatID.DAMAGE_ME));
 
 		verify(infoBoxManager).removeInfoBox(any(SpecialCounter.class));
 	}
@@ -283,9 +285,9 @@ public class SpecialCounterPluginTest
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
 
 		// First special attack
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
+		when(client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, HitsplatID.DAMAGE_ME));
 
 		// Set up spec weapon as BGS(OR)
 		ItemContainer equipment = mock(ItemContainer.class);
@@ -293,9 +295,9 @@ public class SpecialCounterPluginTest
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
 
 		// Second special attack
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(0);
+		when(client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(0);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, HitsplatID.DAMAGE_ME));
 
 		verify(notifier).notify("Bandos Godsword special attack threshold reached!");
 	}
@@ -317,14 +319,14 @@ public class SpecialCounterPluginTest
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
 
 		// First special attack
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
+		when(client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, HitsplatID.DAMAGE_ME));
 
 		// Second special attack
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(0);
+		when(client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(0);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, HitsplatID.DAMAGE_ME));
 
 		verify(notifier, never()).notify(any());
 	}

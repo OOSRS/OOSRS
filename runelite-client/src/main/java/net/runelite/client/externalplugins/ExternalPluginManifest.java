@@ -40,6 +40,8 @@ public class ExternalPluginManifest
 	private String internalName;
 	private String commit;
 	private String hash;
+	private String jarHash;
+	private String iconHash;
 	private int size;
 	private String[] plugins;
 
@@ -58,12 +60,12 @@ public class ExternalPluginManifest
 
 	public boolean hasIcon()
 	{
-		return hasIcon;
+		return iconHash != null;
 	}
 
 	File getJarFile()
 	{
-		return new File(RuneLite.PLUGINS_DIR, internalName + commit + ".jar");
+		return new File(RuneLite.PLUGINS_DIR, internalName + "_" + jarHash + ".jar");
 	}
 
 	boolean isValid()

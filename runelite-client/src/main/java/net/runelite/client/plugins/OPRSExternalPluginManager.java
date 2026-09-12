@@ -99,7 +99,18 @@ public class OPRSExternalPluginManager
 	public static final String DEFAULT_PLUGIN_REPOS = "gh:OOSRS/OOSRS-Plugins|https://raw.githubusercontent.com/OOSRS/OOSRS-Plugins/main/";
 	static final String DEVELOPMENT_MANIFEST_PATH = "build/tmp/jar/MANIFEST.MF";
 
-	public static ArrayList<ClassLoader> pluginClassLoaders = new ArrayList<>();
+	/** @deprecated Detached compatibility snapshot. Use getPluginClassLoaderSnapshot; mutations do not register loaders. */
+	@Deprecated
+	public static volatile ArrayList<ClassLoader> pluginClassLoaders = new ArrayList<>();
+	@Inject
+	private PluginClassLoaderRegistry classLoaderRegistry = new PluginClassLoaderRegistry();
+
+	public List<ClassLoader> getPluginClassLoaderSnapshot() { return classLoaderRegistry.snapshot(); }
+
+	private void publishLegacyLoaderSnapshot()
+	{
+		pluginClassLoaders = new ArrayList<>(classLoaderRegistry.snapshot());
+	}
 	@Inject
 	private PluginManager runelitePluginManager;
 	@Getter(AccessLevel.PUBLIC)
@@ -112,6 +123,9 @@ public class OPRSExternalPluginManager
 	private EventBus eventBus;
 	@Inject
 	private ExecutorService executorService;
+
+	@Inject private PluginLifecycle lifecycle = new PluginLifecycle();
+	private final Set<String> installing = new HashSet<>();
 	@Inject
 	private ConfigManager configManager;
 	private final Map<String, String> pluginsMap = new HashMap<>();
@@ -167,42 +181,44 @@ public class OPRSExternalPluginManager
 
 	private static URL toRepositoryUrl(String owner, String name) throws MalformedURLException
 	{
+		if (owner == null || name == null || !owner.matches("[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?")
+			|| !name.matches("[A-Za-z0-9_-][A-Za-z0-9_.-]{0,99}"))
+		{
+			throw new MalformedURLException("Invalid repository owner or name");
+		}
 		return new URL("https://raw.githubusercontent.com/" + owner + "/" + name + "/HEAD/");
 	}
 
-	public static boolean testGHRepository(String owner, String name)
+	public static RepositoryValidationResult validateGHRepository(String owner, String name)
 	{
-		try
-		{
-			return testRepository(toRepositoryUrl(owner, name));
-		}
+		try { return validateRepository(toRepositoryUrl(owner, name), null); }
 		catch (MalformedURLException e)
 		{
-			e.printStackTrace();
+			return RepositoryValidationResult.invalid("Repository owner or name is invalid.");
 		}
-		return false;
 	}
 
-	public static boolean testRepository(URL url)
+	public static RepositoryValidationResult validateRepository(URL url, String pluginsJson)
 	{
-		return testRepository(url, null);
+		return new OPRSUpdateRepository("repository-validation", url, pluginsJson).validate();
 	}
 
+	/** @deprecated Historical convention: true means invalid OR unreachable. */
+	@Deprecated
+	public static boolean testGHRepository(String owner, String name)
+	{
+		return !validateGHRepository(owner, name).isValid();
+	}
+
+	/** @deprecated Use the typed validation result. True means invalid OR unreachable. */
+	@Deprecated
+	public static boolean testRepository(URL url) { return testRepository(url, null); }
+
+	/** @deprecated Use the typed validation result. True means invalid OR unreachable. */
+	@Deprecated
 	public static boolean testRepository(URL url, String pluginsJson)
 	{
-		final List<OPRSUpdateRepository> repositories = new ArrayList<>();
-		if (pluginsJson != null)
-		{
-			repositories.add(new OPRSUpdateRepository("repository-testing", url, pluginsJson));
-		}
-		else
-		{
-			repositories.add(new OPRSUpdateRepository("repository-testing", url));
-		}
-		DefaultPluginManager testPluginManager = new DefaultPluginManager(EXTERNALPLUGIN_DIR.toPath());
-		OPRSUpdateManager updateManager = new OPRSUpdateManager(testPluginManager, repositories);
-
-		return updateManager.getPlugins().size() <= 0;
+		return !validateRepository(url, pluginsJson).isValid();
 	}
 
 	public static <T> Predicate<T> not(Predicate<T> t)
@@ -445,46 +461,13 @@ public class OPRSExternalPluginManager
 	 */
 	private void duplicateCheck()
 	{
-		String[] split = openOSRSConfig.getExternalRepositories().split(";");
-
-		if (split.length <= 0)
+		String[] entries = openOSRSConfig.getExternalRepositories().split(";");
+		Set<String> unique = new java.util.LinkedHashSet<>(java.util.Arrays.asList(entries));
+		if (unique.size() != entries.length)
 		{
-			return;
+			openOSRSConfig.setExternalRepositories(String.join(";", unique));
+			log.debug("Removed duplicate repository entries, preserving configured order");
 		}
-
-		Set<String> strings = new HashSet<>();
-		boolean duplicates = false;
-
-		for (String s : split)
-		{
-			if (strings.contains(s))
-			{
-				log.error("Duplicate Repo: {}", s);
-				duplicates = true;
-				continue;
-			}
-			strings.add(s);
-		}
-
-		if (!duplicates)
-		{
-			log.debug("No duplicates found.");
-			return;
-		}
-
-		StringBuilder sb = new StringBuilder();
-
-		for (String string : strings)
-		{
-			sb.append(string);
-			sb.append(";");
-		}
-
-		sb.deleteCharAt(sb.lastIndexOf(";"));
-		String duplicateFix = sb.toString();
-
-		log.debug("Duplicate Repos detected, setting them to: {}", duplicateFix);
-		openOSRSConfig.setExternalRepositories(duplicateFix);
 	}
 
 	private void scanAndInstantiate(List<Plugin> plugins, boolean init, boolean initConfig)
@@ -564,6 +547,7 @@ public class OPRSExternalPluginManager
 		final long start = System.currentTimeMillis();
 
 		List<Plugin> scannedPlugins = new CopyOnWriteArrayList<>();
+		List<Throwable> failures = new CopyOnWriteArrayList<>();
 		sortedPlugins.forEach(group ->
 		{
 			List<Future<?>> curGroup = new ArrayList<>();
@@ -584,6 +568,7 @@ public class OPRSExternalPluginManager
 					}
 					catch (PluginInstantiationException e)
 					{
+						failures.add(e);
 						log.warn("Error instantiating plugin!", e);
 						return;
 					}
@@ -600,11 +585,19 @@ public class OPRSExternalPluginManager
 				}
 				catch (InterruptedException | ExecutionException e)
 				{
+					if (e instanceof InterruptedException) Thread.currentThread().interrupt();
+					failures.add(e);
 					log.warn("Could not instantiate external plugin", e);
 				}
 			});
 		});
 
+		if (init && !failures.isEmpty())
+		{
+			RuntimeException failure = new IllegalStateException("External plugin startup failed", failures.get(0));
+			for (int i = 1; i < failures.size(); i++) failure.addSuppressed(failures.get(i));
+			throw failure;
+		}
 		log.info("External plugin instantiation took {}ms", System.currentTimeMillis() - start);
 	}
 
@@ -736,7 +729,8 @@ public class OPRSExternalPluginManager
 				}
 				catch (Exception ex)
 				{
-					log.warn("unable to start plugin", ex);
+					if (ex instanceof InterruptedException) Thread.currentThread().interrupt();
+					throw new PluginInstantiationException(ex);
 				}
 			}
 			else
@@ -750,8 +744,7 @@ public class OPRSExternalPluginManager
 		}
 		catch (NoSuchFieldError | NoSuchMethodError ex)
 		{
-			log.error("Plugin {} is outdated", clazz.getSimpleName(), ex);
-			return null;
+			throw new PluginInstantiationException(ex);
 		}
 		catch (NoClassDefFoundError ex)
 		{
@@ -779,7 +772,8 @@ public class OPRSExternalPluginManager
 			return;
 		}
 
-		scannedPlugins.addAll(loadPlugin(pluginWrapper.getPluginId()));
+		try { scannedPlugins.addAll(loadPlugin(pluginWrapper.getPluginId())); }
+		catch (RuntimeException failure) { log.warn("Cannot load external plugin {}", pluginWrapper.getPluginId(), failure); }
 	}
 
 	public void loadPlugins()
@@ -802,14 +796,6 @@ public class OPRSExternalPluginManager
 				groups.sendString("STOPEXTERNAL;" + pluginId);
 			}
 		}
-		else
-		{
-			for (String pluginId : getDisabledPluginIds())
-			{
-				externalPluginManager.enablePlugin(pluginId);
-				externalPluginManager.deletePlugin(pluginId);
-			}
-		}
 	}
 
 	private List<Plugin> loadPlugin(String pluginId)
@@ -820,7 +806,8 @@ public class OPRSExternalPluginManager
 			List<Plugin> extensions = externalPluginManager.getExtensions(Plugin.class, pluginId);
 			for (Plugin plugin : extensions)
 			{
-				pluginClassLoaders.add(plugin.getClass().getClassLoader());
+				classLoaderRegistry.register(this, pluginId, plugin.getClass().getClassLoader());
+				publishLegacyLoaderSnapshot();
 
 				pluginsMap.remove(plugin.getClass().getSimpleName());
 				pluginsMap.put(plugin.getClass().getSimpleName(), pluginId);
@@ -854,7 +841,8 @@ public class OPRSExternalPluginManager
 		}
 		catch (Throwable ex)
 		{
-			log.error("Plugin {} could not be loaded.", pluginId, ex);
+			if (ex instanceof ThreadDeath) throw (ThreadDeath) ex;
+			throw new PluginRuntimeException(ex, "Plugin {} could not be loaded", pluginId);
 		}
 
 		return scannedPlugins;
@@ -862,34 +850,14 @@ public class OPRSExternalPluginManager
 
 	private Path stopPlugin(String pluginId)
 	{
-		List<PluginWrapper> startedPlugins = List.copyOf(getStartedPlugins());
-
-		for (PluginWrapper pluginWrapper : startedPlugins)
+		for (PluginWrapper wrapper : List.copyOf(externalPluginManager.getPlugins()))
 		{
-			if (!pluginId.equals(pluginWrapper.getDescriptor().getPluginId()))
-			{
-				continue;
-			}
-
+			if (!pluginId.equals(wrapper.getDescriptor().getPluginId())) continue;
 			List<Plugin> extensions = externalPluginManager.getExtensions(Plugin.class, pluginId);
-
-			for (net.runelite.client.plugins.Plugin plugin : runelitePluginManager.getPlugins())
+			Set<Class<?>> classes = extensions.stream().map(Object::getClass).collect(Collectors.toSet());
+			for (Plugin plugin : List.copyOf(runelitePluginManager.getPlugins()))
 			{
-				boolean found = false;
-				for (Plugin extension : extensions)
-				{
-					if (extension.getClass().getName().equals(plugin.getClass().getName()))
-					{
-						found = true;
-						break;
-					}
-				}
-
-				if (!found)
-				{
-					continue;
-				}
-
+				if (!classes.contains(plugin.getClass())) continue;
 				try
 				{
 					SwingUtil.syncExec(() ->
@@ -897,36 +865,51 @@ public class OPRSExternalPluginManager
 						try
 						{
 							runelitePluginManager.stopPlugin(plugin);
+							runelitePluginManager.remove(plugin);
+							eventBus.post(new OPRSPluginChanged(pluginId, plugin, false));
 						}
-						catch (Exception e2)
-						{
-							throw new RuntimeException(e2);
-						}
+						catch (PluginInstantiationException failure) { throw new RuntimeException(failure); }
 					});
-					runelitePluginManager.remove(plugin);
-					pluginClassLoaders.remove(plugin.getClass().getClassLoader());
-
-					eventBus.post(new OPRSPluginChanged(pluginId, plugin, false));
-
-					return pluginWrapper.getPluginPath();
 				}
-				catch (Exception ex)
+				catch (Exception failure)
 				{
-					log.warn("unable to stop plugin", ex);
+					if (failure instanceof InterruptedException) Thread.currentThread().interrupt();
+					log.warn("Unable to stop all extensions of plugin {}", pluginId, failure);
 					return null;
 				}
 			}
+			classLoaderRegistry.remove(this, pluginId);
+			publishLegacyLoaderSnapshot();
+			pluginsMap.entrySet().removeIf(entry -> pluginId.equals(entry.getValue()));
+			pluginsInfoMap.entrySet().removeIf(entry -> pluginId.equals(entry.getValue().get("id")));
+			return wrapper.getPluginPath();
 		}
-
 		return null;
 	}
 
 	public boolean install(String pluginId)
 	{
+		return lifecycle.call(() ->
+		{
+			if (!installing.add(pluginId)) throw new IllegalStateException("Plugin dependency cycle: " + pluginId);
+			try { return installInternal(pluginId, false); }
+			catch (RuntimeException failure)
+			{
+				try { if (stopPlugin(pluginId) != null) externalPluginManager.stopPlugin(pluginId); }
+				catch (RuntimeException cleanup) { failure.addSuppressed(cleanup); }
+				throw failure;
+			}
+			finally { installing.remove(pluginId); }
+		});
+	}
+
+	private boolean installInternal(String pluginId, boolean retried)
+	{
 		if (getDisabledPluginIds().contains(pluginId))
 		{
 			externalPluginManager.enablePlugin(pluginId);
-			externalPluginManager.startPlugin(pluginId);
+			if (externalPluginManager.startPlugin(pluginId) != org.pf4j.PluginState.STARTED)
+			throw new IllegalStateException("External plugin did not start: " + pluginId);
 
 			if (groups != null)
 			{
@@ -966,17 +949,20 @@ public class OPRSExternalPluginManager
 						return false;
 					}
 
-					return true;
+					return false;
 				}
 
-				updateManager.installPlugin(pluginId, null);
+				if (!updateManager.installPlugin(pluginId, null))
+					throw new IllegalStateException("External plugin installation failed: " + pluginId);
 				scanAndInstantiate(loadPlugin(pluginId), true, true);
 			}
 			else
 			{
 				// In development mode our plugin will already be present in a repository, so we can just load it
 				externalPluginManager.loadPlugins();
-				externalPluginManager.startPlugin(pluginId);
+				if (externalPluginManager.startPlugin(pluginId) != org.pf4j.PluginState.STARTED)
+			throw new IllegalStateException("External plugin did not start: " + pluginId);
+				scanAndInstantiate(loadPlugin(pluginId), true, true);
 			}
 
 			ExternalPluginsChanged event = new ExternalPluginsChanged(null);
@@ -988,16 +974,17 @@ public class OPRSExternalPluginManager
 		}
 		catch (DependencyResolver.DependenciesNotFoundException ex)
 		{
+			if (retried) throw ex;
 			uninstall(pluginId);
 
 			for (String dep : ex.getDependencies())
 			{
-				install(dep);
+				if (!install(dep)) return false;
 			}
 
-			install(pluginId);
+			return installInternal(pluginId, true);
 		}
-		return false;
+		return true;
 	}
 
 	public boolean uninstall(String pluginId)
@@ -1006,6 +993,11 @@ public class OPRSExternalPluginManager
 	}
 
 	public boolean uninstall(String pluginId, boolean skip)
+	{
+		return lifecycle.call(() -> uninstallInternal(pluginId, skip));
+	}
+
+	private boolean uninstallInternal(String pluginId, boolean skip)
 	{
 		Path pluginPath = stopPlugin(pluginId);
 
@@ -1027,13 +1019,18 @@ public class OPRSExternalPluginManager
 		}
 		else
 		{
-			externalPluginManager.deletePlugin(pluginId);
+			return externalPluginManager.deletePlugin(pluginId);
 		}
 
 		return true;
 	}
 
 	public void update()
+	{
+		lifecycle.call(() -> { updateInternal(); return null; });
+	}
+
+	private void updateInternal()
 	{
 		if (groups != null && groups.getInstanceCount() > 1)
 		{
@@ -1057,11 +1054,17 @@ public class OPRSExternalPluginManager
 			for (PluginInfo plugin : updates)
 			{
 				PluginInfo.PluginRelease lastRelease = updateManager.getLastPluginRelease(plugin.id);
+				if (lastRelease == null) { log.warn("No compatible update for {}", plugin.id); continue; }
 				String lastVersion = lastRelease.version;
 				try
 				{
 
 					OpenOSRSSplashScreen.stage(.59, "Updating " + plugin.id + " to version " + lastVersion);
+					if (pluginsMap.containsValue(plugin.id))
+					{
+						log.info("Deferring {} update until next client startup", plugin.id);
+						continue;
+					}
 					boolean updated = updateManager.updatePlugin(plugin.id, lastVersion);
 
 					if (!updated)
@@ -1090,9 +1093,7 @@ public class OPRSExternalPluginManager
 
 		if (error)
 		{
-			initPluginManager();
-			startExternalUpdateManager();
-			startExternalPluginManager();
+			log.warn("Some external updates failed; retained the current plugin manager and recovered versions");
 		}
 	}
 
@@ -1135,8 +1136,14 @@ public class OPRSExternalPluginManager
 
 	public Boolean reloadStart(String pluginId)
 	{
+		return lifecycle.call(() -> reloadStartInternal(pluginId));
+	}
+
+	private Boolean reloadStartInternal(String pluginId)
+	{
 		externalPluginManager.loadPlugins();
-		externalPluginManager.startPlugin(pluginId);
+		if (externalPluginManager.startPlugin(pluginId) != org.pf4j.PluginState.STARTED)
+			throw new IllegalStateException("External plugin did not start: " + pluginId);
 
 		List<PluginWrapper> startedPlugins = List.copyOf(getStartedPlugins());
 		List<PluginWrapper> disabledPlugins = List.copyOf(getDisabledPlugins());
@@ -1165,6 +1172,7 @@ public class OPRSExternalPluginManager
 
 	public void receive(Message message)
 	{
+		if (!Groups.isLegacyTransportSupported()) { return; }
 		if (message.getObject() instanceof ConfigChanged)
 		{
 			return;
@@ -1190,7 +1198,8 @@ public class OPRSExternalPluginManager
 		{
 			case "STARTEXTERNAL":
 				externalPluginManager.loadPlugins();
-				externalPluginManager.startPlugin(pluginId);
+				if (externalPluginManager.startPlugin(pluginId) != org.pf4j.PluginState.STARTED)
+			throw new IllegalStateException("External plugin did not start: " + pluginId);
 
 				List<PluginWrapper> startedPlugins = List.copyOf(getStartedPlugins());
 				List<Plugin> scannedPlugins = new ArrayList<>();

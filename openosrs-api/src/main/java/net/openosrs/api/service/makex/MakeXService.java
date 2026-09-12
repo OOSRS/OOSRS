@@ -1,6 +1,7 @@
 package net.openosrs.api.service.makex;
 
 import javax.inject.Inject;
+import net.openosrs.api.Quantity;
 import javax.inject.Singleton;
 import net.openosrs.api.service.dialogue.DialogueService;
 import net.openosrs.api.service.widget.WidgetRef;
@@ -32,12 +33,12 @@ public class MakeXService
 		{
 			throw new IllegalArgumentException("Make-X option name is required");
 		}
-		String needle = name == null ? "" : name.toLowerCase();
+		String needle = name == null ? "" : name.toLowerCase(java.util.Locale.ROOT);
 		for (WidgetRef widget : widgets.descendants(InterfaceID.Skillmulti.BOTTOM))
 		{
 			String label = (widget.getName() == null ? "" : widget.getName()) + " "
 				+ (widget.getText() == null ? "" : widget.getText());
-			if (label.toLowerCase().contains(needle))
+			if (widget.isVisible() && label.toLowerCase(java.util.Locale.ROOT).contains(needle))
 			{
 				widgets.click(widget);
 				return;
@@ -48,34 +49,37 @@ public class MakeXService
 
 	public void choose(int oneBasedIndex)
 	{
-		int component = InterfaceID.Skillmulti.A + oneBasedIndex - 1;
-		if (oneBasedIndex < 1 || component > InterfaceID.Skillmulti.R)
+		int optionCount = InterfaceID.Skillmulti.R - InterfaceID.Skillmulti.A + 1;
+		if (oneBasedIndex < 1 || oneBasedIndex > optionCount)
 		{
 			throw new IllegalArgumentException("Make-X option index unavailable: " + oneBasedIndex);
 		}
+		int component = InterfaceID.Skillmulti.A + oneBasedIndex - 1;
 		WidgetRef widget = widgets.get(component);
-		if (widget == null) throw new IllegalStateException("Make-X option widget is not loaded");
+		if (widget == null || !widget.isVisible()) throw new IllegalStateException("Make-X option widget is not visible");
 		widgets.click(widget);
 	}
 
-	public void setAmount(int amount)
+	/** Legacy MAX_VALUE means All; use Quantity.exact to request that exact value. */
+	@Deprecated public void setAmount(int amount) { setAmount(Quantity.fromLegacy(amount)); }
+
+	public void setAmount(Quantity quantity)
 	{
-		if (amount <= 0)
-		{
-			throw new IllegalArgumentException("Make-X amount must be positive");
-		}
+		java.util.Objects.requireNonNull(quantity, "quantity");
+		int amount = quantity.isAll() ? 0 : quantity.getAmount();
 		int component;
 		switch (amount)
 		{
 			case 1: component = InterfaceID.Skillmulti._1; break;
 			case 5: component = InterfaceID.Skillmulti._5; break;
 			case 10: component = InterfaceID.Skillmulti._10; break;
-			case Integer.MAX_VALUE: component = InterfaceID.Skillmulti.ALL; break;
+			case 0: component = InterfaceID.Skillmulti.ALL; break;
 			default: component = InterfaceID.Skillmulti.X;
 		}
 		WidgetRef widget = widgets.get(component);
-		if (widget == null) throw new IllegalStateException("Make-X quantity widget is not loaded");
-		widgets.click(widget);
-		if (component == InterfaceID.Skillmulti.X) dialogue.enterAmount(amount);
+		if (widget == null || !widget.isVisible()) throw new IllegalStateException("Make-X quantity widget is not visible");
+		if (component == InterfaceID.Skillmulti.X)
+			dialogue.requestAmount(amount, 16, widget, () -> widgets.click(widget), "how many");
+		else widgets.click(widget);
 	}
 }

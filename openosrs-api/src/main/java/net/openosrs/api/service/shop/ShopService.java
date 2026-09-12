@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
+import net.openosrs.api.Quantity;
 import javax.inject.Singleton;
 import net.openosrs.api.service.dialogue.DialogueService;
 import net.openosrs.api.service.inventory.InventoryItem;
@@ -60,26 +61,51 @@ public class ShopService
 		return null;
 	}
 
+	/** Legacy MAX_VALUE means All; negative quantities are rejected. */
+	@Deprecated
 	public void buy(ShopItem item, int quantity)
 	{
-		if (item == null) throw new IllegalArgumentException("shop item is required");
-		if (item.getQuantity() <= 0) throw new IllegalArgumentException("shop has no stock");
-		int clamped = quantity == Integer.MAX_VALUE || quantity < 0
-			? Integer.MAX_VALUE : Math.min(quantity, item.getQuantity());
-		if (clamped <= 0) throw new IllegalArgumentException("quantity must be positive");
-		WidgetRef widget = itemWidget(InterfaceID.Shopmain.ITEMS, item.getSlot(), item.getId());
-		String action = quantityAction("Buy", clamped);
-		widgets.interact(widget, action);
-		if (action.endsWith("X")) dialogue.enterAmount(clamped);
+		buy(item, Quantity.fromLegacy(quantity));
 	}
 
+	public void buy(ShopItem item, Quantity quantity)
+	{
+		java.util.Objects.requireNonNull(quantity, "quantity");
+		if (item == null) throw new IllegalArgumentException("shop item is required");
+		if (item.getQuantity() <= 0) throw new IllegalArgumentException("shop has no stock");
+		Quantity clamped = quantity.isAll() ? quantity : Quantity.exact(Math.min(quantity.getAmount(), item.getQuantity()));
+		WidgetRef widget = itemWidget(InterfaceID.Shopmain.ITEMS, item.getSlot(), item.getId());
+		String action = quantityAction("Buy", clamped);
+		if (action.endsWith("X"))
+		{
+			WidgetRef origin = widget;
+			dialogue.requestAmount(clamped.getAmount(), 7, origin, () -> widgets.interact(origin, action),
+				action.substring(0, action.indexOf('-')).toLowerCase(java.util.Locale.ROOT));
+		}
+		else widgets.interact(widget, action);
+	}
+
+	/** Legacy MAX_VALUE means All; negative quantities are rejected. */
+	@Deprecated
 	public void sell(InventoryItem item, int quantity)
 	{
+		sell(item, Quantity.fromLegacy(quantity));
+	}
+
+	public void sell(InventoryItem item, Quantity quantity)
+	{
+		java.util.Objects.requireNonNull(quantity, "quantity");
 		if (item == null) throw new IllegalArgumentException("inventory item is required");
+		item.requireCurrent(client);
 		WidgetRef widget = itemWidget(InterfaceID.Shopside.ITEMS, item.getSlot(), item.getId());
 		String action = quantityAction("Sell", quantity);
-		widgets.interact(widget, action);
-		if (action.endsWith("X")) dialogue.enterAmount(quantity);
+		if (action.endsWith("X"))
+		{
+			WidgetRef origin = widget;
+			dialogue.requestAmount(quantity.getAmount(), 7, origin, () -> widgets.interact(origin, action),
+				action.substring(0, action.indexOf('-')).toLowerCase(java.util.Locale.ROOT));
+		}
+		else widgets.interact(widget, action);
 	}
 
 	private WidgetRef itemWidget(int component, int slot, int itemId)
@@ -91,10 +117,11 @@ public class ShopService
 		throw new IllegalStateException("shop item widget is not loaded");
 	}
 
-	private static String quantityAction(String verb, int quantity)
+	private static String quantityAction(String verb, Quantity intent)
 	{
+		if (intent.isAll()) return verb + " All";
+		int quantity = intent.getAmount();
 		if (quantity == 1 || quantity == 5 || quantity == 10 || quantity == 50) return verb + " " + quantity;
-		if (quantity == Integer.MAX_VALUE || quantity < 0) return verb + " All";
 		if (quantity <= 0) throw new IllegalArgumentException("quantity must be positive");
 		return verb + " X";
 	}

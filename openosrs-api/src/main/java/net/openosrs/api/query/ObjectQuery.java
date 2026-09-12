@@ -29,8 +29,8 @@ public final class ObjectQuery extends Query<ObjectRef, ObjectQuery>
 
 	public ObjectQuery nameContains(String text)
 	{
-		String needle = text == null ? "" : text.toLowerCase();
-		return keepIf(object -> object.getName() != null && object.getName().toLowerCase().contains(needle));
+		String needle = text == null ? "" : text.toLowerCase(java.util.Locale.ROOT);
+		return keepIf(object -> object.getName() != null && object.getName().toLowerCase(java.util.Locale.ROOT).contains(needle));
 	}
 
 	public ObjectQuery withAction(String action)

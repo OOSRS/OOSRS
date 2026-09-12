@@ -476,6 +476,8 @@ public class SpecialCounterPlugin extends Plugin
 		BufferedImage image = ImageUtil.resizeImage(itemManager.getImage(weapon.getItemID()[0]), 24, 24);
 
 		return PlayerInfoDrop.builder(cycle, cycle + 100, playerId, Integer.toString(hit))
+			.player(net.runelite.api.ActorLookup.player(client.getTopLevelWorldView(), playerId))
+			.worldView(client.getTopLevelWorldView())
 			.color(config.specDropColor())
 			.startHeightOffset(100)
 			.endHeightOffset(400)

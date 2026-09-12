@@ -116,7 +116,7 @@ public class GameEventManager
 				eventBus.post(new ItemContainerChanged(itemContainer.getId(), itemContainer));
 			}
 
-			for (NPC npc : client.getCachedNPCs())
+			for (NPC npc : client.getNpcs())
 			{
 				if (npc != null)
 				{
@@ -125,7 +125,7 @@ public class GameEventManager
 				}
 			}
 
-			for (Player player : client.getCachedPlayers())
+			for (Player player : client.getPlayers())
 			{
 				if (player != null)
 				{

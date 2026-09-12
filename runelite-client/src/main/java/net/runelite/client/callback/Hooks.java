@@ -101,6 +101,8 @@ public class Hooks implements Callbacks
 	private final DrawManager drawManager;
 	private final Notifier notifier;
 	private final ClientUI clientUi;
+    @Inject
+    private RenderCallbackManager renderCallbackManager;
 
 	private Dimension lastStretchedDimensions;
 	private VolatileImage stretchedImage;
@@ -587,6 +589,7 @@ public class Hooks implements Callbacks
 	{
 		try
 		{
+            if (!renderCallbackManager.addEntity(renderable, drawingUi)) return false;
 			for (RenderableDrawListener renderableDrawListener : renderableDrawListeners)
 			{
 				if (!renderableDrawListener.draw(renderable, drawingUi))

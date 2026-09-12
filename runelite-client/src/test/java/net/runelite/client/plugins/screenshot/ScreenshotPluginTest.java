@@ -130,6 +130,7 @@ public class ScreenshotPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		when(client.macroExpand(org.mockito.ArgumentMatchers.anyString())).thenAnswer(call -> call.getArgument(0));
 		screenshotPlugin = spy(screenshotPlugin);
 		when(screenshotConfig.screenshotLevels()).thenReturn(true);
 		when(screenshotConfig.screenshotValuableDrop()).thenReturn(true);
@@ -413,8 +414,8 @@ public class ScreenshotPluginTest
 		ScriptPreFired notificationStart = new ScriptPreFired(ScriptID.NOTIFICATION_START);
 		screenshotPlugin.onScriptPreFired(notificationStart);
 
-		when(client.getVar(VarClientStr.NOTIFICATION_TOP_TEXT)).thenReturn("Collection log");
-		when(client.getVar(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("New item:<br><br><col=ffffff>Chompy bird hat</col>");
+		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT)).thenReturn("Collection log");
+		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("New item:<br><br><col=ffffff>Chompy bird hat</col>");
 
 		ScriptPreFired notificationDelay = new ScriptPreFired(ScriptID.NOTIFICATION_DELAY);
 		screenshotPlugin.onScriptPreFired(notificationDelay);
@@ -476,8 +477,8 @@ public class ScreenshotPluginTest
 		ScriptPreFired notificationStart = new ScriptPreFired(ScriptID.NOTIFICATION_START);
 		screenshotPlugin.onScriptPreFired(notificationStart);
 
-		when(client.getVar(VarClientStr.NOTIFICATION_TOP_TEXT)).thenReturn("Combat Task Completed!");
-		when(client.getVar(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("Task Completed: <col=ffffff>Handyman</col>");
+		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT)).thenReturn("Combat Task Completed!");
+		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("Task Completed: <col=ffffff>Handyman</col>");
 
 		ScriptPreFired notificationDelay = new ScriptPreFired(ScriptID.NOTIFICATION_DELAY);
 		screenshotPlugin.onScriptPreFired(notificationDelay);

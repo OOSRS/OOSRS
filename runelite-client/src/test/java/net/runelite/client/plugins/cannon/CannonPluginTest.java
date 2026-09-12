@@ -96,7 +96,7 @@ public class CannonPluginTest
 	@BeforeClass
 	public static void cannonVarpSetup()
 	{
-		cannonAmmoChanged.setIndex(VarPlayer.CANNON_AMMO.getId());
+		cannonAmmoChanged.setIndex(VarPlayer.CANNON_AMMO);
 	}
 
 	@Before
@@ -120,7 +120,7 @@ public class CannonPluginTest
 
 		// Some time passes...
 
-		when(client.getVar(VarPlayer.CANNON_AMMO)).thenReturn(30);
+		when(client.getVarpValue(VarPlayer.CANNON_AMMO)).thenReturn(30);
 		plugin.onVarbitChanged(cannonAmmoChanged);
 		assertEquals(30, plugin.getCballsLeft());
 	}
@@ -147,9 +147,9 @@ public class CannonPluginTest
 		when(config.showCannonNotifications()).thenReturn(true);
 		when(config.lowWarningThreshold()).thenReturn(10);
 
-		when(client.getVar(VarPlayer.CANNON_AMMO)).thenReturn(30);
+		when(client.getVarpValue(VarPlayer.CANNON_AMMO)).thenReturn(30);
 		plugin.onVarbitChanged(cannonAmmoChanged);
-		when(client.getVar(VarPlayer.CANNON_AMMO)).thenReturn(10);
+		when(client.getVarpValue(VarPlayer.CANNON_AMMO)).thenReturn(10);
 		plugin.onVarbitChanged(cannonAmmoChanged);
 
 		verify(notifier, times(1)).notify("Your cannon has 10 cannon balls remaining!");
@@ -163,7 +163,7 @@ public class CannonPluginTest
 
 		for (int cballs = 15; cballs >= 8; --cballs)
 		{
-			when(client.getVar(VarPlayer.CANNON_AMMO)).thenReturn(cballs);
+			when(client.getVarpValue(VarPlayer.CANNON_AMMO)).thenReturn(cballs);
 			plugin.onVarbitChanged(cannonAmmoChanged);
 		}
 
@@ -176,9 +176,9 @@ public class CannonPluginTest
 		when(config.showCannonNotifications()).thenReturn(true);
 		when(config.lowWarningThreshold()).thenReturn(0);
 
-		when(client.getVar(VarPlayer.CANNON_AMMO)).thenReturn(30);
+		when(client.getVarpValue(VarPlayer.CANNON_AMMO)).thenReturn(30);
 		plugin.onVarbitChanged(cannonAmmoChanged);
-		when(client.getVar(VarPlayer.CANNON_AMMO)).thenReturn(10);
+		when(client.getVarpValue(VarPlayer.CANNON_AMMO)).thenReturn(10);
 		plugin.onVarbitChanged(cannonAmmoChanged);
 
 		verify(notifier, never()).notify("Your cannon has 10 cannon balls remaining!");

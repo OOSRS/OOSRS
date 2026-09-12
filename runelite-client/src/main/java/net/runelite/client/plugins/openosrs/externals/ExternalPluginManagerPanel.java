@@ -22,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.OPRSExternalPluginManager;
+import net.runelite.client.plugins.RepositoryValidationResult;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -123,9 +124,10 @@ public class ExternalPluginManagerPanel extends PluginPanel
 					return;
 				}
 
-				if (OPRSExternalPluginManager.testGHRepository(owner.getText(), name.getText()))
+				RepositoryValidationResult validation = OPRSExternalPluginManager.validateGHRepository(owner.getText(), name.getText());
+				if (!validation.isValid())
 				{
-					JOptionPane.showMessageDialog(ClientUI.getFrame(), "This doesn't appear to be a valid repository.", "Error!",
+					JOptionPane.showMessageDialog(ClientUI.getFrame(), validation.getReason(), "Error!",
 						JOptionPane.ERROR_MESSAGE);
 					return;
 				}
@@ -213,9 +215,10 @@ public class ExternalPluginManagerPanel extends PluginPanel
 					return;
 				}
 
-				if ((pluginJson == null && OPRSExternalPluginManager.testRepository(urlActual)) || (pluginJson != null && OPRSExternalPluginManager.testRepository(urlActual, pluginJson)))
+				RepositoryValidationResult validation = OPRSExternalPluginManager.validateRepository(urlActual, pluginJson);
+				if (!validation.isValid())
 				{
-					JOptionPane.showMessageDialog(ClientUI.getFrame(), "This doesn't appear to be a valid repository.", "Error!",
+					JOptionPane.showMessageDialog(ClientUI.getFrame(), validation.getReason(), "Error!",
 						JOptionPane.ERROR_MESSAGE);
 					return;
 				}

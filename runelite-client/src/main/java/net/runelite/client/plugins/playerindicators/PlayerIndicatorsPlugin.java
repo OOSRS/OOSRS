@@ -146,9 +146,6 @@ public class PlayerIndicatorsPlugin extends Plugin
 				|| type == PLAYER_EIGTH_OPTION
 				|| type == RUNELITE_PLAYER)
 			{
-				Player[] players = client.getCachedPlayers();
-				Player player = null;
-
 				int identifier = entry.getIdentifier();
 
 				// 'Walk here' identifiers are offset by 1 because the default
@@ -158,10 +155,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 					identifier--;
 				}
 
-				if (identifier >= 0 && identifier < players.length)
-				{
-					player = players[identifier];
-				}
+				Player player = net.runelite.api.ActorLookup.player(client, entry.getWorldViewId(), identifier);
 
 				if (player == null)
 				{

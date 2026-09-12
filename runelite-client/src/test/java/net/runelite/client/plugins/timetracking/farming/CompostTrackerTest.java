@@ -32,6 +32,7 @@ import java.util.Collections;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.WorldView;
 import net.runelite.api.GameObject;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
@@ -114,14 +115,21 @@ public class CompostTrackerTest
 	private static final int PATCH_VARBIT = 54321;
 	private static final WorldPoint worldPoint = new WorldPoint(1, 2, 0);
 
+	@Mock
+	private WorldView worldView;
+
 	@Before
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		when(client.getTopLevelWorldView()).thenReturn(worldView);
+		when(client.findWorldViewFromWorldPoint(any())).thenReturn(worldView);
+		org.mockito.Mockito.lenient().when(worldView.getSizeX()).thenReturn(104);
+		org.mockito.Mockito.lenient().when(worldView.getSizeY()).thenReturn(104);
 		compostTracker.pendingCompostActions.clear();
 
-		when(client.getBaseX()).thenReturn(0);
-		when(client.getBaseY()).thenReturn(0);
+		when(worldView.getBaseX()).thenReturn(0);
+		when(worldView.getBaseY()).thenReturn(0);
 		when(client.getPlane()).thenReturn(0);
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(player.getWorldLocation()).thenReturn(worldPoint);

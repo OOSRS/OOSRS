@@ -297,7 +297,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		return false;
 	}
 
-	private void checkAreaNpcs(final NPC... npcs)
+	private void checkAreaNpcs(final Iterable<NPC> npcs)
 	{
 		for (NPC npc : npcs)
 		{
@@ -319,7 +319,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	private void recheckActive()
 	{
 		active = config.alwaysActive();
-		checkAreaNpcs(client.getCachedNPCs());
+		checkAreaNpcs(client.getNpcs());
 	}
 
 	@Subscribe
@@ -330,7 +330,7 @@ public class NpcAggroAreaPlugin extends Plugin
 			return;
 		}
 
-		checkAreaNpcs(event.getNpc());
+		checkAreaNpcs(java.util.Collections.singletonList(event.getNpc()));
 	}
 
 	@Subscribe

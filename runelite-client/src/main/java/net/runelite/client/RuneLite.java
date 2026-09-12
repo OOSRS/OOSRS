@@ -317,7 +317,7 @@ public class RuneLite
 				ClassPreloader.preload();
 			}, "Preloader").start();
 
-			final boolean developerMode = true;
+			final boolean developerMode = options.has("developer-mode") && !options.has("safe-mode");
 
 			PROFILES_DIR.mkdirs();
 
@@ -485,7 +485,8 @@ public class RuneLite
 			// the callback Hooks feed GameTick etc. without a frame.
 			log.info("[headless] skipping UI init; engine continues without display");
 		}
-		eventBus.register(pluginManager);
+		eventBus.register(injector.getInstance(net.openosrs.client.ApiClockLifecycle.class));
+			eventBus.register(pluginManager);
 		eventBus.register(externalPluginManager);
 		eventBus.register(configManager);
 		if (!HEADLESS)

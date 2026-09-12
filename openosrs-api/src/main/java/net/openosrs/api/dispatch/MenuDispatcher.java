@@ -37,39 +37,61 @@ public class MenuDispatcher implements Dispatcher
 							String option, String target, int itemId, int worldViewId,
 							int canvasX, int canvasY)
 	{
+		return submit(action, identifier, param0, param1, option, target, itemId, worldViewId, canvasX, canvasY).isSubmitted();
+	}
+
+	public SubmissionResult submit(MenuAction action, int identifier, int param0, int param1,
+		String option, String target, int itemId, int worldViewId)
+	{
+		return submit(action, identifier, param0, param1, option, target, itemId, worldViewId, -1, -1);
+	}
+
+	/** The seven-argument native bridge supports the top-level view and no explicit click point. */
+	public SubmissionResult submit(MenuAction action, int identifier, int param0, int param1,
+		String option, String target, int itemId, int worldViewId, int canvasX, int canvasY)
+	{
 		if (!client.isClientThread())
 		{
-			log.warn("menu dispatch must run on the client thread");
-			return false;
+			return SubmissionResult.rejected(SubmissionStatus.REJECTED_WRONG_THREAD, "Menu actions require the client thread");
 		}
-		// The bundled seven-argument bridge cannot express another world view
-		// or explicit click coordinates. Never silently dispatch in the wrong context.
-		net.runelite.api.WorldView topLevel = client.getTopLevelWorldView();
-		if (worldViewId != 0 && (topLevel == null || worldViewId != topLevel.getId()))
+		if (client.getGameState() != net.runelite.api.GameState.LOGGED_IN)
 		{
-			log.warn("menu dispatch does not support world view {}", worldViewId);
-			return false;
+			return SubmissionResult.rejected(SubmissionStatus.REJECTED_NOT_LOGGED_IN, "Menu actions require a logged-in session");
 		}
-		if (canvasX != -1 || canvasY != -1)
+		if (action == null || action == MenuAction.UNKNOWN)
 		{
-			log.warn("menu dispatch does not support explicit canvas coordinates");
-			return false;
+			return SubmissionResult.rejected(SubmissionStatus.REJECTED_INVALID_INPUT, "A known menu action is required");
+		}
+		net.runelite.api.WorldView top = client.getTopLevelWorldView();
+		if (top == null || (worldViewId != -1 && worldViewId != top.getId()))
+		{
+			return SubmissionResult.rejected(SubmissionStatus.REJECTED_CONTEXT, "The native bridge cannot address that world view");
+		}
+		if (canvasX != -1 || canvasY != -1 || legacyInventoryAction(action))
+		{
+			return SubmissionResult.rejected(SubmissionStatus.REJECTED_UNSUPPORTED_ACTION, "No supported native route for this request");
 		}
 		try
 		{
 			client.menuAction(param0, param1, action, identifier, itemId, option, target);
-			return true;
+			return SubmissionResult.submitted();
 		}
-		catch (Exception e)
+		catch (RuntimeException e)
 		{
-			log.warn("menu dispatch failed for {} [{}]: {}", option, action, e.toString());
-			return false;
+			log.debug("Native menu action failed ({})", e.getClass().getSimpleName());
+			return SubmissionResult.rejected(SubmissionStatus.REJECTED_CONTEXT, "Native menu submission failed");
 		}
+	}
+
+	private static boolean legacyInventoryAction(MenuAction action)
+	{
+		return action.getId() >= 31 && action.getId() <= 43;
 	}
 
 	@Override
 	public List<MenuAction> unsupportedActions()
 	{
-		return ImmutableList.of();
+		return java.util.Arrays.stream(MenuAction.values()).filter(MenuDispatcher::legacyInventoryAction)
+			.collect(ImmutableList.toImmutableList());
 	}
 }

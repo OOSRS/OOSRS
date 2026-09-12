@@ -200,7 +200,7 @@ public class RoofRemovalPlugin extends Plugin
 		applyRoofOverrides();
 
 		Stopwatch sw = Stopwatch.createStarted();
-		client.getScene().generateHouses();
+		client.getScene().buildRoofs();
 		log.debug("House generation duration: {}", sw.stop());
 	}
 

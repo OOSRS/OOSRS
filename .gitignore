@@ -16,3 +16,7 @@ __pycache__/
 .DS_Store
 update-workspace/
 release-output/
+
+# Private bug-map research stays in the maintainer workspace.
+docs/bugfixes/
+scripts/bugfix_status.py

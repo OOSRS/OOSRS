@@ -29,16 +29,23 @@ public class NpcService
 
 	private final Client client;
 	private final MenuDispatcher dispatcher;
+	private final net.openosrs.api.state.ActorLifetimes lifetimes;
 
-	@Inject
 	public NpcService(Client client, MenuDispatcher dispatcher)
 	{
+		this(client, dispatcher, net.openosrs.api.state.ActorLifetimes.forClient(client));
+	}
+
+	@Inject public NpcService(Client client, MenuDispatcher dispatcher, net.openosrs.api.state.ActorLifetimes lifetimes)
+	{
+		this.lifetimes = lifetimes;
 		this.client = client;
 		this.dispatcher = dispatcher;
 	}
 
 	public List<NpcRef> all()
 	{
+		if (!client.isClientThread()) throw new IllegalStateException("Actor reads require the client thread");
 		List<NpcRef> result = new ArrayList<>();
 		List<NPC> loaded = client.getNpcs();
 		if (loaded == null) return result;
@@ -78,15 +85,23 @@ public class NpcService
 		{
 			throw new IllegalArgumentException("npc is required");
 		}
+		npc.requireCurrent(client);
+		net.runelite.api.NPC current = net.runelite.api.ActorLookup.npc(client, npc.getWorldViewId(), npc.getIndex());
+		net.runelite.api.NPCComposition definition = current.getTransformedComposition();
+		if (definition == null) definition = current.getComposition();
+		String[] currentActions = definition == null ? null : definition.getActions();
 		int actionIndex = actionIndex(npc.getActions(), action);
+		if (currentActions == null || actionIndex < 0 || actionIndex >= currentActions.length
+			|| !java.util.Objects.equals(currentActions[actionIndex], npc.getActions().get(actionIndex)))
+			throw new IllegalStateException("NPC actions changed");
 		if (actionIndex < 0 || actionIndex >= ACTIONS.length)
 		{
 			throw new IllegalArgumentException("NPC action unavailable: " + action);
 		}
 		// NPC menu tuples use the actor index as identifier/param0. param1 is
 		// reserved for the scene coordinate path and must stay zero.
-		dispatcher.dispatch(ACTIONS[actionIndex], npc.getIndex(), 0, 0,
-			action, npc.getName(), -1, npc.getWorldViewId());
+		dispatcher.submit(ACTIONS[actionIndex], npc.getIndex(), 0, 0,
+			action, npc.getName(), -1, npc.getWorldViewId()).requireSubmitted();
 	}
 
 	public void attack(NpcRef npc)
@@ -138,7 +153,7 @@ public class NpcService
 		}
 		WorldView worldView = npc.getWorldView();
 		return new NpcRef(npc.getId(), npc.getIndex(), worldView == null ? 0 : worldView.getId(),
-			npc.getName(), npc.getCombatLevel(), npc.getWorldLocation(), actions);
+			npc.getName(), npc.getCombatLevel(), npc.getWorldLocation(), actions, lifetimes.capture(npc));
 	}
 
 	static int actionIndex(List<String> actions, String action)

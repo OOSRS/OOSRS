@@ -27,8 +27,8 @@ import net.runelite.api.coords.WorldPoint;
  * <p>Semantics:</p>
  * <ul>
  *   <li>{@link #canInvoke(TeleportDefinition)} is a pure readback check.</li>
- *   <li>{@link #invoke(TeleportDefinition)} submits a command. A returned
- *       true means "dispatch accepted by the owning service", NOT that the
+ *   <li>{@link #invoke(TeleportDefinition)} submits a command. Returning
+ *       normally means "dispatch accepted or queued by the owning service", NOT that the
  *       player arrived anywhere.</li>
  *   <li>"Rub"-style items open a destination dialog on a later tick. After
  *       invoking such a definition, call {@link #resolveDialogueChoice()} from
@@ -45,12 +45,64 @@ public class TeleportsService
 	private final InventoryService inventory;
 	private final EquipmentService equipment;
 	private final MagicService magic;
-	private final DialogueService dialogue;
+	final DialogueService dialogue;
 	private final SkillService skills;
 	private final MovementService movement;
 
 	/** Definition awaiting its destination-dialog choice, if any. */
-	private volatile TeleportDefinition pendingChoice;
+	private volatile TeleportOperation legacyOperation;
+	private boolean legacyChoiceReported;
+	private final java.util.Set<TeleportOperation> active = java.util.concurrent.ConcurrentHashMap.newKeySet();
+	net.runelite.api.Client client;
+	net.openosrs.api.service.delay.SessionTickClock clock;
+	net.openosrs.api.operation.OperationLeases leases;
+
+	@Inject public void configureOperations(net.runelite.api.Client client,
+		net.openosrs.api.service.delay.SessionTickClock clock, net.openosrs.api.operation.OperationLeases leases)
+	{
+		this.client = client; this.clock = clock; this.leases = leases;
+	}
+
+	public TeleportOperation beginTeleport(net.openosrs.api.operation.OperationOwner owner, TeleportDefinition definition)
+	{
+		return beginTeleport(owner, definition, 50);
+	}
+
+	public TeleportOperation beginTeleport(net.openosrs.api.operation.OperationOwner owner, TeleportDefinition definition, long timeoutTicks)
+	{
+		return beginTeleport(owner, definition, timeoutTicks, dialogue -> matchesDestinationMenu(definition));
+	}
+
+	/** Custom definitions must identify their expected destination menu, for example by its header. */
+	public TeleportOperation beginTeleport(net.openosrs.api.operation.OperationOwner owner, TeleportDefinition definition,
+		long timeoutTicks, java.util.function.Predicate<DialogueService> expectedMenu)
+	{
+		if (client == null)
+		{
+			configureOperations(net.openosrs.api.Context.client(),
+				net.openosrs.api.Context.getService(net.openosrs.api.service.delay.SessionTickClock.class),
+				net.openosrs.api.Context.getService(net.openosrs.api.operation.OperationLeases.class));
+		}
+		TeleportOperation operation = new TeleportOperation(this, owner, definition, timeoutTicks).expectedMenu(expectedMenu);
+		operation.advance();
+		return operation;
+	}
+
+	/** Require a destination menu from the same item family, not one matching substring. */
+	boolean matchesDestinationMenu(TeleportDefinition definition)
+	{
+		java.util.Set<String> peers = new java.util.HashSet<>();
+		for (TeleportDefinition peer : all())
+			if (!definition.getItemIds().isEmpty() && peer.getItemIds().equals(definition.getItemIds())
+				&& peer.getDialogueOption() != null && dialogue.hasOption(peer.getDialogueOption()))
+				peers.add(peer.getDialogueOption());
+		return peers.size() >= 2 && dialogue.hasOption(definition.getDialogueOption());
+	}
+
+	void track(TeleportOperation operation) { active.add(operation); }
+	void forget(TeleportOperation operation) { active.remove(operation); }
+	public void advanceOperations() { for (TeleportOperation operation : active) operation.advance(); }
+	public void cancelSession() { for (TeleportOperation operation : active) operation.cancelSession(); }
 
 	@Inject
 	public TeleportsService(InventoryService inventory, EquipmentService equipment,
@@ -75,10 +127,10 @@ public class TeleportsService
 	public List<TeleportDefinition> find(String namePart)
 	{
 		List<TeleportDefinition> out = new ArrayList<>();
-		String needle = namePart == null ? "" : namePart.toLowerCase();
+		String needle = namePart == null ? "" : namePart.toLowerCase(java.util.Locale.ROOT);
 		for (TeleportDefinition def : TeleportTable.all())
 		{
-			if (def.getName().toLowerCase().contains(needle))
+			if (def.getName().toLowerCase(java.util.Locale.ROOT).contains(needle))
 			{
 				out.add(def);
 			}
@@ -147,19 +199,22 @@ public class TeleportsService
 	 */
 	public void invoke(TeleportDefinition def)
 	{
-		if (def == null)
+		TeleportOperation previous = legacyOperation;
+		if (previous != null && !previous.isFinished())
+			throw new IllegalStateException("Previous teleport is still pending: " + previous.getDefinition().getName());
+		legacyOperation = beginTeleport(net.openosrs.api.operation.OperationOwner.currentOrNew(), def);
+		legacyChoiceReported = false;
+		if (legacyOperation.getStatus() == TeleportOperation.Status.BUSY)
 		{
-			throw new IllegalArgumentException("teleport definition is required");
+			legacyOperation.close();
+			throw new IllegalStateException("Chatbox is owned by another operation");
 		}
-		if (pendingChoice != null)
-		{
-			throw new IllegalStateException("destination choice for '"
-				+ pendingChoice.getName() + "' still pending; call resolveDialogueChoice()");
-		}
-		if (!canInvoke(def))
-		{
-			throw new IllegalStateException("teleport not available now: " + def);
-		}
+		if (legacyOperation.getStatus() == TeleportOperation.Status.FAILED || legacyOperation.getStatus() == TeleportOperation.Status.CANCELLED)
+			throw new IllegalStateException("Teleport rejected: " + legacyOperation.getFailure());
+	}
+
+	void dispatch(TeleportDefinition def)
+	{
 		switch (def.getType())
 		{
 			case INVENTORY_ITEM:
@@ -182,64 +237,35 @@ public class TeleportsService
 			default:
 				throw new IllegalStateException("unsupported teleport type: " + def.getType());
 		}
-		if (def.getDialogueOption() != null)
-		{
-			pendingChoice = def;
-			log.info("Teleports: '{}' dispatched; destination dialog choice pending", def.getName());
-		}
-		else
-		{
-			log.info("Teleports: '{}' dispatched", def.getName());
-		}
 	}
 
-	/**
-	 * Attempt the pending destination-dialog choice. Non-blocking: returns
-	 * immediately when no choice is pending or the dialog is not visible yet.
-	 *
-	 * @return true when a choice was clicked this tick; false while still
-	 *         waiting; never throws for "not visible yet"
-	 */
+	/** Legacy polling adapter: true only on the call observing a newly submitted choice. */
 	public boolean resolveDialogueChoice()
 	{
-		TeleportDefinition pending = pendingChoice;
-		if (pending == null)
+		TeleportOperation operation = legacyOperation;
+		if (operation == null) return false;
+		operation.advance();
+		if (!legacyChoiceReported && operation.isChoiceSubmitted())
 		{
-			return false;
-		}
-		if (!dialogue.hasOptions())
-		{
-			return false;
-		}
-		try
-		{
-			dialogue.choose(pending.getDialogueOption());
-			log.info("Teleports: chose destination dialog option '~{}' for '{}'",
-				pending.getDialogueOption(), pending.getName());
+			legacyChoiceReported = true;
 			return true;
 		}
-		catch (IllegalArgumentException ex)
-		{
-			log.warn("Teleports: dialog visible but expected option missing for '{}': {}",
-				pending.getName(), ex.getMessage());
-			throw ex;
-		}
-		finally
-		{
-			pendingChoice = null;
-		}
+		return false;
 	}
 
-	/** The definition whose destination dialog has not been resolved yet, if any. */
 	public TeleportDefinition pendingChoice()
 	{
-		return pendingChoice;
+		TeleportOperation operation = legacyOperation;
+		return operation != null && operation.getStatus() == TeleportOperation.Status.WAITING_CHOICE ? operation.getDefinition() : null;
 	}
 
-	/** Drop a pending dialog choice without clicking (e.g. after a cancel). */
+	/** Last operation remains available after cancellation/failure for diagnostics. */
+	public TeleportOperation lastOperation() { return legacyOperation; }
+
 	public void clearPendingChoice()
 	{
-		pendingChoice = null;
+		TeleportOperation operation = legacyOperation;
+		if (operation != null) operation.close();
 	}
 
 	/**

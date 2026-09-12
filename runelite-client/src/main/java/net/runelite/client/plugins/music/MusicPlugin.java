@@ -631,8 +631,9 @@ public class MusicPlugin extends Plugin
 			Widget root = client.getWidget(this.root);
 			if (root != null)
 			{
-				client.createScriptEvent(root.getOnLoadListener())
+				client.createScriptEventBuilder(root.getOnLoadListener())
 					.setSource(root)
+					.build()
 					.run();
 			}
 
@@ -926,8 +927,9 @@ public class MusicPlugin extends Plugin
 		if (init != null)
 		{
 			// [clientscript, settings_init]
-			client.createScriptEvent(init.getOnLoadListener())
+			client.createScriptEventBuilder(init.getOnLoadListener())
 				.setSource(init)
+				.build()
 				.run();
 		}
 	}

@@ -8,6 +8,7 @@ import net.runelite.api.coords.WorldPoint;
 /** Immutable identity and menu snapshot for a loaded scene object. */
 public final class ObjectRef
 {
+	private final net.openosrs.api.state.SceneTargetLifetimes.Identity identity;
 	private final int id;
 	private final long hash;
 	private final int sceneX;
@@ -20,6 +21,13 @@ public final class ObjectRef
 	ObjectRef(int id, long hash, int sceneX, int sceneY, int worldViewId,
 		String name, WorldPoint location, List<String> actions)
 	{
+		this(id, hash, sceneX, sceneY, worldViewId, name, location, actions, null);
+	}
+
+	ObjectRef(int id, long hash, int sceneX, int sceneY, int worldViewId,
+		String name, WorldPoint location, List<String> actions, net.openosrs.api.state.SceneTargetLifetimes.Identity identity)
+	{
+		this.identity = identity;
 		this.id = id;
 		this.hash = hash;
 		this.sceneX = sceneX;
@@ -28,6 +36,11 @@ public final class ObjectRef
 		this.name = name;
 		this.location = location;
 		this.actions = Collections.unmodifiableList(new ArrayList<>(actions));
+	}
+
+	public void requireCurrent(net.runelite.api.Client client)
+	{
+		if (identity == null || !identity.isCurrent(client)) throw new IllegalStateException("Scene target expired; query it again");
 	}
 
 	public int getId() { return id; }

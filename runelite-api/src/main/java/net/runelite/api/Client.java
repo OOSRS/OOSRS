@@ -2426,17 +2426,48 @@ public interface Client extends OAuthApi, GameEngine
 
 	// --- OpenOSRS 4.31 client extensions (back-ported verbatim signatures) ---
 
+	/**
+	 * Legacy top-level sparse snapshot, indexed by NPC identifier (0..65535).
+	 * Prefer WorldView.npcs().byIndex for lookups; this allocates the full legacy capacity.
+	 */
+	@Deprecated
 	default NPC[] getCachedNPCs()
 	{
+		NPC[] result = new NPC[65536];
+		WorldView view = getTopLevelWorldView();
 		List<NPC> npcs = getNpcs();
-		return npcs.toArray(new NPC[0]);
+		if (view != null && npcs != null)
+		{
+			for (NPC npc : npcs)
+			{
+				if (npc != null && npc.getWorldView() == view && npc.getIndex() >= 0 && npc.getIndex() < result.length)
+				{
+					result[npc.getIndex()] = npc;
+				}
+			}
+		}
+		return result;
 	}
 
 
+	/** Legacy top-level sparse snapshot indexed by player identifier (0..2047). */
+	@Deprecated
 	default Player[] getCachedPlayers()
 	{
+		Player[] result = new Player[2048];
+		WorldView view = getTopLevelWorldView();
 		List<Player> players = getPlayers();
-		return players.toArray(new Player[0]);
+		if (view != null && players != null)
+		{
+			for (Player player : players)
+			{
+				if (player != null && player.getWorldView() == view && player.getId() >= 0 && player.getId() < result.length)
+				{
+					result[player.getId()] = player;
+				}
+			}
+		}
+		return result;
 	}
 
 
@@ -2446,13 +2477,19 @@ public interface Client extends OAuthApi, GameEngine
 
 	int getCameraZ2();
 
-	void setGpu(boolean gpu);
+	/** @deprecated Sets basic GPU mode only; modern renderers must use setGpuFlags for additional features. */
+	@Deprecated
+	default void setGpu(boolean gpu) { if (!gpu || !isGpu()) setGpuFlags(gpu ? net.runelite.api.hooks.DrawCallbacks.GPU : 0); }
 
 	void setPrintMenuActions(boolean b);
 
-	boolean getSpellSelected();
+	/** @deprecated Selection is now shared by spells and item widgets; use isWidgetSelected. */
+	@Deprecated
+	default boolean getSpellSelected() { return isWidgetSelected(); }
 
-	void setSpellSelected(boolean selected);
+	/** @deprecated Only changes the active flag; use the native WIDGET_TARGET action to select a source. */
+	@Deprecated
+	default void setSpellSelected(boolean selected) { setWidgetSelected(selected); }
 
 	void setStringStackSize(int stackSize);
 
@@ -2460,7 +2497,12 @@ public interface Client extends OAuthApi, GameEngine
 
 	void setVar(VarClientInt varClientInt, int value);
 
-	ScriptEvent createScriptEvent(Object... args);
+    /** Compatibility adapter; event creation does not execute the script. */
+    @Deprecated
+    default ScriptEvent createScriptEvent(Object... args)
+    {
+        return createScriptEventBuilder(args).build();
+    }
 
 	void setInterpolatePlayerAnimations(boolean interpolate);
 
@@ -2474,7 +2516,12 @@ public interface Client extends OAuthApi, GameEngine
 
 	Widget getIf1DraggedWidget();
 
-	int getMapAngle();
+    /** Legacy minimap rotation accessor, in the current JAU14 units. */
+    @Deprecated
+    default int getMapAngle()
+    {
+        return getCameraYawTarget() & 0x3fff;
+    }
 
 	// getXteaKeys() removed: modern injected client no longer exposes map region
 	// XTEA keys; XteaPlugin must source them elsewhere (see graft notes).
@@ -2490,12 +2537,37 @@ public interface Client extends OAuthApi, GameEngine
 
 	void setVar(VarPlayer varPlayer, int value);
 
-	void setVar(@VarCInt int var, int value);
+    /** @deprecated Use setVarcIntValue. */
+    @Deprecated
+    default void setVar(@VarCInt int var, int value) { setVarcIntValue(var, value); }
 
-	void setVar(@VarCStr int var, String value);
+    /** @deprecated Use setVarcStrValue. */
+    @Deprecated
+    default void setVar(@VarCStr int var, String value) { setVarcStrValue(var, value); }
 
-	void scaleSprite(int[] canvas, int[] pixels, int color, int pixelX, int pixelY, int canvasIdx, int canvasOffset, int newWidth, int newHeight, int pixelWidth, int pixelHeight, int oldWidth);
-	ItemComposition getItemComposition(int id);
+	/** Legacy nearest-neighbour blit with 16.16 source coordinates; zero pixels preserve the destination. */
+	@Deprecated
+	default void scaleSprite(int[] canvas, int[] pixels, int color, int pixelX, int pixelY,
+		int canvasIdx, int canvasOffset, int newWidth, int newHeight, int pixelWidth, int pixelHeight, int oldWidth)
+	{
+		for (int y = 0; y < newHeight; y++)
+		{
+			int sourceX = pixelX;
+			int sourceRow = (pixelY >> 16) * oldWidth;
+			for (int x = 0; x < newWidth; x++)
+			{
+				int pixel = pixels[sourceRow + (sourceX >> 16)];
+				if (pixel != 0) canvas[canvasIdx] = pixel;
+				canvasIdx++;
+				sourceX += pixelWidth;
+			}
+			pixelY += pixelHeight;
+			canvasIdx += canvasOffset;
+		}
+	}
+    /** @deprecated Use getItemDefinition. */
+    @Deprecated
+    default ItemComposition getItemComposition(int id) { return getItemDefinition(id); }
 
 	/**
 	 * Expand macros such as @mes_hl_blu@, @blu@, etc. with their corresponding values, eg. &lt;col=0000ff&gt;

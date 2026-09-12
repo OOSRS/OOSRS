@@ -1122,7 +1122,32 @@ public interface Widget
 	void setOnVarTransmitListener(Object ...args);
 
 	// --- OpenOSRS 4.31 back-port ---
-	WidgetItem getWidgetItem(int index);
+    /**
+     * Snapshot an item in a current IF3 container's child slot.
+     * Sparse, empty and invalid slots return null. Bounds come from the live child.
+     */
+    default WidgetItem getWidgetItem(int index)
+    {
+        Widget[] children = getChildren();
+        if (index < 0 || children == null || index >= children.length) return null;
+        Widget child = children[index];
+        if (child == null || child.getItemId() < 0) return null;
+        Rectangle bounds = child.getBounds();
+        if (bounds == null) return null;
+        return new WidgetItem(child.getItemId(), child.getItemQuantity(), new Rectangle(bounds), child, null, index);
+    }
 
-	Collection<WidgetItem> getWidgetItems();
+    /** Snapshot current IF3 item children, retaining their sparse slot indexes. */
+    default Collection<WidgetItem> getWidgetItems()
+    {
+        Widget[] children = getChildren();
+        if (children == null) return java.util.Collections.emptyList();
+        java.util.List<WidgetItem> items = new java.util.ArrayList<>();
+        for (int index = 0; index < children.length; index++)
+        {
+            WidgetItem item = getWidgetItem(index);
+            if (item != null) items.add(item);
+        }
+        return java.util.Collections.unmodifiableList(items);
+    }
 }

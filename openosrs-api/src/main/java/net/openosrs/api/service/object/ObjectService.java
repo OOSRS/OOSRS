@@ -35,18 +35,25 @@ public class ObjectService
 		MenuAction.GAME_OBJECT_FIFTH_OPTION
 	};
 
+	private final net.openosrs.api.state.SceneTargetLifetimes lifetimes;
 	private final Client client;
 	private final MenuDispatcher dispatcher;
 
-	@Inject
 	public ObjectService(Client client, MenuDispatcher dispatcher)
 	{
+		this(client, dispatcher, net.openosrs.api.state.SceneTargetLifetimes.forClient(client));
+	}
+
+	@Inject public ObjectService(Client client, MenuDispatcher dispatcher, net.openosrs.api.state.SceneTargetLifetimes lifetimes)
+	{
+		this.lifetimes = lifetimes;
 		this.client = client;
 		this.dispatcher = dispatcher;
 	}
 
 	public List<ObjectRef> all()
 	{
+		if (!client.isClientThread()) throw new IllegalStateException("Scene queries require the client thread");
 		Scene scene = client.getScene();
 		if (scene == null || scene.getTiles() == null)
 		{
@@ -66,15 +73,15 @@ public class ObjectService
 					{
 						continue;
 					}
-					add(result, seen, tile.getDecorativeObject());
-					add(result, seen, tile.getGroundObject());
-					add(result, seen, tile.getWallObject());
+					add(result, seen, tile, tile.getDecorativeObject());
+					add(result, seen, tile, tile.getGroundObject());
+					add(result, seen, tile, tile.getWallObject());
 					GameObject[] gameObjects = tile.getGameObjects();
 					if (gameObjects != null)
 					{
 						for (GameObject gameObject : gameObjects)
 						{
-							add(result, seen, gameObject);
+							add(result, seen, tile, gameObject);
 						}
 					}
 				}
@@ -104,17 +111,28 @@ public class ObjectService
 	}
 
 	public void interact(ObjectRef object, String action)
-	{
+    {
+        if (!submitInteract(object, action)) throw new IllegalStateException("Object interaction rejected");
+    }
+
+    /** Submission only; does not prove the server completed the action. */
+    public boolean submitInteract(ObjectRef object, String action)
+    {
+        if (!client.isClientThread()) return false;
 		if (object == null)
 		{
 			throw new IllegalArgumentException("object is required");
 		}
-		int actionIndex = actionIndex(object.getActions(), action);
+		object.requireCurrent(client);
+		ObjectComposition live = client.getObjectDefinition(object.getId());
+		if (live != null && live.getImpostorIds() != null) live = live.getImpostor();
+		List<String> liveActions = live == null || live.getActions() == null ? Collections.emptyList() : java.util.Arrays.asList(live.getActions());
+		int actionIndex = actionIndex(liveActions, action);
 		if (actionIndex < 0 || actionIndex >= ACTIONS.length)
 		{
 			throw new IllegalArgumentException("object action unavailable: " + action);
 		}
-		dispatcher.dispatch(ACTIONS[actionIndex], object.getId(), object.getSceneX(), object.getSceneY(),
+		return dispatcher.dispatch(ACTIONS[actionIndex], object.getId(), object.getSceneX(), object.getSceneY(),
 			action, object.getName(), -1, object.getWorldViewId());
 	}
 
@@ -209,7 +227,7 @@ public class ObjectService
 		return nearest;
 	}
 
-	private void add(List<ObjectRef> result, Set<TileObject> seen, TileObject object)
+	private void add(List<ObjectRef> result, Set<TileObject> seen, Tile tile, TileObject object)
 	{
 		if (object == null || !seen.add(object))
 		{
@@ -237,7 +255,7 @@ public class ObjectService
 		WorldView worldView = object.getWorldView();
 		result.add(new ObjectRef(object.getId(), object.getHash(), local.getSceneX(), local.getSceneY(),
 			worldView == null ? 0 : worldView.getId(), composition == null ? null : composition.getName(),
-			object.getWorldLocation(), actions));
+			object.getWorldLocation(), actions, lifetimes.capture(object, tile)));
 	}
 
 	static int actionIndex(List<String> actions, String action)

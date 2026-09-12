@@ -92,6 +92,7 @@ public class PluginManager
 	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
 	private static final File SIDELOADED_PLUGINS = new File(RuneLite.RUNELITE_DIR, "sideloaded-plugins");
 
+	private final net.openosrs.api.operation.OperationOwners operationOwners;
 	private final boolean developerMode;
 	private final boolean safeMode;
 	private final EventBus eventBus;
@@ -104,7 +105,6 @@ public class PluginManager
 	@Setter
 	boolean isOutdated;
 
-	@Inject
 	@VisibleForTesting
 	PluginManager(
 		@Named("developerMode") final boolean developerMode,
@@ -114,6 +114,22 @@ public class PluginManager
 		final ConfigManager configManager,
 		final Provider<GameEventManager> sceneTileManager)
 	{
+		this(developerMode, safeMode, eventBus, scheduler, configManager, sceneTileManager,
+			new net.openosrs.api.operation.OperationOwners());
+	}
+
+	@Inject
+	@VisibleForTesting
+	PluginManager(
+		@Named("developerMode") final boolean developerMode,
+		@Named("safeMode") final boolean safeMode,
+		final EventBus eventBus,
+		final Scheduler scheduler,
+		final ConfigManager configManager,
+		final Provider<GameEventManager> sceneTileManager,
+		final net.openosrs.api.operation.OperationOwners operationOwners)
+	{
+		this.operationOwners = operationOwners;
 		this.developerMode = developerMode;
 		this.safeMode = safeMode;
 		this.eventBus = eventBus;
@@ -471,7 +487,12 @@ public class PluginManager
 
 		try
 		{
-			plugin.startUp();
+			operationOwners.start(plugin).whileActive(() ->
+			{
+				try { plugin.startUp(); }
+				catch (Exception failure) { throw new java.util.concurrent.CompletionException(failure); }
+				return null;
+			}, null);
 
 			log.debug("Plugin {} is now running", plugin.getClass().getSimpleName());
 			if (!isOutdated && sceneTileManager != null)
@@ -483,7 +504,7 @@ public class PluginManager
 				}
 			}
 
-			eventBus.register(plugin);
+			eventBus.registerOwned(plugin, operationOwners.get(plugin));
 			schedule(plugin);
 			eventBus.post(new PluginChanged(plugin, true));
 		}
@@ -493,6 +514,12 @@ public class PluginManager
 		}
 		catch (Throwable ex)
 		{
+			try { operationOwners.stop(plugin); } catch (RuntimeException cleanup) { ex.addSuppressed(cleanup); }
+			try { plugin.shutDown(); activePlugins.remove(plugin); }
+			catch (ThreadDeath death) { throw death; }
+			catch (Throwable cleanup) { ex.addSuppressed(cleanup); }
+			unschedule(plugin);
+			eventBus.unregister(plugin);
 			throw new PluginInstantiationException(ex);
 		}
 
@@ -504,22 +531,26 @@ public class PluginManager
 		// plugins always stop in the EDT
 		assert SwingUtilities.isEventDispatchThread();
 
-		if (!activePlugins.remove(plugin))
+		if (!activePlugins.contains(plugin))
 		{
 			return false;
 		}
 
+		try { operationOwners.stop(plugin); }
+		catch (RuntimeException e) { log.warn("Plugin operation cleanup failed", e); }
 		unschedule(plugin);
 		eventBus.unregister(plugin);
 
 		try
 		{
 			plugin.shutDown();
+			activePlugins.remove(plugin);
 
 			log.debug("Plugin {} is now stopped", plugin.getClass().getSimpleName());
 			eventBus.post(new PluginChanged(plugin, false));
 		}
-		catch (Exception ex)
+		catch (ThreadDeath death) { throw death; }
+		catch (Throwable ex)
 		{
 			throw new PluginInstantiationException(ex);
 		}

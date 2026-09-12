@@ -238,8 +238,7 @@ class NameAutocompleter implements KeyListener
 		// Search cached players if a friend wasn't found
 		if (!autocompleteName.isPresent())
 		{
-			final Player[] cachedPlayers = client.getCachedPlayers();
-			autocompleteName = Arrays.stream(cachedPlayers)
+			autocompleteName = client.getPlayers().stream()
 				.filter(Objects::nonNull)
 				.map(Player::getName)
 				.filter(Objects::nonNull)

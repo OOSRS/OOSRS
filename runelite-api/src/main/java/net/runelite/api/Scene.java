@@ -176,5 +176,7 @@ public interface Scene extends Renderable
 
 	Model getSkybox();
 
-	void generateHouses();
+	/** @deprecated Use the current native roof builder, which also rebuilds roof metadata. */
+	@Deprecated
+	default void generateHouses() { buildRoofs(); }
 }

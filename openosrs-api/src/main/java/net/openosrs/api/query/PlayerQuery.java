@@ -21,8 +21,8 @@ public final class PlayerQuery extends Query<PlayerRef, PlayerQuery>
 
 	public PlayerQuery nameContains(String text)
 	{
-		String needle = text == null ? "" : text.toLowerCase();
-		return keepIf(player -> player.getName() != null && player.getName().toLowerCase().contains(needle));
+		String needle = text == null ? "" : text.toLowerCase(java.util.Locale.ROOT);
+		return keepIf(player -> player.getName() != null && player.getName().toLowerCase(java.util.Locale.ROOT).contains(needle));
 	}
 
 	public PlayerQuery withAction(String action)

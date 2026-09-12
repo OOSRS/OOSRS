@@ -32,6 +32,7 @@ public class TileService
 
 	public List<TileRef> all()
 	{
+		requireThread();
 		Scene scene = client.getScene();
 		if (scene == null || scene.getTiles() == null) return Collections.emptyList();
 		List<TileRef> result = new ArrayList<>();
@@ -52,14 +53,39 @@ public class TileService
 		return result;
 	}
 
+	/** Direct lookup in the native-resolved view; use the explicit-view overload when views overlap. */
 	public TileRef at(WorldPoint location)
 	{
 		if (location == null) return null;
-		for (TileRef tile : all())
-		{
-			if (location.equals(tile.getLocation())) return tile;
-		}
-		return null;
+		requireThread();
+		return at(client.findWorldViewFromWorldPoint(location), location);
+	}
+
+	public TileRef at(int worldViewId, WorldPoint location)
+	{
+		if (location == null) return null;
+		requireThread();
+		return at(client.getWorldView(worldViewId), location);
+	}
+
+	private void requireThread()
+	{
+		if (!client.isClientThread()) throw new IllegalStateException("Tile reads require the client thread");
+	}
+
+	private TileRef at(net.runelite.api.WorldView view, WorldPoint location)
+	{
+		if (view == null || location.getPlane() < 0 || location.getPlane() > 3) return null;
+		long x = (long) location.getX() - view.getBaseX(), y = (long) location.getY() - view.getBaseY();
+		if (x < 0 || y < 0 || x >= view.getSizeX() || y >= view.getSizeY()) return null;
+		Scene scene = view.getScene();
+		Tile[][][] tiles = scene == null ? null : scene.getTiles();
+		int plane = location.getPlane();
+		if (tiles == null || plane >= tiles.length || tiles[plane] == null || x >= tiles[plane].length
+			|| tiles[plane][(int) x] == null || y >= tiles[plane][(int) x].length) return null;
+		Tile tile = tiles[plane][(int) x][(int) y];
+		if (tile == null || tile.getPlane() != plane || !location.equals(tile.getWorldLocation())) return null;
+		return new TileRef((int) x, (int) y, plane, view.getId(), location);
 	}
 
 	public List<ObjectRef> objectsAt(WorldPoint location)

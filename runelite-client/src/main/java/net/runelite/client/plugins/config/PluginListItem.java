@@ -173,6 +173,16 @@ class PluginListItem extends JPanel implements SearchablePlugin
 					@Override
 					protected void done()
 					{
+						try
+						{
+							if (!Boolean.TRUE.equals(get())) return;
+						}
+						catch (Exception failure)
+						{
+							JOptionPane.showMessageDialog(ClientUI.getFrame(), "Plugin could not be unloaded: " + failure.getMessage(),
+								"Hotswap failed", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
 						// In development mode our plugins will be loaded directly from sources, so we don't need to prompt
 						if (!OPRSExternalPluginManager.isDevelopmentMode())
 						{

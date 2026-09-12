@@ -93,5 +93,15 @@ public interface Model extends Mesh<Model>, Renderable
 	void drawFrustum(int zero, int xRotate, int yRotate, int zRotate, int xCamera, int yCamera, int zCamera);
 	void drawOrtho(int zero, int xRotate, int yRotate, int zRotate, int xCamera, int yCamera, int zCamera, int zoom);
 
-	float[] getFaceTextureUVCoordinates();
+    /**
+     * Legacy packed UV snapshot: u/v for each of the three vertices per face.
+     * Derived from current mesh geometry; returns null for an untextured model.
+     * The returned array is owned by the caller. Prefer native mesh/texture indices
+     * in renderers, which can avoid constructing this compatibility snapshot.
+     */
+    @Deprecated
+    default float[] getFaceTextureUVCoordinates()
+    {
+        return ModelTextureUvs.compute(this);
+    }
 }

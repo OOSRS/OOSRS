@@ -29,8 +29,8 @@ import net.runelite.api.coords.WorldPoint;
 @Singleton
 public class MovementService
 {
-	/** Historical varp for run-enabled state (173). Verify live in P7. */
-	public static final int VARP_RUN_ENABLED = 173;
+	/** Run-enabled variable from the pinned game-value definitions. */
+	public static final int VARP_RUN_ENABLED = net.runelite.api.gameval.VarPlayerID.OPTION_RUN;
 
 	private final Client client;
 	private final MenuDispatcher dispatcher;
@@ -137,23 +137,33 @@ public class MovementService
 	}
 
 	/**
-	 * Toggle run via its settings component.
-	 *
-	 * Finds the visible run-toggle control and routes it through the native menu tier.
+	 * Explicit flip through the revision-240 orb control shared by desktop fixed/resizable layouts.
+	 * Completion is observed separately through {@link #runEnabled()}.
 	 */
 	public void toggleRun()
 	{
-		for (WidgetRef widget : widgets.search().visible().list())
+		requireRunContext();
+		WidgetRef control = widgets.get(net.runelite.api.gameval.InterfaceID.Orbs.RUNBUTTON);
+		if (control == null || !control.isVisible() || !control.hasAction("Toggle Run"))
 		{
-			for (String action : widget.getActions())
-			{
-				if (action != null && action.toLowerCase().contains("run"))
-				{
-					widgets.interact(widget, action);
-					return;
-				}
-			}
+			throw new IllegalStateException("run control unavailable in the current layout");
 		}
-		throw new IllegalStateException("run-toggle widget is not visible");
+		widgets.interact(control, "Toggle Run");
+	}
+
+	/** Submit a flip only when the observed state differs; does not claim server completion. */
+	public void ensureRunEnabled(boolean enabled)
+	{
+		requireRunContext();
+		if (runEnabled() != enabled) { toggleRun(); }
+	}
+
+	private void requireRunContext()
+	{
+		if (!client.isClientThread()) { throw new IllegalStateException("run control requires the client thread"); }
+		if (client.getGameState() != net.runelite.api.GameState.LOGGED_IN)
+		{
+			throw new IllegalStateException("run control requires a logged-in session");
+		}
 	}
 }

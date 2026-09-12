@@ -62,8 +62,26 @@ public class EventBus
 		private final float priority;
 		@EqualsAndHashCode.Exclude
 		private final Consumer<Object> lambda;
+		@EqualsAndHashCode.Exclude
+		private final net.openosrs.api.operation.OperationOwner owner;
+
+		public Subscriber(Object object, Method method, float priority, Consumer<Object> lambda)
+		{ this(object, method, priority, lambda, null); }
+		private Subscriber(Object object, Method method, float priority, Consumer<Object> lambda, net.openosrs.api.operation.OperationOwner owner)
+		{ this.object = object; this.method = method; this.priority = priority; this.lambda = lambda; this.owner = owner; }
 
 		void invoke(final Object arg) throws Exception
+		{
+			if (owner == null) { invokeUnowned(arg); return; }
+			owner.whileActive(() ->
+			{
+				try { invokeUnowned(arg); }
+				catch (Exception error) { throw new java.util.concurrent.CompletionException(error); }
+				return null;
+			}, null);
+		}
+
+		private void invokeUnowned(final Object arg) throws Exception
 		{
 			if (lambda != null)
 			{
@@ -97,6 +115,17 @@ public class EventBus
 	 * @throws IllegalArgumentException in case subscriber method name is wrong (correct format is 'on' + EventName
 	 */
 	public synchronized void register(@Nonnull final Object object)
+	{
+		register(object, null);
+	}
+
+	/** Plugin subscriptions carry their lifetime into delayed API operations. */
+	public synchronized void registerOwned(Object object, net.openosrs.api.operation.OperationOwner owner)
+	{
+		register(object, java.util.Objects.requireNonNull(owner));
+	}
+
+	private void register(Object object, net.openosrs.api.operation.OperationOwner owner)
 	{
 		final ImmutableMultimap.Builder<Class<?>, Subscriber> builder = ImmutableMultimap.builder();
 		builder.putAll(subscribers);
@@ -155,7 +184,7 @@ public class EventBus
 					log.warn("Unable to create lambda for method {}", method, e);
 				}
 
-				final Subscriber subscriber = new Subscriber(object, method, sub.priority(), lambda);
+				final Subscriber subscriber = new Subscriber(object, method, sub.priority(), lambda, owner);
 				builder.put(parameterClazz, subscriber);
 				log.debug("Registering {} - {}", parameterClazz, subscriber);
 			}

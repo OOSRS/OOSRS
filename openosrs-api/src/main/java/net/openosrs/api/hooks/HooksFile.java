@@ -25,6 +25,12 @@ import lombok.Data;
 @Data
 public class HooksFile
 {
+    /** Detached compatibility DTO; changes to this copy cannot change its source. */
+    public HooksFile copy()
+    {
+        Gson gson = new Gson();
+        return gson.fromJson(gson.toJson(this), HooksFile.class);
+    }
 	@SerializedName("format")
 	private String format;
 
@@ -282,6 +288,10 @@ public class HooksFile
 		{
 			throw new IllegalStateException("invalid sendPath.factoryMethods");
 		}
+        String factoryDescriptor = "(L" + f.clientPacket.replace('.', '/') + ";L"
+            + f.isaac.replace('.', '/') + ";)L" + f.packetBufferNode.replace('.', '/') + ";";
+        if (s.factoryMethods.stream().anyMatch(v -> !v.substring(v.indexOf('(')).equals(factoryDescriptor)))
+            throw new IllegalStateException("unsupported factory descriptor");
 		if (trace != null && (trace.idField == null || trace.idField.isBlank()
 			|| trace.declaredField == null || trace.declaredField.isBlank()
 			|| !validMultiplier(trace.idMultiplier) || !validMultiplier(trace.declaredMultiplier)
@@ -290,7 +300,8 @@ public class HooksFile
 			throw new IllegalStateException("invalid trace metadata");
 		}
 		if (!validMethodKey(s.addNodeMethod + (s.addNodeDescriptor == null ? "" : s.addNodeDescriptor))
-			|| !validDescriptor(s.addNodeDescriptor))
+			|| !validDescriptor(s.addNodeDescriptor) || s.addNodeStatic
+            || !("(L" + f.packetBufferNode.replace('.', '/') + ";I)V").equals(s.addNodeDescriptor))
 		{
 			throw new IllegalStateException("invalid sendPath.addNodeMethod");
 		}
@@ -303,7 +314,8 @@ public class HooksFile
 			BufferMethodDef method = entry.getValue();
 			if (method == null || !validMethodKey(entry.getKey()) ||
 				!entry.getKey().endsWith(method.desc) ||
-				!validDescriptor(method.desc) || method.owner == null || method.owner.isEmpty() ||
+				!validDescriptor(method.desc) || method.owner == null ||
+                !(method.owner.equals(f.buffer) || f.bufferSubclasses.contains(method.owner)) ||
 				!validWidth(method.width) || method.read == null)
 			{
 				throw new IllegalStateException("invalid buffer method: " + entry.getKey());
@@ -380,7 +392,7 @@ public class HooksFile
 				{
 					throw new IllegalStateException("empty writes for packet id=" + p.id);
 				}
-				int width = 0;
+				long width = 0;
 				for (WriteOp op : p.writes)
 				{
 					if (op == null || !validMethodKey(op.m + op.d) || !validDescriptor(op.d)
@@ -389,6 +401,14 @@ public class HooksFile
 					{
 						throw new IllegalStateException("invalid write op for packet id=" + p.id);
 					}
+                    BufferMethodDef method = bufferMethods.get(op.m + op.d);
+                    if (method == null || !op.w.equals(method.width)
+                        || op.staticMethod != method.staticMethod || !op.d.endsWith(")V")
+                        || !(op.owner.equals(method.owner) || (!op.staticMethod
+                            && families.buffer.equals(method.owner) && families.bufferSubclasses.contains(op.owner))))
+                    {
+                        throw new IllegalStateException("write metadata mismatch for packet id=" + p.id);
+                    }
 					width += Integer.parseInt(op.w.substring(1));
 				}
 				if (p.length >= 0 && width != p.length)
@@ -424,13 +444,15 @@ public class HooksFile
 
 	private static boolean validMethodKey(String key)
 	{
-		return key != null && key.indexOf('(') > 0 && key.endsWith(")V") ||
-			(key != null && key.indexOf('(') > 0 && key.indexOf(')') > key.indexOf('('));
+        if (key == null || key.indexOf('(') <= 0) return false;
+        int start = key.indexOf('(');
+        return key.substring(0, start).matches("[a-zA-Z_$][a-zA-Z0-9_$]*")
+            && validDescriptor(key.substring(start));
 	}
 
 	private static boolean validDescriptor(String desc)
 	{
-		return desc != null && desc.startsWith("(") && desc.indexOf(')') > 0;
+		return JvmDescriptor.isMethod(desc);
 	}
 
 	private static boolean validMultiplier(Integer multiplier)

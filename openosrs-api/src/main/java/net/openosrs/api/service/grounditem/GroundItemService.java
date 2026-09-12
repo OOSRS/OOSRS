@@ -20,18 +20,25 @@ import net.runelite.api.coords.WorldPoint;
 @Singleton
 public class GroundItemService
 {
+	private final net.openosrs.api.state.SceneTargetLifetimes lifetimes;
 	private final Client client;
 	private final MenuDispatcher dispatcher;
 
-	@Inject
 	public GroundItemService(Client client, MenuDispatcher dispatcher)
 	{
+		this(client, dispatcher, net.openosrs.api.state.SceneTargetLifetimes.forClient(client));
+	}
+
+	@Inject public GroundItemService(Client client, MenuDispatcher dispatcher, net.openosrs.api.state.SceneTargetLifetimes lifetimes)
+	{
+		this.lifetimes = lifetimes;
 		this.client = client;
 		this.dispatcher = dispatcher;
 	}
 
 	public List<GroundItemRef> all()
 	{
+		if (!client.isClientThread()) throw new IllegalStateException("Scene queries require the client thread");
 		Scene scene = client.getScene();
 		if (scene == null || scene.getTiles() == null) return Collections.emptyList();
 		List<GroundItemRef> result = new ArrayList<>();
@@ -52,7 +59,7 @@ public class GroundItemService
 						result.add(new GroundItemRef(item.getId(), item.getQuantity(),
 							tile.getSceneLocation().getX(), tile.getSceneLocation().getY(),
 							scene.getWorldViewId(), composition == null ? null : composition.getName(),
-							tile.getWorldLocation()));
+							tile.getWorldLocation(), lifetimes.capture(item, tile)));
 					}
 				}
 			}
@@ -79,8 +86,10 @@ public class GroundItemService
 	public void take(GroundItemRef item)
 	{
 		if (item == null) throw new IllegalArgumentException("ground item is required");
-		dispatcher.dispatch(MenuAction.GROUND_ITEM_FIRST_OPTION, item.getId(),
-			item.getSceneX(), item.getSceneY(), "Take", item.getName(), -1, item.getWorldViewId());
+		item.requireCurrent(client);
+		// RLPlugins TileItemAPI: Take is index 0, mapped to OPOBJ1 on this revision.
+		dispatcher.submit(MenuAction.GROUND_ITEM_FIRST_OPTION, item.getId(),
+			item.getSceneX(), item.getSceneY(), "Take", item.getName(), -1, item.getWorldViewId()).requireSubmitted();
 	}
 
 	public void lootAt(WorldPoint location)

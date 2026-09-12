@@ -475,4 +475,12 @@ public interface RuneLiteConfig extends Config
 	{
 		return Keybind.ALT;
 	}
+
+	@ConfigItem(
+		keyName = "sharePluginUsage",
+		name = "Share Plugin Hub usage",
+		description = "Send installed RuneLite Plugin Hub plugin IDs to RuneLite every three hours. Off by default; repository plugins are excluded.",
+		position = 53
+	)
+	default boolean sharePluginUsage() { return false; }
 }

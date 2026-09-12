@@ -230,7 +230,7 @@ public class OPRSUpdateManager
 		Path file = pluginsRoot.resolve(downloaded.getFileName());
 		try
 		{
-			Files.move(downloaded, file, REPLACE_EXISTING);
+			Files.move(downloaded, file);
 		}
 		catch (IOException e)
 		{
@@ -238,6 +238,11 @@ public class OPRSUpdateManager
 		}
 
 		String pluginId = pluginManager.loadPlugin(file);
+		if (!id.equals(pluginId))
+		{
+			if (pluginId != null) pluginManager.deletePlugin(pluginId);
+			throw new PluginRuntimeException("Downloaded plugin identity does not match {}", id);
+		}
 		PluginState state = pluginManager.startPlugin(pluginId);
 
 		return PluginState.STARTED.equals(state);
@@ -254,15 +259,28 @@ public class OPRSUpdateManager
 	 */
 	protected Path downloadPlugin(String id, String version)
 	{
+		Path downloaded = null;
 		try
 		{
 			PluginInfo.PluginRelease release = findReleaseForPlugin(id, version);
-			Path downloaded = getFileDownloader(id).downloadFile(new URL(release.url));
-			getFileVerifier(id).verify(new FileVerifier.Context(id, release), downloaded);
+			if (release == null) { throw new PluginRuntimeException("No compatible release for plugin {}", id); }
+			MandatoryPluginVerifier.requireDigest(release.sha512sum);
+			URL artifact = new URL(release.url);
+			OPRSUpdateRepository.validateHttps(artifact);
+			downloaded = getFileDownloader(id).downloadFile(artifact);
+			FileVerifier.Context context = new FileVerifier.Context(id, release);
+			// A custom repository verifier cannot bypass mandatory integrity checks.
+			new MandatoryPluginVerifier().verify(context, downloaded);
+			FileVerifier repositoryVerifier = getFileVerifier(id);
+			if (!(repositoryVerifier instanceof MandatoryPluginVerifier)) { repositoryVerifier.verify(context, downloaded); }
 			return downloaded;
 		}
-		catch (IOException e)
+		catch (IOException | RuntimeException e)
 		{
+			if (downloaded != null)
+			{
+				try { Files.deleteIfExists(downloaded); } catch (IOException cleanup) { e.addSuppressed(cleanup); }
+			}
 			throw new PluginRuntimeException(e, "Error during download of plugin {}", id);
 		}
 	}
@@ -303,7 +321,7 @@ public class OPRSUpdateManager
 			}
 		}
 
-		return new CompoundVerifier();
+		return new MandatoryPluginVerifier();
 	}
 
 	/**
@@ -366,29 +384,60 @@ public class OPRSUpdateManager
 			return false;
 		}
 
-		// Download to temp folder
+		// Verify the new download before touching the installed version.
 		Path downloaded = downloadPlugin(id, version);
-
-		if (!pluginManager.deletePlugin(id))
-		{
-			return false;
-		}
-
-		Path pluginsRoot = pluginManager.getPluginsRoot();
-		Path file = pluginsRoot.resolve(downloaded.getFileName());
+		PluginWrapper previous = pluginManager.getPlugin(id);
+		Path original = previous.getPluginPath();
+		Path backup = null;
+		Path file = pluginManager.getPluginsRoot().resolve(downloaded.getFileName());
+		boolean wasStarted = previous.getPluginState() == PluginState.STARTED;
+		boolean wasDisabled = previous.getPluginState() == PluginState.DISABLED;
+		String loaded = null;
+		boolean removed = false;
 		try
 		{
+			if (Files.exists(file) && !file.equals(original))
+				throw new IOException("Update filename collides with another installed artifact");
+			backup = Files.createTempFile(pluginManager.getPluginsRoot(), ".rollback-", ".bak");
+			Files.copy(original, backup, REPLACE_EXISTING);
+			if (!pluginManager.deletePlugin(id)) return false;
+			removed = true;
 			Files.move(downloaded, file, REPLACE_EXISTING);
+			loaded = pluginManager.loadPlugin(file);
+			if (!id.equals(loaded)) throw new IOException("Updated plugin identity changed");
+			if (wasDisabled) pluginManager.disablePlugin(id);
+			else if (wasStarted && pluginManager.startPlugin(id) != PluginState.STARTED)
+				throw new IOException("Updated plugin failed to start");
+			Files.deleteIfExists(backup); backup = null;
+			return true;
 		}
-		catch (IOException e)
+		catch (Exception | LinkageError failure)
 		{
-			throw new PluginRuntimeException("Failed to write plugin file {} to plugin folder", file);
+			if (removed)
+			{
+				try
+				{
+					if (loaded != null && pluginManager.getPlugin(loaded) != null && !pluginManager.deletePlugin(loaded))
+						throw new IOException("Failed update cannot be unloaded; rollback retained at " + backup);
+					Files.deleteIfExists(file);
+					Files.copy(backup, original, REPLACE_EXISTING);
+					String restored = pluginManager.loadPlugin(original);
+					if (!id.equals(restored)) throw new IOException("Rollback plugin identity mismatch");
+					if (wasDisabled) pluginManager.disablePlugin(id);
+					else if (wasStarted && pluginManager.startPlugin(id) != PluginState.STARTED)
+						throw new IOException("Rollback failed to restart");
+					Files.deleteIfExists(backup); backup = null;
+				}
+				catch (Exception | LinkageError recovery) { failure.addSuppressed(recovery); }
+			}
+			throw new PluginRuntimeException(failure, "Update failed for {}; previous artifact retained", id);
 		}
-
-		String newPluginId = pluginManager.loadPlugin(file);
-		PluginState state = pluginManager.startPlugin(newPluginId);
-
-		return PluginState.STARTED.equals(state);
+		finally
+		{
+			try { Files.deleteIfExists(downloaded); } catch (IOException cleanup) { log.warn("Cannot remove update download", cleanup); }
+			if (!removed && backup != null)
+				try { Files.deleteIfExists(backup); } catch (IOException cleanup) { log.warn("Cannot remove unused rollback copy", cleanup); }
+		}
 	}
 
 	/**

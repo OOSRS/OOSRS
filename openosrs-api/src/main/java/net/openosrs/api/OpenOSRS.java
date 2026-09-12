@@ -46,6 +46,16 @@ public final class OpenOSRS
 	{
 	}
 
+	/** Resolve the lifetime registered for a currently running plugin instance. */
+	public static net.openosrs.api.operation.OperationOwner owner(Object plugin)
+	{
+		return Context.getService(net.openosrs.api.operation.OperationOwners.class).get(plugin);
+	}
+	public static net.openosrs.api.concurrent.ClientActions actions()
+	{
+		return Context.getService(net.openosrs.api.concurrent.ClientActions.class);
+	}
+
 	public static NpcService npcs()
 	{
 		return Context.getService(NpcService.class);
@@ -83,7 +93,12 @@ public final class OpenOSRS
 
 	public static EquipmentService equipment() { return Context.getService(EquipmentService.class); }
 	public static DialogueService dialogue() { return Context.getService(DialogueService.class); }
-	public static DialogueFlowRunner dialogueFlow() { return Context.getService(DialogueFlowRunner.class); }
+	/** Creates a fresh handle. Retain it over ticks; prefer the owner overload. */
+	public static DialogueFlowRunner dialogueFlow() { return dialogueFlow(new net.openosrs.api.operation.OperationOwner()); }
+	public static DialogueFlowRunner dialogueFlow(net.openosrs.api.operation.OperationOwner owner)
+	{
+		return Context.getService(net.openosrs.api.service.dialogue.DialogueFlowFactory.class).newFlow(owner);
+	}
 	public static PrayerService prayers() { return Context.getService(PrayerService.class); }
 	public static TabsService tabs() { return Context.getService(TabsService.class); }
 	public static EmoteService emotes() { return Context.getService(EmoteService.class); }

@@ -39,8 +39,8 @@ public final class WidgetQuery extends Query<WidgetRef, WidgetQuery>
 
 	public WidgetQuery textContains(String text)
 	{
-		String needle = text == null ? "" : text.toLowerCase();
-		return keepIf(widget -> strip(widget.getText()).toLowerCase().contains(needle));
+		String needle = text == null ? "" : text.toLowerCase(java.util.Locale.ROOT);
+		return keepIf(widget -> strip(widget.getText()).toLowerCase(java.util.Locale.ROOT).contains(needle));
 	}
 
 	public WidgetQuery withName(String name)
@@ -50,8 +50,8 @@ public final class WidgetQuery extends Query<WidgetRef, WidgetQuery>
 
 	public WidgetQuery nameContains(String name)
 	{
-		String needle = name == null ? "" : name.toLowerCase();
-		return keepIf(widget -> strip(widget.getName()).toLowerCase().contains(needle));
+		String needle = name == null ? "" : name.toLowerCase(java.util.Locale.ROOT);
+		return keepIf(widget -> strip(widget.getName()).toLowerCase(java.util.Locale.ROOT).contains(needle));
 	}
 
 	private static String strip(String text)

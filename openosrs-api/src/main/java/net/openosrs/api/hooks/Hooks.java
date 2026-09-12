@@ -99,6 +99,6 @@ public class Hooks
 
 	public HooksFile file()
 	{
-		return file;
+		return file == null ? null : file.copy();
 	}
 }

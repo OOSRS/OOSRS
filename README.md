@@ -18,12 +18,12 @@ An open-source desktop client built around extensibility. Explore the world with
 
 1. Install **Java 11 or newer**.
 2. Download the launcher JAR from [OpenOSRS Launcher releases](https://github.com/OOSRS/OOSRS-Launcher/releases/latest).
-3. Open it with Java, or run `java -jar openosrs-launcher-1.0.1.jar`.
+3. Open it with Java, or run `java -jar openosrs-launcher-1.0.4.jar`.
 4. Select **Launch OpenOSRS**. The launcher downloads and verifies the matching client, then keeps it cached.
 
 Client and launcher updates have separate release channels. Failed downloads preserve existing cached files. A cached client still needs a game-compatible revision and a network connection to play.
 
-You can also download the client JAR directly and run `java -jar openosrs-client-1.0.1.jar`.
+You can also download the client JAR directly and run `java -jar openosrs-client-1.0.2.jar`.
 
 ## Built for plugin makers
 
@@ -53,7 +53,7 @@ See the [plugin guide](docs/PLUGINS.md), [API guide](docs/API.md), and [three ex
 git clone https://github.com/OOSRS/OOSRS.git
 cd OOSRS
 ./gradlew :runelite-client:shadowJar
-java -jar runelite-client/build/libs/openosrs-client-1.0.1.jar
+java -jar runelite-client/build/libs/openosrs-client-1.0.2.jar
 ```
 
 Use a Java 11 JDK. On Windows, use `gradlew.bat`. The build fetches its pinned game dependency and verifies its SHA-256; you do not need the private maintainer tools. [Full build guide →](docs/BUILDING.md)
@@ -68,6 +68,8 @@ Use a Java 11 JDK. On Windows, use `gradlew.bat`. The build fetches its pinned g
 - [OOSRS-Plugins](https://github.com/OOSRS/OOSRS-Plugins) — a separate repository containing three installable examples, included by default in the client.
 
 Existing Java package names preserve plugin compatibility. Revision 240 is the initial published baseline. Unverified packet layouts remain disabled; the API does not promise that every possible action is supported.
+
+See [1.0.2 changes and compatibility limits](docs/releases/1.0.2.md).
 
 ## Contribute
 

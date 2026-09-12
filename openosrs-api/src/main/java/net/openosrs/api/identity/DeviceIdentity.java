@@ -7,6 +7,8 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.AtomicMoveNotSupportedException;
+import java.nio.file.CopyOption;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -56,7 +58,12 @@ public final class DeviceIdentity
 	}
 
 	static synchronized String cached(Path directory, String identifier) throws IOException
-	{
+    {
+        return cached(directory, identifier, Files::move);
+    }
+
+    static synchronized String cached(Path directory, String identifier, MoveStrategy mover) throws IOException
+    {
 		if (Files.isSymbolicLink(directory))
 		{
 			throw new IOException("Identity cache must not be a symbolic link");
@@ -107,8 +114,7 @@ public final class DeviceIdentity
 				{
 					properties.store(output, "OpenOSRS device IDs; hashed account keys");
 				}
-				// An unsupported atomic move leaves the old cache intact.
-				Files.move(temporary, file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+				commit(temporary, file, mover);
 			}
 			finally
 			{
@@ -117,6 +123,69 @@ public final class DeviceIdentity
 			return value;
 		}
 	}
+
+    @FunctionalInterface
+    interface MoveStrategy
+    {
+        Path move(Path source, Path target, CopyOption... options) throws IOException;
+    }
+
+    /** Caller holds the cache lock; fallback applies only to unsupported atomic moves. */
+    private static void commit(Path temporary, Path file, MoveStrategy mover) throws IOException
+    {
+        try
+        {
+            mover.move(temporary, file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+            return;
+        }
+        catch (AtomicMoveNotSupportedException unsupported)
+        {
+            byte[] expected = Files.readAllBytes(temporary);
+            Path backup = null;
+            boolean preserveBackup = false;
+            boolean replacementStarted = false;
+            try
+            {
+                if (Files.exists(file, LinkOption.NOFOLLOW_LINKS))
+                {
+                    if (!Files.isRegularFile(file, LinkOption.NOFOLLOW_LINKS)) throw new IOException("Invalid identity cache target");
+                    backup = Files.createTempFile(file.getParent(), "device-ids-backup-", ".tmp");
+                    restrict(backup, "rw-------");
+                    Files.copy(file, backup, StandardCopyOption.REPLACE_EXISTING, LinkOption.NOFOLLOW_LINKS);
+                    restrict(backup, "rw-------");
+                }
+                replacementStarted = true;
+                mover.move(temporary, file, StandardCopyOption.REPLACE_EXISTING);
+                if (!Files.isRegularFile(file, LinkOption.NOFOLLOW_LINKS)
+                    || !java.util.Arrays.equals(expected, Files.readAllBytes(file)))
+                    throw new IOException("Identity cache write verification failed");
+                restrict(file, "rw-------");
+            }
+            catch (IOException failure)
+            {
+                if (!replacementStarted) { throw failure; }
+                try
+                {
+                    if (backup != null)
+                    {
+                        Files.copy(backup, file, StandardCopyOption.REPLACE_EXISTING, LinkOption.NOFOLLOW_LINKS);
+                        restrict(file, "rw-------");
+                    }
+                    else { Files.deleteIfExists(file); }
+                }
+                catch (IOException recovery)
+                {
+                    preserveBackup = true;
+                    failure.addSuppressed(recovery);
+                }
+                throw failure;
+            }
+            finally
+            {
+                if (backup != null && !preserveBackup) Files.deleteIfExists(backup);
+            }
+        }
+    }
 
 	/** VitaLite-style generated pair, stable for the lifetime of this JVM. */
 	public static synchronized String packedStack(int index)

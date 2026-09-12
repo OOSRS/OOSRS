@@ -91,8 +91,8 @@ public class ChatMessageManager
 	void colorChatMessage()
 	{
 		final int[] intStack = client.getIntStack();
-		final String[] stringStack = client.getStringStack();
-		final int size = client.getStringStackSize();
+		final Object[] objectStack = client.getObjectStack();
+		final int size = client.getObjectStackSize();
 		final int isize = client.getIntStackSize();
 		final int uid = intStack[isize - 1];
 		final boolean splitpmbox = intStack[isize - 2] == 1;
@@ -100,9 +100,9 @@ public class ChatMessageManager
 		final MessageNode messageNode = client.getMessages().get(uid);
 		assert messageNode != null : "chat message build for unknown message";
 
-		String message = stringStack[size - 2];
-		final String username = stringStack[size - 3];
-		final String channel = stringStack[size - 4];
+		String message = (String) objectStack[size - 2];
+		final String username = (String) objectStack[size - 3];
+		final String channel = (String) objectStack[size - 4];
 		final ChatMessageType chatMessageType = messageNode.getType();
 
 		final boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
@@ -155,12 +155,12 @@ public class ChatMessageManager
 
 		if (usernameColor != null)
 		{
-			stringStack[size - 3] = ColorUtil.wrapWithColorTag(username, usernameColor);
+			objectStack[size - 3] = ColorUtil.wrapWithColorTag(username, usernameColor);
 		}
 
 		if (channelColor != null && !Strings.isNullOrEmpty(channel))
 		{
-			stringStack[size - 4] = ColorUtil.wrapWithColorTag(channel, channelColor);
+			objectStack[size - 4] = ColorUtil.wrapWithColorTag(channel, channelColor);
 		}
 
 		String prefix = "";
@@ -192,7 +192,7 @@ public class ChatMessageManager
 			break;
 		}
 
-		stringStack[size - 2] = prefix + message;
+		objectStack[size - 2] = prefix + message;
 	}
 
 	@Subscribe
@@ -223,10 +223,10 @@ public class ChatMessageManager
 			return;
 		}
 
-		final String[] stringStack = client.getStringStack();
-		final int stringStackSize = client.getStringStackSize();
+		final Object[] objectStack = client.getObjectStack();
+		final int objectStackSize = client.getObjectStackSize();
 		
-		String fromToUsername = stringStack[stringStackSize - 1];
+		String fromToUsername = (String) objectStack[objectStackSize - 1];
 		if (wrap)
 		{
 			fromToUsername = ColorUtil.wrapWithColorTag(fromToUsername, usernameColor);
@@ -235,7 +235,7 @@ public class ChatMessageManager
 		{
 			fromToUsername = ColorUtil.colorTag(usernameColor);
 		}
-		stringStack[stringStackSize - 1] = fromToUsername;
+		objectStack[objectStackSize - 1] = fromToUsername;
 	}
 
 	private static Color getDefaultColor(ChatMessageType type, boolean transparent)

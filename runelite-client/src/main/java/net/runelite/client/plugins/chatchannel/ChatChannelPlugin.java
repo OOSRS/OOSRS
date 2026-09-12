@@ -583,9 +583,9 @@ public class ChatChannelPlugin extends Plugin
 				intStack[size - 1] = 1;
 
 				// Get name of player we are trying to kick
-				final String[] stringStack = client.getStringStack();
-				final int stringSize = client.getStringStackSize();
-				final String kickPlayerName = stringStack[stringSize - 1];
+				final Object[] objectStack = client.getObjectStack();
+				final int objectSize = client.getObjectStackSize();
+				final String kickPlayerName = (String) objectStack[objectSize - 1];
 
 				// Show a chatbox panel confirming the kick
 				clientThread.invokeLater(() -> confirmKickPlayer(kickPlayerName));

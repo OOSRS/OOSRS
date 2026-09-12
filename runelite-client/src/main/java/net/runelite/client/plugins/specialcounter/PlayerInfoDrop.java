@@ -43,6 +43,8 @@ class PlayerInfoDrop
 	private final int endCycle;
 	private final int playerIdx;
 	private final String text;
+	private final net.runelite.api.Player player;
+	private final net.runelite.api.WorldView worldView;
 	private final int startHeightOffset;
 	private final int endHeightOffset;
 	private final Font font;
@@ -54,6 +56,14 @@ class PlayerInfoDrop
 		return new Builder(startCycle, endCycle, playerIdx, text);
 	}
 
+	/** Never attach an old drop to a later actor or a reused world-view identifier. */
+	net.runelite.api.Player resolvePlayer(net.runelite.api.Client client)
+	{
+		if (player == null || worldView == null) { return null; }
+		net.runelite.api.WorldView current = worldView.isTopLevel() ? client.getTopLevelWorldView() : client.getWorldView(worldView.getId());
+		return current == worldView && net.runelite.api.ActorLookup.player(current, playerIdx) == player ? player : null;
+	}
+
 	@RequiredArgsConstructor
 	@Accessors(fluent = true)
 	@Setter
@@ -63,6 +73,8 @@ class PlayerInfoDrop
 		private final int endCycle;
 		private final int playerIdx;
 		private final String text;
+		private net.runelite.api.Player player;
+		private net.runelite.api.WorldView worldView;
 		private int startHeightOffset = 0;
 		private int endHeightOffset = 200;
 		private Font font = FontManager.getRunescapeBoldFont();
@@ -79,7 +91,7 @@ class PlayerInfoDrop
 			{
 				throw new IllegalArgumentException("playerIdx must be between 0-2047");
 			}
-			return new PlayerInfoDrop(startCycle, endCycle, playerIdx, text, startHeightOffset, endHeightOffset, font, color, image);
+			return new PlayerInfoDrop(startCycle, endCycle, playerIdx, text, player, worldView, startHeightOffset, endHeightOffset, font, color, image);
 		}
 	}
 }

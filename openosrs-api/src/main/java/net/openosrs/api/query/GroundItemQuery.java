@@ -26,8 +26,8 @@ public final class GroundItemQuery extends Query<GroundItemRef, GroundItemQuery>
 
 	public GroundItemQuery nameContains(String text)
 	{
-		String needle = text == null ? "" : text.toLowerCase();
-		return keepIf(item -> item.getName() != null && item.getName().toLowerCase().contains(needle));
+		String needle = text == null ? "" : text.toLowerCase(java.util.Locale.ROOT);
+		return keepIf(item -> item.getName() != null && item.getName().toLowerCase(java.util.Locale.ROOT).contains(needle));
 	}
 
 	public GroundItemQuery at(WorldPoint location)

@@ -89,7 +89,7 @@ public class GrandExchangeService
 		String needle = buy ? "buy" : "sell";
 		for (String action : widget.getActions())
 		{
-			if (action != null && action.toLowerCase().contains(needle)) return action;
+			if (action != null && action.toLowerCase(java.util.Locale.ROOT).contains(needle)) return action;
 		}
 		return null;
 	}
@@ -97,6 +97,7 @@ public class GrandExchangeService
 	public void selectSellItem(InventoryItem item)
 	{
 		if (item == null) throw new IllegalArgumentException("inventory item is required");
+		item.requireCurrent(client);
 		for (WidgetRef widget : widgets.descendants(InterfaceID.GeOffersSide.ITEMS))
 		{
 			if (widget.getIndex() == item.getSlot() && widget.getItemId() == item.getId())
@@ -111,8 +112,8 @@ public class GrandExchangeService
 	public void setQuantity(int quantity)
 	{
 		requirePositive(quantity, "quantity");
-		pressSetupAction("Enter quantity");
-		dialogue.enterAmount(quantity);
+		WidgetRef origin = setupAction("Enter quantity");
+		dialogue.requestAmount(quantity, 7, origin, () -> widgets.interact(origin, "Enter quantity"), "quantity");
 	}
 
 	/** Opens the price input; submit the value on a later client tick. */
@@ -144,8 +145,8 @@ public class GrandExchangeService
 	public void setPrice(int price)
 	{
 		requirePositive(price, "price");
-		pressSetupAction("Enter price");
-		dialogue.enterAmount(price);
+		WidgetRef origin = setupAction("Enter price");
+		dialogue.requestAmount(price, 7, origin, () -> widgets.interact(origin, "Enter price"), "price");
 	}
 
 	public void confirm()
@@ -162,7 +163,7 @@ public class GrandExchangeService
 			if (!widget.isVisible()) continue;
 			for (String action : widget.getActions())
 			{
-				if (action != null && action.toLowerCase().contains("collect"))
+				if (action != null && action.toLowerCase(java.util.Locale.ROOT).contains("collect"))
 				{
 					widgets.interact(widget, action);
 					return;
@@ -184,7 +185,7 @@ public class GrandExchangeService
 			if (!widget.isVisible()) continue;
 			for (String action : widget.getActions())
 			{
-				if (action != null && action.toLowerCase().contains("collect"))
+				if (action != null && action.toLowerCase(java.util.Locale.ROOT).contains("collect"))
 				{
 					widgets.interact(widget, action);
 					return;
@@ -216,12 +217,16 @@ public class GrandExchangeService
 
 	private void pressSetupAction(String action)
 	{
+		widgets.interact(setupAction(action), action);
+	}
+
+	private WidgetRef setupAction(String action)
+	{
 		for (WidgetRef widget : widgets.descendants(InterfaceID.GeOffers.SETUP))
 		{
 			if (widget.isVisible() && widget.hasAction(action))
 			{
-				widgets.interact(widget, action);
-				return;
+				return widget;
 			}
 		}
 		throw new IllegalStateException("GE setup action is not loaded: " + action);

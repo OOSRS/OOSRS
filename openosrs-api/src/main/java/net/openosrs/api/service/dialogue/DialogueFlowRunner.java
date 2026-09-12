@@ -1,252 +1,239 @@
 /*
  * Copyright (c) 2026, OpenOSRS
  * All rights reserved.
- *
- * Declarative dialogue flow runner (P5): a sequential chain of expected
- * dialogue states driven by the caller's tick loop. Never blocks, never
- * sleeps; each {@link #advance()} call makes at most one decision and
- * reports honest progress.
- *
- * Typical plugin usage:
- * <pre>{@code
- *   flow = DialogueFlow.builder(dialogue)
- *       .continueIfPossible()
- *       .choose("Yes")
- *       .continueTimes(2)
- *       .build();
- *   // each game tick:
- *   if (flow.advance()) { ... finished ... }
- * }</pre>
  */
 package net.openosrs.api.service.dialogue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
-import javax.inject.Singleton;
+import net.openosrs.api.Context;
+import net.openosrs.api.operation.OperationLeases;
+import net.openosrs.api.operation.OperationOwner;
+import net.openosrs.api.service.delay.SessionTickClock;
+import net.runelite.api.GameState;
 
 /**
- * Executes ordered dialogue interactions until an end condition. Steps are
- * matched against LIVE dialogue state: a step that cannot run right now is
- * simply skipped when the dialogue no longer matches (NPCs vary), while an
- * explicit expectation failure fails the flow.
+ * One owned, bounded dialogue sequence. Retain this handle over client ticks.
+ * COMPLETE means each submitted step produced a visible dialogue transition,
+ * not that a quest or transaction succeeded on the server.
  */
-@Singleton
-public class DialogueFlowRunner
+public class DialogueFlowRunner implements AutoCloseable
 {
-	private final DialogueService dialogue;
-
-	@Inject
-	public DialogueFlowRunner(DialogueService dialogue)
-	{
-		this.dialogue = dialogue;
-	}
-
-	public enum StepKind
-	{
-		/** Click whatever continue widget is visible (spacebar-equivalent). */
-		CONTINUE,
-		/** Choose the first option containing the needle (case-insensitive). */
-		CHOOSE,
-		/** Enter an integer amount via RESUME_P_COUNTDIALOG packet tier. */
-		ENTER_AMOUNT,
-	}
-
+	public enum StepKind { CONTINUE, CHOOSE, ENTER_AMOUNT }
+	public enum Status { COMPLETE, PROGRESSED, WAITING, STUCK, TIMED_OUT, CANCELLED, BUSY }
+	public enum Failure { NONE, REJECTED, UNSUPPORTED_INPUT, DEADLINE, OWNER_CLOSED, SESSION_CHANGED }
 	public static final class Step
 	{
 		final StepKind kind;
-		final String argument; // option needle / unused for others
-
-		Step(StepKind kind, String argument)
-		{
-			this.kind = kind;
-			this.argument = argument;
-		}
+		final String argument;
+		final String expectedText;
+		Step(StepKind kind, String argument) { this(kind, argument, null); }
+		Step(StepKind kind, String argument, String expectedText) { this.kind = kind; this.argument = argument; this.expectedText = expectedText; }
 	}
 
+	private final DialogueService dialogue;
+	private DialogueFlowFactory factory;
+	private final OperationOwner owner;
+	private final List<Step> draft = new ArrayList<>();
+	private List<Step> steps;
+	private OperationLeases.Lease lease;
+	private Runnable detach = () -> {};
+	private int cursor;
+	private long timeoutTicks = 50, startedTick, epoch, lastTick = Long.MIN_VALUE;
+	private boolean started;
+	private DialogueService.Snapshot submittedState;
+	private Status status = Status.WAITING;
+	private Failure failure = Failure.NONE;
 
-	public enum Status
+	/** Legacy isolated handle. Prefer the factory with a plugin's OperationOwner. */
+	@Deprecated
+	@Inject public DialogueFlowRunner(DialogueService dialogue)
 	{
-		/** All steps executed; dialogue resolved or no longer present. */
-		COMPLETE,
-		/** A step ran this tick; call advance() again next tick. */
-		PROGRESSED,
-		/** Waiting for the dialogue to change; keep calling advance(). */
-		WAITING,
-		/** Flow cannot proceed as specified. */
-		STUCK
+		this.dialogue = java.util.Objects.requireNonNull(dialogue, "dialogue");
+		this.owner = OperationOwner.currentOrNew();
 	}
 
+	DialogueFlowRunner(DialogueFlowFactory factory, OperationOwner owner)
+	{
+		this.factory = factory;
+		this.dialogue = factory.dialogue;
+		this.owner = owner;
+	}
+
+	public static DialogueFlowRunner of(DialogueService dialogue) { return new DialogueFlowRunner(dialogue); }
+	public static Builder builder(DialogueService dialogue) { return new Builder(dialogue); }
 	public static final class Builder
 	{
 		private final DialogueService dialogue;
 		private final List<Step> steps = new ArrayList<>();
-
-		public Builder()
+		/** Resolves the initialized API instead of creating an unusable builder. */
+		@Deprecated public Builder() { this(Context.getService(DialogueService.class)); }
+		public Builder(DialogueService dialogue) { this.dialogue = java.util.Objects.requireNonNull(dialogue); }
+		public static Builder builder(DialogueService dialogue) { return new Builder(dialogue); }
+		public Builder continueStep() { steps.add(new Step(StepKind.CONTINUE, null)); return this; }
+		public Builder continueStep(String expectedText) { steps.add(new Step(StepKind.CONTINUE, null, requireStage(expectedText))); return this; }
+		public Builder choose(String expectedText, String option) { steps.add(new Step(StepKind.CHOOSE, choice(option).argument, requireStage(expectedText))); return this; }
+		public Builder continueIfPossible() { return continueStep(); }
+		public Builder continueTimes(int count)
 		{
-			this(null);
-		}
-
-		public Builder(DialogueService dialogue)
-		{
-			this.dialogue = dialogue;
-		}
-
-		public static Builder builder(DialogueService dialogue)
-		{
-			return new Builder(dialogue);
-		}
-
-		public Builder continueStep()
-		{
-			steps.add(new Step(StepKind.CONTINUE, null));
+			if (count < 0) throw new IllegalArgumentException("continue count must be non-negative");
+			for (int i = 0; i < count; i++) continueStep();
 			return this;
 		}
-
-		public Builder continueTimes(int n)
-		{
-			if (n < 0) throw new IllegalArgumentException("continue count must be non-negative");
-			for (int i = 0; i < n; i++)
-			{
-				continueStep();
-			}
-			return this;
-		}
-
-		public Builder choose(String optionNeedle)
-		{
-			steps.add(new Step(StepKind.CHOOSE, optionNeedle));
-			return this;
-		}
-
-		public Builder enterAmount(int amount)
-		{
-			if (amount < 0) throw new IllegalArgumentException("amount must be non-negative");
-			steps.add(new Step(StepKind.ENTER_AMOUNT, String.valueOf(amount)));
-			return this;
-		}
-
-		/** Alias matching the declarative flow vocabulary. */
-		public Builder continueIfPossible()
-		{
-			return continueStep();
-		}
-
-		public List<Step> buildSteps()
-		{
-			return new ArrayList<>(steps);
-		}
-
+		public Builder choose(String text) { steps.add(choice(text)); return this; }
+		/** Amount submission requires a correlated input operation. */
+		@Deprecated public Builder enterAmount(int amount) { steps.add(amount(amount)); return this; }
+		public List<Step> buildSteps() { return Collections.unmodifiableList(new ArrayList<>(steps)); }
 		public DialogueFlowRunner build()
 		{
-			if (dialogue == null)
-			{
-				throw new IllegalStateException("dialogue service is required; use builder(dialogue)");
-			}
-			DialogueFlowRunner runner = new DialogueFlowRunner(dialogue);
-			runner.steps.addAll(steps);
-			return runner;
+			DialogueFlowRunner flow = new DialogueFlowRunner(dialogue);
+			flow.draft.addAll(steps);
+			flow.steps = buildSteps();
+			return flow;
 		}
 	}
 
-	private final List<Step> steps = new ArrayList<>();
-	private int cursor;
-	private boolean finished;
-
-	public static DialogueFlowRunner of(DialogueService dialogue)
+	public synchronized DialogueFlowRunner continueStep() { return add(new Step(StepKind.CONTINUE, null)); }
+	public synchronized DialogueFlowRunner continueStep(String expectedText) { return add(new Step(StepKind.CONTINUE, null, requireStage(expectedText))); }
+	public synchronized DialogueFlowRunner choose(String expectedText, String option) { return add(new Step(StepKind.CHOOSE, choice(option).argument, requireStage(expectedText))); }
+	public DialogueFlowRunner continueIfPossible() { return continueStep(); }
+	public synchronized DialogueFlowRunner choose(String text) { return add(choice(text)); }
+	@Deprecated public synchronized DialogueFlowRunner enterAmount(int amount) { return add(amount(amount)); }
+	private DialogueFlowRunner add(Step step)
 	{
-		return new DialogueFlowRunner(dialogue);
-	}
-
-	/** Declarative builder entry point used by plugin code. */
-	public static Builder builder(DialogueService dialogue)
-	{
-		return new Builder(dialogue);
-	}
-
-	public DialogueFlowRunner continueStep()
-	{
-		steps.add(new Step(StepKind.CONTINUE, null));
+		if (steps != null || started) throw new IllegalStateException("Flow specification is already frozen");
+		draft.add(step);
 		return this;
 	}
-
-	public DialogueFlowRunner choose(String optionNeedle)
+	private static String requireStage(String text)
 	{
-		steps.add(new Step(StepKind.CHOOSE, optionNeedle));
-		return this;
+		if (text == null || text.trim().isEmpty()) throw new IllegalArgumentException("Expected dialogue text is required");
+		return text.trim();
 	}
-
-	public DialogueFlowRunner enterAmount(int amount)
+	private static Step choice(String text)
+	{
+		if (text == null || text.trim().isEmpty()) throw new IllegalArgumentException("option text is required");
+		return new Step(StepKind.CHOOSE, text.trim());
+	}
+	private static Step amount(int amount)
 	{
 		if (amount < 0) throw new IllegalArgumentException("amount must be non-negative");
-		steps.add(new Step(StepKind.ENTER_AMOUNT, String.valueOf(amount)));
+		return new Step(StepKind.ENTER_AMOUNT, Integer.toString(amount));
+	}
+	public synchronized DialogueFlowRunner timeoutTicks(long ticks)
+	{
+		if (started || ticks < 1 || ticks > Integer.MAX_VALUE) throw new IllegalArgumentException("Set a positive bounded deadline before starting");
+		timeoutTicks = ticks;
 		return this;
 	}
 
-	/** Alias matching the declarative flow vocabulary. */
-	public DialogueFlowRunner continueIfPossible()
-	{
-		return continueStep();
-	}
-
-	/**
-	 * Execute one step per tick.
-	 *
-	 * @return current status; COMPLETE once every step has been consumed and
-	 *         the dialogue either resolved or moved past the last step.
-	 */
 	public synchronized Status advance()
 	{
-		if (finished)
+		if (isFinished()) return status;
+		if (factory == null)
 		{
-			return Status.COMPLETE;
+			DialogueFlowFactory runtime = Context.getService(DialogueFlowFactory.class);
+			factory = runtime;
 		}
-		if (cursor >= steps.size())
+		if (!factory.client.isClientThread()) throw new IllegalStateException("Dialogue flows require the client thread");
+		Status next;
+		try { next = owner.whileActive(this::advanceOwned, Status.CANCELLED); }
+		catch (RuntimeException error)
 		{
-			finished = true;
-			return Status.COMPLETE;
+			finish(Status.STUCK, Failure.REJECTED);
+			throw error;
 		}
+		return next == Status.CANCELLED ? finish(Status.CANCELLED, Failure.OWNER_CLOSED) : next;
+	}
+
+	private Status advanceOwned()
+	{
+		SessionTickClock.Snapshot now = factory.clock.sample();
+		if (factory.client.getGameState() != GameState.LOGGED_IN || started && now.epoch != epoch)
+			return finish(Status.CANCELLED, Failure.SESSION_CHANGED);
+		if (!started)
+		{
+			started = true;
+			startedTick = now.tick;
+			epoch = now.epoch;
+			if (steps == null) steps = Collections.unmodifiableList(new ArrayList<>(draft));
+			detach = owner.onCancel(this::cancel);
+			factory.track(this);
+			// Reject unsafe legacy amount steps before any earlier action runs.
+			if (steps.stream().anyMatch(step -> step.kind == StepKind.ENTER_AMOUNT))
+				return finish(Status.STUCK, Failure.UNSUPPORTED_INPUT);
+		}
+		if (now.tick - startedTick >= timeoutTicks) return finish(Status.TIMED_OUT, Failure.DEADLINE);
+		if (lastTick == now.tick) return status == Status.PROGRESSED ? Status.WAITING : status;
+		lastTick = now.tick;
+		if (lease == null)
+		{
+			lease = factory.leases.acquire(OperationLeases.Resource.CHATBOX, owner, epoch);
+			if (lease == null) return status = Status.BUSY;
+		}
+		if (!lease.isActive()) return finish(Status.CANCELLED, Failure.OWNER_CLOSED);
+		DialogueService.Snapshot current = dialogue.snapshot();
+		if (submittedState != null)
+		{
+			if (submittedState.sameAs(current)) return status = Status.WAITING;
+			submittedState = null;
+			cursor++;
+		}
+		if (cursor >= steps.size()) return finish(Status.COMPLETE, Failure.NONE);
 		Step step = steps.get(cursor);
-		switch (step.kind)
+		if (step.expectedText != null && !dialogue.containsText(step.expectedText))
+			return status = Status.WAITING;
+		if (step.kind == StepKind.CHOOSE && dialogue.hasOptions() && !dialogue.hasOption(step.argument))
+			return finish(Status.STUCK, Failure.REJECTED);
+		if (step.kind == StepKind.CONTINUE ? !dialogue.canContinue() : !dialogue.hasOption(step.argument))
+			return status = Status.WAITING;
+		try
 		{
-			case CONTINUE:
-				if (!dialogue.canContinue())
-				{
-					return Status.WAITING;
-				}
-				dialogue.continueDialogue();
-				cursor++;
-				return Status.PROGRESSED;
-			case CHOOSE:
-				if (!dialogue.hasOptions())
-				{
-					return Status.WAITING;
-				}
-				dialogue.choose(step.argument);
-				cursor++;
-				return Status.PROGRESSED;
-			case ENTER_AMOUNT:
-				dialogue.enterAmount(Integer.parseInt(step.argument));
-				cursor++;
-				return Status.PROGRESSED;
+			lease.run(() ->
+			{
+				if (step.kind == StepKind.CONTINUE) dialogue.continueDialogue();
+				else dialogue.choose(step.argument);
+			});
 		}
-		return Status.STUCK; // unreachable: all kinds handled above
+		catch (IllegalStateException | IllegalArgumentException rejected)
+		{
+			return finish(Status.STUCK, Failure.REJECTED);
+		}
+		submittedState = current;
+		return status = Status.PROGRESSED;
 	}
 
-	/** Remaining step count (diagnostics). */
-	public int remaining()
+	private Status finish(Status terminal, Failure reason)
 	{
-		return Math.max(0, steps.size() - cursor);
+		if (isFinished()) return status;
+		status = terminal;
+		failure = reason;
+		if (lease != null) { lease.close(); lease = null; }
+		detach.run();
+		if (factory != null) factory.forget(this);
+		submittedState = null;
+		return status;
 	}
-
-	public boolean isFinished()
+	public synchronized Status getStatus() { return status; }
+	public synchronized Failure getFailure() { return failure; }
+	public synchronized int remaining() { return Math.max(0, (steps == null ? draft : steps).size() - cursor); }
+	public synchronized boolean isFinished()
 	{
-		return finished;
+		return status == Status.COMPLETE || status == Status.STUCK || status == Status.TIMED_OUT || status == Status.CANCELLED;
 	}
-
-	public void reset()
+	public synchronized void cancel() { finish(Status.CANCELLED, Failure.OWNER_CLOSED); }
+	synchronized void cancelSession() { finish(Status.CANCELLED, Failure.SESSION_CHANGED); }
+	@Override public void close() { cancel(); }
+	/** Explicit restart of the same spec; never renews a stopped plugin owner. */
+	public synchronized void reset()
 	{
-		cursor = 0;
-		finished = false;
+		if (!owner.isActive()) throw new IllegalStateException("Flow owner has stopped");
+		if (lease != null) { lease.close(); lease = null; }
+		detach.run();
+		if (factory != null) factory.forget(this);
+		cursor = 0; started = false; lastTick = Long.MIN_VALUE; submittedState = null;
+		status = Status.WAITING; failure = Failure.NONE;
 	}
 }
