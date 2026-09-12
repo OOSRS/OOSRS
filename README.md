@@ -10,6 +10,12 @@
 
 # OpenOSRS
 
+<p align="center">
+  <a href="https://discord.gg/KKPUeeqgn9"><img src="https://img.shields.io/badge/Discord-Join%20the%20community-5865F2?style=for-the-badge&amp;logo=discord&amp;logoColor=white" alt="Join the OpenOSRS Discord community"></a>
+</p>
+
+Join our [Discord community](https://discord.gg/KKPUeeqgn9) for release news, plugin development, help, and community showcases.
+
 An open-source desktop client built around extensibility. Explore the world with familiar tools, load community plugins from GitHub, and build your own features with the OpenOSRS API.
 
 **Your client. Your plugins. Your source.**
