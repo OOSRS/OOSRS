@@ -21,7 +21,7 @@ class WidgetLifetimeTest
 		WorldView view = mock(WorldView.class); when(view.getId()).thenReturn(-1); when(view.getScene()).thenReturn(mock(Scene.class));
 		when(client.getTopLevelWorldView()).thenReturn(view);
 		Widget widget = mock(Widget.class); when(widget.getId()).thenReturn(123); when(widget.getIndex()).thenReturn(-1);
-		when(widget.getItemId()).thenReturn(-1); when(widget.getActions()).thenReturn(new String[]{"Select"});
+		when(widget.getClickMask()).thenReturn(2); when(widget.getItemId()).thenReturn(-1); when(widget.getActions()).thenReturn(new String[]{"Select"});
 		when(client.getWidget(123)).thenReturn(widget);
 		when(dispatcher.submit(any(), anyInt(), anyInt(), anyInt(), any(), any(), anyInt(), anyInt())).thenReturn(net.openosrs.api.dispatch.SubmissionResult.submitted());
 		return widget;
@@ -96,7 +96,7 @@ class WidgetLifetimeTest
 	{
 		Widget parent = ready(); Widget child = mock(Widget.class);
 		when(child.getId()).thenReturn(123); when(child.getIndex()).thenReturn(0);
-		when(child.getActions()).thenReturn(new String[]{"Select"});
+		when(child.getClickMask()).thenReturn(2); when(child.getActions()).thenReturn(new String[]{"Select"});
 		when(parent.getChildren()).thenReturn(new Widget[]{child}); when(parent.getDynamicChildren()).thenReturn(new Widget[]{child});
 		when(parent.getChild(0)).thenReturn(child);
 		java.util.List<WidgetRef> refs = widgets.descendants(123); assertEquals(2, refs.size());

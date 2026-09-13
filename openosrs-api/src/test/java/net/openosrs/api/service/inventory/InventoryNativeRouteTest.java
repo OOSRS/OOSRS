@@ -30,6 +30,7 @@ class InventoryNativeRouteTest
 		when(client.getItemDefinition(385)).thenReturn(definition); when(definition.getName()).thenReturn("Shark"); when(definition.getInventoryActions()).thenReturn(actions);
 		when(client.getWidget(InterfaceID.Inventory.ITEMS)).thenReturn(parent); when(parent.getChild(7)).thenReturn(child);
 		item = inventory.first(385);
+		when(child.getClickMask()).thenReturn((1023 << 1) | (63 << 11)); when(child.getTargetPriority()).thenReturn(10);
 		when(child.getId()).thenReturn(InterfaceID.Inventory.ITEMS); when(child.getIndex()).thenReturn(7); when(child.getItemId()).thenReturn(385);
 	}
 	@Test void reusedSlotAfterContainerEventRejectsOldSnapshot()

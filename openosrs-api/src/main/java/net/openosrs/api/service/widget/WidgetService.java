@@ -154,6 +154,11 @@ public class WidgetService
 		}
 		int index = actionIndex(widget.getActions(), action);
 		if (index < 0 || index >= 10) { return WidgetCapability.rejected(revision, SubmissionStatus.REJECTED_UNSUPPORTED_ACTION, "The requested widget action is unavailable"); }
+		Widget live = widget.liveIdentity();
+		net.runelite.api.widgets.WidgetConfigNode config = client.getWidgetConfig(live);
+		int opMask = config == null ? (live.getClickMask() >>> 1) & 1023 : config.getOpMask();
+		if ((opMask & (1 << index)) == 0 && live.getOnOpListener() == null)
+			return WidgetCapability.rejected(revision, SubmissionStatus.REJECTED_UNSUPPORTED_ACTION, "The widget action has no enabled native route");
 		return WidgetCapability.supported(revision);
 	}
 
