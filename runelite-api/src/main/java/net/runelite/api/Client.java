@@ -2481,7 +2481,8 @@ public interface Client extends OAuthApi, GameEngine
 	@Deprecated
 	default void setGpu(boolean gpu) { if (!gpu || !isGpu()) setGpuFlags(gpu ? net.runelite.api.hooks.DrawCallbacks.GPU : 0); }
 
-	void setPrintMenuActions(boolean b);
+	/** Logging helper for DevTools; no-op if unsupported by the native game client. */
+	default void setPrintMenuActions(boolean b) {}
 
 	/** @deprecated Selection is now shared by spells and item widgets; use isWidgetSelected. */
 	@Deprecated

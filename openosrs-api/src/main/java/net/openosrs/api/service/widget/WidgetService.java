@@ -127,7 +127,7 @@ public class WidgetService
 				return;
 			}
 		}
-		SubmissionResult.rejected(SubmissionStatus.REJECTED_UNSUPPORTED_ACTION, "Widget has no visible native action").requireSubmitted();
+		interact(widget, 1, 0, -1);
 	}
 
 	public void interact(WidgetRef widget, String action) { submitInteract(widget, action).requireSubmitted(); }
@@ -166,9 +166,29 @@ public class WidgetService
 	{
 		require(widget);
 		if (actionIndex < 1 || actionIndex > 10 || subOp < 0 || subOp > 256) { throw new IllegalArgumentException("Invalid widget action index or sub-operation"); }
-		if (itemId != widget.getItemId() || actionIndex > widget.getActions().size() || widget.getActions().get(actionIndex - 1) == null)
+		if (itemId != widget.getItemId())
 		{
-			SubmissionResult.rejected(SubmissionStatus.REJECTED_STALE_TARGET, "Widget item or action no longer matches").requireSubmitted();
+			SubmissionResult.rejected(SubmissionStatus.REJECTED_STALE_TARGET, "Widget item no longer matches").requireSubmitted();
+		}
+		String option = "";
+		if (widget.getActions() != null && actionIndex <= widget.getActions().size() && widget.getActions().get(actionIndex - 1) != null)
+		{
+			option = widget.getActions().get(actionIndex - 1);
+		}
+		else
+		{
+			Widget live = widget.liveIdentity();
+			if (live == null)
+			{
+				SubmissionResult.rejected(SubmissionStatus.REJECTED_STALE_TARGET, "Widget target is unavailable").requireSubmitted();
+			}
+			net.runelite.api.widgets.WidgetConfigNode config = client.getWidgetConfig(live);
+			int clickMask = config == null ? live.getClickMask() : config.getClickMask();
+			int opMask = config == null ? (clickMask >>> 1) & 1023 : config.getOpMask();
+			if ((opMask & (1 << (actionIndex - 1))) == 0 && live.getOnOpListener() == null)
+			{
+				SubmissionResult.rejected(SubmissionStatus.REJECTED_UNSUPPORTED_ACTION, "Widget action has no enabled native route").requireSubmitted();
+			}
 		}
 		if (subOp > 0)
 		{
@@ -178,8 +198,7 @@ public class WidgetService
 				throw new IllegalArgumentException("Widget sub-operation is unavailable");
 		}
 		// Native CC_OP runs widget hooks/masks and writes subOp - 1 into IF_SUBOP.
-		dispatch(widget, MenuAction.CC_OP, actionIndex | (subOp << 16), itemId,
-			widget.getActions().get(actionIndex - 1)).requireSubmitted();
+		dispatch(widget, MenuAction.CC_OP, actionIndex | (subOp << 16), itemId, option).requireSubmitted();
 	}
 
 	public void continueDialogue(WidgetRef widget)

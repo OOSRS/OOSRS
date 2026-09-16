@@ -16,13 +16,15 @@ class AmountInputServiceTest
 	private final Widget title = mock(Widget.class), input = mock(Widget.class);
 	private final ScriptEventBuilder builder = mock(ScriptEventBuilder.class);
 	private final ScriptEvent event = mock(ScriptEvent.class);
+	private final net.openosrs.api.dispatch.PacketDispatcher packets = mock(net.openosrs.api.dispatch.PacketDispatcher.class);
 	private final OperationOwner owner = new OperationOwner();
 	private final Runnable open = mock(Runnable.class);
-	private final AmountInputService service = new AmountInputService(client, new SessionTickClock(client), new OperationLeases());
+	private final AmountInputService service = new AmountInputService(client, new SessionTickClock(client), new OperationLeases(), packets);
 	private int mode, tick;
 	@BeforeEach void setup()
 	{
 		when(client.isClientThread()).thenReturn(true);
+		when(packets.send("RESUME_P_COUNTDIALOG", 123)).thenReturn(true);
 		when(client.getRevision()).thenReturn(240);
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		when(client.getTickCount()).thenAnswer(call -> tick);
@@ -37,20 +39,26 @@ class AmountInputServiceTest
 	}
 	private AmountInputService.Operation begin(int expectedMode)
 	{ return service.begin(owner, 123, expectedMode, open, () -> true, text -> text.contains("how many")); }
-	@Test void waitsForPromptAndSubmitsOnceThroughItsNativeHandler()
+	@Test void waitsForPromptAndResumesServerCountOnceBeforeClosing()
 	{
 		AmountInputService.Operation operation = begin(7);
 		service.advance(); verifyNoInteractions(event);
 		mode = 7; service.advance(); service.advance();
-		verify(client).createScriptEventBuilder(new Object[] {112, KeyCode.KC_ENTER, 0, ""});
-		verify(client).setVarcStrValue(VarClientID.MESLAYERINPUT, "123");
-		verify(event, times(1)).run(); verify(open, times(1)).run();
+		org.mockito.InOrder order = inOrder(packets, client);
+		order.verify(packets).send("RESUME_P_COUNTDIALOG", 123);
+		order.verify(client).runScript(138);
+		verify(packets, times(1)).send("RESUME_P_COUNTDIALOG", 123);
+		verifyNoInteractions(event); verify(open, times(1)).run();
 		assertEquals(AmountInputService.Status.SUBMITTED, operation.getStatus());
 		mode = 0; service.advance();
 		assertEquals(AmountInputService.Status.INPUT_CLOSED, operation.getStatus());
 	}
 	@Test void makeXUsesTheActualMode16Listener()
-	{ begin(16); mode = 16; service.advance(); verify(event).run(); }
+	{
+		begin(16); mode = 16; service.advance(); verify(event).run();
+		verify(client).setVarcStrValue(VarClientID.MESLAYERINPUT, "123");
+		verifyNoInteractions(packets);
+	}
 	@Test void unrelatedPromptCancelsWithoutSending()
 	{
 		AmountInputService.Operation operation = begin(7);
@@ -79,9 +87,38 @@ class AmountInputServiceTest
 	}
 	@Test void nativeFailureIsTerminalAndNeverRetried()
 	{
-		AmountInputService.Operation operation = begin(7); mode = 7;
+		AmountInputService.Operation operation = begin(16); mode = 16;
 		doThrow(new IllegalStateException("native rejection")).when(event).run();
 		service.advance(); service.advance();
 		assertEquals(AmountInputService.Status.FAILED, operation.getStatus()); verify(event, times(1)).run();
+	}
+	@Test void rejectedCountResumeDoesNotClosePromptOrRetry()
+	{
+		when(packets.send("RESUME_P_COUNTDIALOG", 123)).thenReturn(false);
+		AmountInputService.Operation operation = begin(7); mode = 7;
+		service.advance(); service.advance();
+		assertEquals(AmountInputService.Status.FAILED, operation.getStatus());
+		verify(packets, times(1)).send("RESUME_P_COUNTDIALOG", 123);
+		verify(client, never()).runScript(138);
+	}
+	@Test void countPromptDoesNotDependOnAWidgetKeyListener()
+	{
+		when(input.getOnKeyListener()).thenReturn(null);
+		begin(7); mode = 7; service.advance();
+		verify(packets).send("RESUME_P_COUNTDIALOG", 123);
+		verifyNoInteractions(event);
+	}
+	@Test void nativeGenericBankPromptIsAcceptedOnlyForBankAmounts()
+	{
+		assertTrue(DialogueService.matchesAmountPrompt("enter amount:", "withdraw"));
+		assertTrue(DialogueService.matchesAmountPrompt("enter amount:", "deposit"));
+		assertFalse(DialogueService.matchesAmountPrompt("enter amount:", "price"));
+		assertFalse(DialogueService.matchesAmountPrompt("enter a price", "withdraw"));
+		when(title.getText()).thenReturn("Enter amount:");
+		AmountInputService.Operation operation = service.begin(owner, 123, 7, open, () -> true,
+			text -> DialogueService.matchesAmountPrompt(text, "withdraw"));
+		mode = 7; service.advance();
+		assertEquals(AmountInputService.Status.SUBMITTED, operation.getStatus());
+		verify(packets).send("RESUME_P_COUNTDIALOG", 123);
 	}
 }

@@ -44,7 +44,7 @@ final class ProfilesPanel extends PluginPanel
 {
 	private static final Color BACKGROUND = new Color(28, 36, 46);
 	private static final Color CARD = new Color(36, 46, 58);
-	private static final Color BLUE = new Color(36, 140, 237);
+	private static final Color BLUE = new Color(38, 132, 219);
 	private static final Color TEXT = new Color(229, 235, 242);
 	private static final Color MUTED = new Color(159, 174, 191);
 	private static final Font UI_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
@@ -56,11 +56,11 @@ final class ProfilesPanel extends PluginPanel
 	{
 		Thread thread = new Thread(task, "openosrs-profiles"); thread.setDaemon(true); return thread;
 	});
-	private final JTextField search = new JTextField();
+	private final JTextField search = new ProfilesSearchField();
 	private final JPanel content = vertical();
 	private final JTextArea status = text("");
 	private final JTextArea storage = text("");
-	private final JButton add = button("+  Add Jagex account", true, () -> startAuth(null));
+	private final JButton add = button("+  Add account", false, () -> startAuth(null));
 	private final JButton launch = button("Log in", true, this::login);
 	private final Timer timer;
 	private final List<JButton> selectionButtons = new ArrayList<>();
@@ -79,15 +79,21 @@ final class ProfilesPanel extends PluginPanel
 		this.profiles = profiles; this.login = login; this.auth = auth; this.config = config;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBackground(BACKGROUND);
-		setBorder(BorderFactory.createEmptyBorder(14, 9, 14, 9));
-		JLabel brand = label("OPENOSRS", 10, MUTED); add(brand); gap(12);
-		add(label("Profiles", 23, TEXT)); gap(5);
-		add(text("Your accounts. One place.")); gap(16);
+		setBorder(BorderFactory.createEmptyBorder(18, 12, 16, 12));
+		add(label("OPENOSRS", 10, MUTED)); gap(10);
+		JPanel heading = horizontal();
+		heading.add(label("Profiles", 24, TEXT), BorderLayout.CENTER);
+		heading.add(iconButton("↻", "Refresh accounts", this::refresh), BorderLayout.EAST);
+		add(heading); gap(6);
+		add(text("Accounts and characters")); gap(18);
 		add(add); gap(12);
 		search.setToolTipText("Find a character or account");
 		search.getAccessibleContext().setAccessibleName("Find a character or account");
-		search.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-		search.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(CARD.brighter()), BorderFactory.createEmptyBorder(6, 8, 6, 8)));
+		search.setAlignmentX(Component.LEFT_ALIGNMENT);
+		search.setPreferredSize(new Dimension(180, 36));
+		search.setMinimumSize(new Dimension(0, 36));
+		search.setMaximumSize(new Dimension(Integer.MAX_VALUE, 36));
+		search.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(56, 69, 84)), BorderFactory.createEmptyBorder(8, 10, 8, 10)));
 		search.setBackground(CARD); search.setForeground(TEXT); search.setCaretColor(TEXT);
 		search.setFont(UI_FONT);
 		search.getDocument().addDocumentListener(new DocumentListener()
@@ -96,10 +102,12 @@ final class ProfilesPanel extends PluginPanel
 			public void removeUpdate(DocumentEvent e) { redraw(); }
 			public void changedUpdate(DocumentEvent e) { redraw(); }
 		});
-		add(search); gap(12); add(content); gap(12); add(status); gap(8); add(launch); gap(8);
-		add(button("Clear selection", false, () -> { login.clearSelection(); notice = null; redraw(); }));
-		gap(12); add(storage); gap(6);
-		add(button("Refresh accounts", false, this::refresh));
+		add(search); gap(16); add(content); gap(16);
+		add(status); gap(10); add(launch); gap(4);
+		JButton clear = button("Clear selection", false, () -> { login.clearSelection(); notice = null; redraw(); });
+		clear.setBackground(BACKGROUND); clear.setForeground(MUTED);
+		add(clear); gap(12);
+		storage.setFont(UI_FONT.deriveFont(11f)); add(storage);
 		timer = new Timer(500, event -> updateState()); timer.start();
 	}
 
@@ -156,31 +164,46 @@ final class ProfilesPanel extends PluginPanel
 					if (account.label.toLowerCase(Locale.ROOT).contains(query) || character.name.toLowerCase(Locale.ROOT).contains(query)) matches.add(character);
 				if (matches.isEmpty()) continue;
 				any = true;
-				JPanel group = vertical(); group.setBackground(CARD);
-				group.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(CARD.brighter()), BorderFactory.createEmptyBorder(9, 8, 9, 8)));
-				group.add(label(account.label, 12, TEXT));
-				group.add(label(account.reconnect ? "Reconnect required" : "Jagex account", 10, account.reconnect ? new Color(255, 184, 112) : MUTED));
-				group.add(Box.createVerticalStrut(7));
+				JPanel group = vertical(); group.setOpaque(true); group.setBackground(CARD);
+				group.setBorder(BorderFactory.createEmptyBorder(12, 10, 10, 10));
+				JPanel header = horizontal();
+				JPanel identity = vertical();
+				identity.add(label(account.label, 12, TEXT));
+				identity.add(Box.createVerticalStrut(4));
+				identity.add(label(account.reconnect ? "Reconnect required" : "Jagex account", 10, account.reconnect ? new Color(255, 184, 112) : MUTED));
+				header.add(identity, BorderLayout.CENTER);
+				JButton edit = iconButton("⋯", "Account options", () -> {});
+				edit.addActionListener(event -> editAccount(account, edit)); edit.setEnabled(!busy);
+				header.add(edit, BorderLayout.EAST); group.add(header);
+				group.add(Box.createVerticalStrut(12));
 				for (AccountProfileService.CharacterView character : matches)
 				{
-					JPanel row = new JPanel(new BorderLayout(4, 0)); row.setOpaque(false);
-					row.setBorder(BorderFactory.createEmptyBorder(config.compactRows() ? 2 : 5, 0, config.compactRows() ? 2 : 5, 0));
+					JPanel row = horizontal();
+					row.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 0));
 					JButton choose = button(character.name, false, () -> run("Preparing character…", () -> login.select(account.id, character.id).get()));
 					choose.setHorizontalAlignment(JButton.LEFT);
-					choose.setBackground(login.isSelected(account.id, character.id) ? BLUE.darker() : CARD);
+					boolean selected = login.isSelected(account.id, character.id);
+					choose.setBackground(selected ? new Color(29, 65, 99) : CARD);
+					choose.setForeground(selected ? new Color(150, 205, 255) : TEXT);
+					choose.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, selected ? 2 : 0, 0, 0, BLUE), BorderFactory.createEmptyBorder(8, selected ? 8 : 10, 8, 8)));
+					choose.setPreferredSize(new Dimension(110, config.compactRows() ? 32 : 38));
 					choose.setToolTipText(account.reconnect ? "Reconnect this account first" : "Select this character");
 					choose.setEnabled(!account.reconnect && !busy && login.canSelect());
 					if (!account.reconnect) selectionButtons.add(choose);
 					row.add(choose, BorderLayout.CENTER);
-					JButton star = button(character.favourite ? "★" : "☆", false,
+					JButton star = iconButton(character.favourite ? "★" : "☆", character.favourite ? "Remove favourite" : "Favourite character",
 						() -> run("Saving favourite…", () -> profiles.favourite(account.id, character.id, !character.favourite)));
-					star.setToolTipText(character.favourite ? "Remove favourite" : "Favourite character");
+					star.setForeground(character.favourite ? new Color(226, 194, 119) : MUTED);
 					star.setEnabled(!busy); row.add(star, BorderLayout.EAST); group.add(row);
 				}
-				JPanel actions = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0)); actions.setOpaque(false);
-				JButton reconnect = button("Reconnect", false, () -> startAuth(account.id)); reconnect.setEnabled(!busy); actions.add(reconnect);
-				JButton edit = button("…", false, () -> editAccount(account)); edit.setToolTipText("Rename or remove account"); edit.setEnabled(!busy); actions.add(edit);
-				group.add(actions); content.add(group); content.add(Box.createVerticalStrut(9));
+				if (account.reconnect)
+				{
+					group.add(Box.createVerticalStrut(6));
+					JButton reconnect = button("Reconnect account", false, () -> startAuth(account.id));
+					reconnect.setEnabled(!busy); group.add(reconnect);
+				}
+				if (any && content.getComponentCount() > 0) content.add(Box.createVerticalStrut(12));
+				content.add(group);
 			}
 			if (!any) content.add(text(accounts.isEmpty() ? "Add a Jagex account to see its characters here. Your password stays in your browser." : "No matching characters."));
 		}
@@ -190,9 +213,9 @@ final class ProfilesPanel extends PluginPanel
 	private void updateState()
 	{
 		if (closed) return;
-		status.setText(notice != null ? notice : login.message());
+		status.setText(notice != null ? notice : login.canLogin() ? "Ready to log in" : login.message());
 		storage.setText(locked ? "Saved accounts are locked; existing files are preserved." : profiles.isSessionOnly()
-			? "Session only · accounts are forgotten when this client closes." : "Saved access stays encrypted on this device.");
+			? "Session only · not saved" : "Encrypted on this device");
 		add.setEnabled(!busy && !locked && attempt == null && result == null);
 		launch.setEnabled(!busy && !locked && attempt == null && result == null && login.canLogin());
 		search.setEnabled(attempt == null && result == null);
@@ -286,21 +309,25 @@ final class ProfilesPanel extends PluginPanel
 		notice = "Sign-in cancelled. Saved accounts were kept."; redraw();
 	}
 
-	private void editAccount(AccountProfileService.ProfileView account)
+	private void editAccount(AccountProfileService.ProfileView account, Component anchor)
 	{
-		Object[] options = {"Rename", "Remove from device", "Cancel"};
-		int choice = JOptionPane.showOptionDialog(this, "Manage this saved account", "Account", JOptionPane.DEFAULT_OPTION,
-			JOptionPane.PLAIN_MESSAGE, null, options, options[2]);
-		if (choice == 0)
+		javax.swing.JPopupMenu menu = new javax.swing.JPopupMenu();
+		javax.swing.JMenuItem reconnect = new javax.swing.JMenuItem("Reconnect");
+		reconnect.setFont(UI_FONT); reconnect.addActionListener(event -> startAuth(account.id)); menu.add(reconnect);
+		javax.swing.JMenuItem rename = new javax.swing.JMenuItem("Rename account"); rename.setFont(UI_FONT);
+		rename.addActionListener(event ->
 		{
 			String label = JOptionPane.showInputDialog(this, "Local account label", account.label);
 			if (label != null) run("Saving label…", () -> profiles.rename(account.id, label));
-		}
-		else if (choice == 1)
+		});
+		menu.add(rename); menu.addSeparator();
+		javax.swing.JMenuItem remove = new javax.swing.JMenuItem("Remove from device"); remove.setFont(UI_FONT);
+		remove.addActionListener(event ->
 		{
 			if (confirm("Remove saved account", "Remove this account and its saved characters from this device?\n\nYour Jagex account and game progress are not deleted. An active game session will not be logged out.", "Remove account"))
 				run("Removing saved account…", () -> { profiles.remove(account.id); login.clearSelection(); });
-		}
+		});
+		menu.add(remove); menu.show(anchor, 0, anchor.getHeight());
 	}
 
 	private void login() { run("Checking session…", () -> login.login().get()); }
@@ -381,13 +408,68 @@ final class ProfilesPanel extends PluginPanel
 
 	private static JButton button(String title, boolean primary, Runnable action)
 	{
-		JButton button = new JButton(title); button.putClientProperty("html.disable", true); button.setAlignmentX(Component.LEFT_ALIGNMENT);
+		JButton button = new ProfilesButton(title); button.putClientProperty("html.disable", true); button.setAlignmentX(Component.LEFT_ALIGNMENT);
 		button.setFont(UI_FONT);
 		button.setForeground(TEXT); button.setBackground(primary ? BLUE : CARD); button.setFocusPainted(false);
 		button.setBorder(BorderFactory.createEmptyBorder(primary ? 10 : 7, 8, primary ? 10 : 7, 8));
-		button.setMaximumSize(new Dimension(Integer.MAX_VALUE, primary ? 38 : 32));
+		button.setPreferredSize(new Dimension(button.getPreferredSize().width, primary ? 40 : 36));
+		button.setMaximumSize(new Dimension(Integer.MAX_VALUE, primary ? 40 : 36));
 		button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); button.addActionListener(event -> action.run()); return button;
 	}
+	private static JPanel horizontal()
+	{
+		JPanel panel = new JPanel(new BorderLayout(6, 0));
+		panel.setOpaque(false); panel.setAlignmentX(Component.LEFT_ALIGNMENT); return panel;
+	}
+
+	private static JButton iconButton(String title, String hint, Runnable action)
+	{
+		JButton button = button(title, false, action);
+		button.setPreferredSize(new Dimension(30, 32));
+		button.setMinimumSize(new Dimension(30, 32));
+		button.setMaximumSize(new Dimension(30, 32));
+		button.setBorder(BorderFactory.createEmptyBorder());
+		button.setToolTipText(hint); button.getAccessibleContext().setAccessibleName(hint);
+		return button;
+	}
+
+	private static final class ProfilesButton extends JButton
+	{
+		ProfilesButton(String title)
+		{
+			super(title); setUI(new javax.swing.plaf.basic.BasicButtonUI());
+			setOpaque(false); setContentAreaFilled(false); setRolloverEnabled(true);
+		}
+
+		@Override protected void paintComponent(java.awt.Graphics graphics)
+		{
+			java.awt.Graphics2D g = (java.awt.Graphics2D) graphics.create();
+			g.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+			Color color = getBackground();
+			if (!isEnabled()) color = CARD;
+			else if (getModel().isPressed()) color = color.darker();
+			else if (getModel().isRollover()) color = color.brighter();
+			g.setColor(color); g.fillRoundRect(0, 0, getWidth(), getHeight(), 6, 6);
+			if (hasFocus()) { g.setColor(BLUE.brighter()); g.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 6, 6); }
+			g.dispose(); super.paintComponent(graphics);
+		}
+	}
+
+	private static final class ProfilesSearchField extends JTextField
+	{
+		ProfilesSearchField() { setUI(new javax.swing.plaf.basic.BasicTextFieldUI()); }
+		@Override protected void paintComponent(java.awt.Graphics graphics)
+		{
+			super.paintComponent(graphics);
+			if (getText().isEmpty())
+			{
+				graphics.setColor(MUTED); graphics.setFont(UI_FONT);
+				java.awt.FontMetrics metrics = graphics.getFontMetrics();
+				graphics.drawString("Search characters…", getInsets().left, (getHeight() - metrics.getHeight()) / 2 + metrics.getAscent());
+			}
+		}
+	}
+
 	private void gap(int height) { add(Box.createVerticalStrut(height)); }
 	@FunctionalInterface private interface Work { void run() throws Exception; }
 }

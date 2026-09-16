@@ -54,7 +54,17 @@ public class DialogueService
 					if (origin.isSameWidget(current) && origin.getItemId() == current.getItemId()
 						&& origin.getItemQuantity() == current.getItemQuantity()) return true;
 				return false;
-			}, title -> title.contains(promptWord) || ("quantity".equals(promptWord) && title.contains("how many")) || ("price".equals(promptWord) && title.contains("how much")));
+			}, title -> matchesAmountPrompt(title, promptWord));
+	}
+
+	static boolean matchesAmountPrompt(String title, String promptWord)
+	{
+		// Bank item X actions use a generic prompt; the originating widget and lease bind the operation.
+		boolean bankAmount = ("withdraw".equals(promptWord) || "deposit".equals(promptWord))
+			&& (title.equals("enter amount:") || title.equals("enter amount"));
+		return bankAmount || title.contains(promptWord)
+			|| ("quantity".equals(promptWord) && title.contains("how many"))
+			|| ("price".equals(promptWord) && title.contains("how much"));
 	}
 
 	public boolean canContinue()

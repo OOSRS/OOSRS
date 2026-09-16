@@ -25,7 +25,8 @@ class RunControlTest
 		Widget widget = mock(Widget.class);
 		when(widget.getId()).thenReturn(id); when(widget.getIndex()).thenReturn(-1);
 		when(widget.getItemId()).thenReturn(-1); when(widget.getName()).thenReturn("Run");
-		when(widget.getActions()).thenReturn(actions); when(client.getWidget(id)).thenReturn(widget);
+		when(widget.getActions()).thenReturn(actions); when(widget.getClickMask()).thenReturn(2);
+		when(client.getWidget(id)).thenReturn(widget);
 		return widget;
 	}
 	private void ready()

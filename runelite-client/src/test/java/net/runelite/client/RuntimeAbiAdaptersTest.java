@@ -123,4 +123,11 @@ public class RuntimeAbiAdaptersTest
             assertTrue(widget.getWidgetItems().isEmpty());
         }
     }
+
+    @Test public void printMenuActionsDoesNotThrowAbstractMethodError()
+    {
+        Client client = mock(Client.class, CALLS_REAL_METHODS);
+        client.setPrintMenuActions(true);
+        client.setPrintMenuActions(false);
+    }
 }

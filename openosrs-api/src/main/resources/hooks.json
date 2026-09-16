@@ -1734,12 +1734,8 @@
       110
     ],
     "quarantinedFixedIds": [],
-    "quarantinedVariableIds": [
-      56,
-      61,
-      114
-    ],
-    "trustedCount": 92,
+    "quarantinedVariableIds": [],
+    "trustedCount": 95,
     "trustedIds": [
       1,
       2,
@@ -1784,10 +1780,12 @@
       52,
       54,
       55,
+      56,
       57,
       58,
       59,
       60,
+      61,
       62,
       63,
       64,
@@ -1831,6 +1829,7 @@
       111,
       112,
       113,
+      114,
       115,
       116
     ]
@@ -3278,8 +3277,25 @@
         "cp"
       ],
       "id": 56,
+      "layoutSource": "derived-verified",
       "length": -1,
-      "name": "MESSAGE_PUBLIC"
+      "name": "MESSAGE_PUBLIC",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
     },
     {
       "fields": [
@@ -3435,8 +3451,53 @@
         "cs"
       ],
       "id": 61,
+      "layoutSource": "derived-verified",
       "length": -1,
-      "name": "MOVE_MINIMAPCLICK"
+      "name": "MOVE_MINIMAPCLICK",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "hm",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
     },
     {
       "fields": [
@@ -4895,8 +4956,18 @@
         "en"
       ],
       "id": 114,
+      "layoutSource": "derived-verified",
       "length": -1,
-      "name": "EVENT_MOUSE_MOVE"
+      "name": "EVENT_MOUSE_MOVE",
+      "writes": [
+        {
+          "d": "(IB)V",
+          "m": "ck",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        }
+      ]
     },
     {
       "fields": [

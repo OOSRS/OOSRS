@@ -37,28 +37,52 @@ public class MovementService
 	private final VarService vars;
 	private final SceneService scenes;
 	private final WidgetService widgets;
+	private final net.openosrs.api.dispatch.PacketDispatcher packets;
+
+	public MovementService(Client client, MenuDispatcher dispatcher,
+		VarService vars, SceneService scenes, WidgetService widgets)
+	{
+		this(client, dispatcher, vars, scenes, widgets, null);
+	}
 
 	@Inject
 	public MovementService(Client client, MenuDispatcher dispatcher,
-		VarService vars, SceneService scenes, WidgetService widgets)
+		VarService vars, SceneService scenes, WidgetService widgets,
+		net.openosrs.api.dispatch.PacketDispatcher packets)
 	{
 		this.client = client;
 		this.dispatcher = dispatcher;
 		this.vars = vars;
 		this.scenes = scenes;
 		this.widgets = widgets;
+		this.packets = packets;
 	}
 
 	/**
 	 * Submit a walk command to a world point.
 	 *
-	 * Uses the native menu tier. The client owns the WALK packet tuple.
+	 * When packet dispatch is available and cipher is ready, routes directly
+	 * via MOVE_GAMECLICK (packet 102: prefix, worldY, ctrl, worldX).
+	 * Otherwise falls back to the native menu tier (MenuAction.WALK).
 	 */
 	public boolean walkTo(WorldPoint target)
+	{
+		return walkTo(target, false);
+	}
+
+	public boolean walkTo(WorldPoint target, boolean ctrl)
 	{
 		if (target == null)
 		{
 			return false;
+		}
+		net.openosrs.api.dispatch.PacketDispatcher p = packets != null ? packets : net.openosrs.api.Context.getService(net.openosrs.api.dispatch.PacketDispatcher.class);
+		if (p != null && p.available() && p.cipherReady())
+		{
+			if (p.send("MOVE_GAMECLICK", 5, target.getY(), ctrl ? 1 : 0, target.getX()))
+			{
+				return true;
+			}
 		}
 		net.runelite.api.WorldView view = client.getTopLevelWorldView();
 		if (view == null)

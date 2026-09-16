@@ -26,11 +26,15 @@ public final class AmountInputService
 	private final Client client;
 	private final SessionTickClock clock;
 	private final OperationLeases leases;
+	private final net.openosrs.api.dispatch.PacketDispatcher packets;
 	private final Set<Operation> active = ConcurrentHashMap.newKeySet();
 	private Operation lastOperation;
 
-	@Inject public AmountInputService(Client client, SessionTickClock clock, OperationLeases leases)
-	{ this.client = client; this.clock = clock; this.leases = leases; }
+	public AmountInputService(Client client, SessionTickClock clock, OperationLeases leases)
+	{ this(client, clock, leases, null); }
+
+	@Inject public AmountInputService(Client client, SessionTickClock clock, OperationLeases leases, net.openosrs.api.dispatch.PacketDispatcher packets)
+	{ this.client = client; this.clock = clock; this.leases = leases; this.packets = packets; }
 
 	public Operation getLastOperation() { return lastOperation; }
 
@@ -83,9 +87,18 @@ public final class AmountInputService
 	}
 	public void cancelSession() { for (Operation operation : active) operation.close(); }
 
-	/** Executes the actual widget listener, so Make-X's local quantity handler also runs. */
+	/** Server count prompts use the resume packet; Make-X keeps its local quantity handler. */
 	void submit(int amount, Widget input)
 	{
+		if (client.getVarcIntValue(VarClientID.MESLAYERMODE) == 7)
+		{
+			net.openosrs.api.dispatch.PacketDispatcher dispatcher = packets != null ? packets : net.openosrs.api.Context.getService(net.openosrs.api.dispatch.PacketDispatcher.class);
+			if (!dispatcher.send("RESUME_P_COUNTDIALOG", amount))
+				throw new IllegalStateException("Count dialogue packet was not accepted");
+			// Native numeric dialogue close script; run only after the resume was accepted.
+			client.runScript(138);
+			return;
+		}
 		Object[] listener = input.getOnKeyListener();
 		if (listener == null || listener.length == 0 || !(listener[0] instanceof Integer))
 			throw new IllegalStateException("Numeric input has no native key handler");

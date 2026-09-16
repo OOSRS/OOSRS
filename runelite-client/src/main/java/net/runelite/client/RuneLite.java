@@ -237,6 +237,10 @@ public class RuneLite
 				}
 			});
 
+		final ArgumentAcceptingOptionSpec<Integer> liveDebugOption = parser
+			.accepts("livedebug", "Enable live debug JSON-RPC endpoint on loopback")
+			.withOptionalArg().ofType(Integer.class).defaultsTo(net.runelite.client.livedebug.LiveDebugConfig.DEFAULT_PORT);
+
 		parser.accepts("help", "Show this text").forHelp();
 		OptionSet options = parser.parse(args);
 
@@ -339,6 +343,28 @@ public class RuneLite
 			net.openosrs.api.Context.init(injector);
 
 			injector.getInstance(RuneLite.class).start();
+
+			if (options.has("livedebug"))
+			{
+				int port = options.has(liveDebugOption) && options.valueOf(liveDebugOption) != null
+					? options.valueOf(liveDebugOption)
+					: net.runelite.client.livedebug.LiveDebugConfig.DEFAULT_PORT;
+				net.runelite.client.livedebug.LiveDebugConfig liveDebugConfig = net.runelite.client.livedebug.LiveDebugConfig.builder()
+					.enabled(true)
+					.port(port)
+					.sessionDir(RUNELITE_DIR)
+					.build();
+				net.runelite.client.livedebug.LiveDebugService liveDebugService = injector.createChildInjector(new com.google.inject.AbstractModule()
+				{
+					@Override
+					protected void configure()
+					{
+						bind(net.runelite.client.livedebug.LiveDebugConfig.class).toInstance(liveDebugConfig);
+					}
+				}).getInstance(net.runelite.client.livedebug.LiveDebugService.class);
+				liveDebugService.start();
+				Runtime.getRuntime().addShutdownHook(new Thread(liveDebugService::stop, "LiveDebug-Shutdown"));
+			}
 
             String launcherReady = System.getProperty("openosrs.launcher.ready");
             if (launcherReady != null)
