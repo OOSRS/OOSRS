@@ -10,7 +10,6 @@
     "Missing implementation: client -> net/runelite/api/Client.getCameraX2()I",
     "Missing implementation: client -> net/runelite/api/Client.getCameraY2()I",
     "Missing implementation: client -> net/runelite/api/Client.getCameraZ2()I",
-    "Missing implementation: client -> net/runelite/api/Client.setPrintMenuActions(Z)V",
     "Missing implementation: client -> net/runelite/api/Client.setStringStackSize(I)V",
     "Missing implementation: client -> net/runelite/api/Client.setVar(Lnet/runelite/api/VarClientStr;Ljava/lang/String;)V",
     "Missing implementation: client -> net/runelite/api/Client.setVar(Lnet/runelite/api/VarClientInt;I)V",

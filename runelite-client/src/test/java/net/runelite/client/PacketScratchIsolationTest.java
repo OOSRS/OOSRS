@@ -52,7 +52,10 @@ public class PacketScratchIsolationTest
             PacketDispatcher dispatcher = new PacketDispatcher(client, hooks);
             source.setPackets(null);
             String report = dispatcher.dryRunAll();
-            assertTrue(report, report.startsWith("ok=71 inconclusive=21 noLayout=25 failed=0"));
+            // 56, 61 and 114 gained derived layouts, moving them out of noLayout.
+            // They stay inconclusive because a dry run cannot byte-verify a
+            // variable-length packet. failed must stay 0.
+            assertTrue(report, report.startsWith("ok=71 inconclusive=24 noLayout=22 failed=0"));
             assertTrue(dispatcher.dryRunById(0).startsWith("QUARANTINE"));
             verify(hooks, times(1)).file();
             verify(hooks, never()).isPacketTierAvailable();
