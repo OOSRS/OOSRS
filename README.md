@@ -29,7 +29,7 @@ An open-source desktop client built around extensibility. Explore the world with
 
 Client and launcher updates have separate release channels. Failed downloads preserve existing cached files. A cached client still needs a game-compatible revision and a network connection to play.
 
-You can also download the client JAR directly and run `java -jar openosrs-client-1.0.3.jar`.
+You can also download the client JAR directly and run `java -jar openosrs-client-1.2.0.jar`.
 
 ## Built for plugin makers
 
@@ -61,7 +61,7 @@ Use the [Profiles sidebar](docs/PROFILES.md) to add Jagex accounts, save your ch
 git clone https://github.com/OOSRS/OOSRS.git
 cd OOSRS
 ./gradlew :runelite-client:shadowJar
-java -jar runelite-client/build/libs/openosrs-client-1.0.3.jar
+java -jar runelite-client/build/libs/openosrs-client-1.2.0.jar
 ```
 
 Use a Java 11 JDK. On Windows, use `gradlew.bat`. The build fetches its pinned game dependency and verifies its SHA-256; you do not need the private maintainer tools. [Full build guide →](docs/BUILDING.md)
@@ -77,7 +77,7 @@ Use a Java 11 JDK. On Windows, use `gradlew.bat`. The build fetches its pinned g
 
 Existing Java package names preserve plugin compatibility. Revision 240 is the initial published baseline. Unverified packet layouts remain disabled; the API does not promise that every possible action is supported.
 
-See [what changed in 1.0.3](docs/releases/1.0.3.md) and the [existing API compatibility limits](docs/releases/1.0.2.md#plugin-compatibility).
+See [what changed in 1.2.0](docs/releases/1.2.0.md) and the [existing API compatibility limits](docs/releases/1.0.2.md#plugin-compatibility).
 
 ## Contribute
 
@@ -86,3 +86,7 @@ Open an issue with your client version and a redacted error log, or send a focus
 ## License
 
 See [LICENSE](LICENSE), [NOTICE](NOTICE), and individual source headers. This repository contains the open-source client and API; the separately downloaded game dependency has its own terms.
+
+### Human mouse
+
+Plugins built on the OpenOSRS API can act through a real, moving cursor instead of submitting interactions directly. It is off by default; switch it on under **Mouse settings**. See the [human input guide](docs/HUMAN_INPUT.md) for the settings, plugin integration, completion handling and current limits.
