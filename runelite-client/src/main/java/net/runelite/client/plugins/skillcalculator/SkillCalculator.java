@@ -79,6 +79,7 @@ class SkillCalculator extends JPanel
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
 	private float xpFactor = 1;
+	private SkillBonus currentBonus;
 
 	SkillCalculator(Client client, ClientThread clientThread, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
 	{
@@ -141,6 +142,7 @@ class SkillCalculator extends JPanel
 
 			// Reset the XP factor, removing bonuses.
 			xpFactor = 1;
+			currentBonus = null;
 
 			int endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
 			int endGoal = client.getVar(endGoalVarp);
@@ -279,6 +281,7 @@ class SkillCalculator extends JPanel
 			}
 		}
 
+		currentBonus = target.isSelected() ? bonus : null;
 		adjustXPBonus(target.isSelected() ? bonus.getValue() : 0f);
 	}
 
@@ -342,7 +345,7 @@ class SkillCalculator extends JPanel
 			int actionCount = 0;
 			int neededXP = targetXP - currentXP;
 			SkillAction action = slot.getAction();
-			final float bonus = action.isIgnoreBonus() ? 1f : xpFactor;
+			final float bonus = currentBonus != null && action.isBonusApplicable(currentBonus) ? xpFactor : 1f;
 			final int xp = Math.round(action.getXp() * bonus * 10f);
 
 			if (neededXP > 0)
@@ -503,6 +506,8 @@ class SkillCalculator extends JPanel
 				return CONSTRUCTION_GOAL_END;
 			case HUNTER:
 				return HUNTER_GOAL_END;
+			case SAILING:
+				return net.runelite.api.gameval.VarPlayerID.XPDROPS_SAILING_END;
 			case COOKING:
 				return COOKING_GOAL_END;
 			case FARMING:

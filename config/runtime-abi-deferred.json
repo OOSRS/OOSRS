@@ -1,5 +1,5 @@
 {
-  "gamepackSha256": "7fdedf1194261cc5b99faa35e0d2b4e45b6d56665402ccbde7f3aa6207c3f947",
+  "gamepackSha256": "25f42961c400bd9dfff1554402441c0ba6d1cffd011163cb9b0b4c42ae194f85",
   "revision": "240",
   "errors": [
     "Missing implementation: bi -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",

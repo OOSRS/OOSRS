@@ -29,7 +29,7 @@ public class PacketScratchIsolationTest
         StringBuilder hash = new StringBuilder();
         for (byte b : MessageDigest.getInstance("SHA-256").digest(Files.readAllBytes(gamepack)))
             hash.append(String.format(java.util.Locale.ROOT, "%02x", b & 255));
-        assertEquals("7fdedf1194261cc5b99faa35e0d2b4e45b6d56665402ccbde7f3aa6207c3f947", hash.toString());
+        assertEquals("25f42961c400bd9dfff1554402441c0ba6d1cffd011163cb9b0b4c42ae194f85", hash.toString());
         return new URLClassLoader(new URL[]{gamepack.toUri().toURL()}, PacketScratchIsolationTest.class.getClassLoader())
         {
             @Override protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException
@@ -52,10 +52,9 @@ public class PacketScratchIsolationTest
             PacketDispatcher dispatcher = new PacketDispatcher(client, hooks);
             source.setPackets(null);
             String report = dispatcher.dryRunAll();
-            // 56, 61 and 114 gained derived layouts, moving them out of noLayout.
-            // They stay inconclusive because a dry run cannot byte-verify a
-            // variable-length packet. failed must stay 0.
-            assertTrue(report, report.startsWith("ok=71 inconclusive=24 noLayout=22 failed=0"));
+            // 56, 61 and 114 stay quarantined: their write sequences are not proven, and
+            // the reference decoders show the partial layouts were incomplete. failed must stay 0.
+            assertTrue(report, report.startsWith("ok=71 inconclusive=21 noLayout=25 failed=0"));
             assertTrue(dispatcher.dryRunById(0).startsWith("QUARANTINE"));
             verify(hooks, times(1)).file();
             verify(hooks, never()).isPacketTierAvailable();

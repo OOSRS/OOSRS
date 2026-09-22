@@ -9,9 +9,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
@@ -48,18 +52,80 @@ public final class GamepackIdentityPatch
 
 	public static Map<String, byte[]> prepare(JarFile jar) throws IOException
 	{
-		if (!Boolean.parseBoolean(System.getProperty("oos.identity.enabled", "true")))
+		return prepare(jar, List.of());
+	}
+
+	/**
+	 * Prepare every in-memory class override for this game artifact.
+	 *
+	 * @param holderSetters {@code owner.setter} names of constant-dynamic credential
+	 *                      holders that need a getter; see {@link HolderAccessors}
+	 */
+	public static Map<String, byte[]> prepare(JarFile jar, Collection<String> holderSetters) throws IOException
+	{
+		boolean identity = Boolean.parseBoolean(System.getProperty("oos.identity.enabled", "true"));
+		if (!identity)
 		{
 			log.info("Gamepack identity overrides disabled");
+		}
+		if (!identity && holderSetters.isEmpty())
+		{
 			return Map.of();
 		}
-		try (InputStream capture = GamepackIdentityPatch.class.getResourceAsStream("/identity-callstack.json"))
+		try (InputStream capture = identity ? GamepackIdentityPatch.class.getResourceAsStream("/identity-callstack.json") : null)
 		{
-			return prepare(jar, capture);
+			return prepare(jar, identity, capture, holderSetters);
 		}
 	}
 
-	private static Map<String, byte[]> prepare(JarFile jar, InputStream capture) throws IOException
+	private static Map<String, byte[]> prepare(JarFile jar, boolean identity, InputStream capture,
+		Collection<String> holderSetters) throws IOException
+	{
+		Map<String, byte[]> originals = new LinkedHashMap<>();
+		Map<String, ClassNode> classes = new LinkedHashMap<>();
+		for (JarEntry entry : java.util.Collections.list(jar.entries()))
+		{
+			if (entry.getName().endsWith(".class"))
+			{
+				try (InputStream input = jar.getInputStream(entry))
+				{
+					byte[] bytes = input.readAllBytes();
+					ClassNode node = new ClassNode();
+					new ClassReader(bytes).accept(node, 0);
+					classes.put(node.name, node);
+					originals.put(node.name, bytes);
+				}
+			}
+		}
+
+		Set<ClassNode> changed = new LinkedHashSet<>();
+		if (identity)
+		{
+			changed.addAll(applyIdentity(jar, classes, capture));
+		}
+		for (String location : holderSetters)
+		{
+			int split = location.lastIndexOf('.');
+			ClassNode owner = split < 0 ? null : classes.get(location.substring(0, split));
+			require(owner != null, "Missing credential holder owner for " + location);
+			HolderAccessors.ensureGetter(owner, location.substring(split + 1));
+			changed.add(owner);
+		}
+
+		Map<String, byte[]> patched = new LinkedHashMap<>();
+		for (ClassNode node : changed)
+		{
+			HolderAccessors.requireDistinctDynamics(originals.get(node.name), node.name);
+			// Existing method frames stay untouched; replacements and holder getters
+			// are straight-line methods and need only their maximum stack recomputed.
+			ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+			node.accept(writer);
+			patched.put(node.name.replace('/', '.'), writer.toByteArray());
+		}
+		return patched;
+	}
+
+	private static List<ClassNode> applyIdentity(JarFile jar, Map<String, ClassNode> classes, InputStream capture) throws IOException
 	{
 		require(capture != null, "No stock RuneLite call-stack capture; run oos.sh callstack");
 		JsonObject reference = new JsonParser().parse(new InputStreamReader(capture, StandardCharsets.UTF_8)).getAsJsonObject();
@@ -74,24 +140,11 @@ public final class GamepackIdentityPatch
 			&& DeviceIdentity.digest(stack.getBytes(StandardCharsets.UTF_8)).equals(reference.get("stackSha256").getAsString()),
 			"Invalid call-stack capture contents");
 
-		Map<String, ClassNode> classes = new LinkedHashMap<>();
-		for (JarEntry entry : java.util.Collections.list(jar.entries()))
-		{
-			if (entry.getName().endsWith(".class"))
-			{
-				try (InputStream input = jar.getInputStream(entry))
-				{
-					ClassNode node = new ClassNode();
-					new ClassReader(input).accept(node, 0);
-					classes.put(node.name, node);
-				}
-			}
-		}
 		ClassNode client = classes.get("client");
 		require(client != null, "Game client class is missing");
 		List<MethodNode> checks = new ArrayList<>();
 		List<MethodNode> combiners = new ArrayList<>();
-		List<FieldInsnNode> accountFields = new ArrayList<>();
+		Map<String, AbstractInsnNode> characterReads = new LinkedHashMap<>();
 		List<FieldInsnNode> usernameFields = new ArrayList<>();
 		for (MethodNode method : client.methods)
 		{
@@ -113,8 +166,9 @@ public final class GamepackIdentityPatch
 			{
 				if (instruction instanceof LdcInsnNode && "JX_CHARACTER_ID".equals(((LdcInsnNode) instruction).cst))
 				{
-					// Character ID's property read is immediately followed by its
-					// String field assignment, independent of obfuscated names.
+					// Character ID's property read is immediately followed by its store,
+					// independent of obfuscated names: a static String field, or a
+					// constant-dynamic holder setter that needs an emitted getter.
 					AbstractInsnNode cursor = instruction.getNext();
 					for (int distance = 0; cursor != null && distance < 8; distance++, cursor = cursor.getNext())
 					{
@@ -127,7 +181,25 @@ public final class GamepackIdentityPatch
 							FieldInsnNode field = (FieldInsnNode) cursor;
 							if (field.desc.equals(STRING))
 							{
-								accountFields.add(field);
+								characterReads.put(field.owner + "." + field.name,
+									new FieldInsnNode(Opcodes.GETSTATIC, field.owner, field.name, field.desc));
+							}
+							break;
+						}
+						if (cursor.getOpcode() == Opcodes.INVOKESTATIC && cursor instanceof MethodInsnNode
+							&& "(Ljava/lang/String;)V".equals(((MethodInsnNode) cursor).desc))
+						{
+							MethodInsnNode call = (MethodInsnNode) cursor;
+							ClassNode owner = classes.get(call.owner);
+							MethodNode setter = owner == null ? null : owner.methods.stream()
+								.filter(m -> m.name.equals(call.name) && m.desc.equals(call.desc)).findFirst().orElse(null);
+							if (setter != null && HolderAccessors.holder(setter) != null)
+							{
+								// The getter is emitted after this scan: adding it now would
+								// modify the method list being iterated.
+								characterReads.put("holder:" + owner.name + "." + setter.name,
+									new MethodInsnNode(Opcodes.INVOKESTATIC, owner.name,
+										HolderAccessors.getterName(setter.name), "()" + STRING, false));
 							}
 							break;
 						}
@@ -137,7 +209,13 @@ public final class GamepackIdentityPatch
 		}
 		MethodNode check = only(checks, "call-stack checker");
 		MethodNode combiner = only(combiners, "packed-stack combiner");
-		FieldInsnNode characterId = uniqueField(accountFields, "character ID");
+		AbstractInsnNode characterId = only(new ArrayList<>(characterReads.values()), "character ID store");
+		if (characterId instanceof MethodInsnNode)
+		{
+			MethodInsnNode read = (MethodInsnNode) characterId;
+			HolderAccessors.ensureGetter(classes.get(read.owner),
+				read.name.substring(0, read.name.length() - HolderAccessors.GETTER_SUFFIX.length()));
+		}
 		FieldInsnNode username = uniqueField(usernameFields, "username");
 		List<FieldInsnNode> packedFields = stringFields(combiner, Opcodes.GETSTATIC, client.name);
 		List<MethodNode> packers = new ArrayList<>();
@@ -181,7 +259,10 @@ public final class GamepackIdentityPatch
 			}
 		}
 		MethodNode uuid = only(uuidMethods, "live platform UUID method");
-		validateFieldAccess(classes, characterId, platform.name);
+		if (characterId instanceof FieldInsnNode)
+		{
+			validateFieldAccess(classes, (FieldInsnNode) characterId, platform.name);
+		}
 		validateFieldAccess(classes, username, platform.name);
 
 		replace(check);
@@ -198,24 +279,24 @@ public final class GamepackIdentityPatch
 			packer.instructions.add(new InsnNode(Opcodes.RETURN));
 		}
 		replace(uuid);
-		uuid.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC, characterId.owner, characterId.name, STRING));
+		uuid.instructions.add(characterId.clone(java.util.Collections.emptyMap()));
 		uuid.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC, username.owner, username.name, STRING));
 		uuid.instructions.add(new MethodInsnNode(Opcodes.INVOKESTATIC, HELPER, "resolve", "(" + STRING + STRING + ")" + STRING, false));
 		uuid.instructions.add(new InsnNode(Opcodes.ARETURN));
 
-		Map<String, byte[]> patched = new LinkedHashMap<>();
-		for (ClassNode node : List.of(client, platform))
-		{
-			// Existing method frames stay untouched; replacements are straight
-			// line methods and need only their maximum stack size recomputed.
-			ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-			node.accept(writer);
-			patched.put(node.name.replace('/', '.'), writer.toByteArray());
-		}
 		log.info("Identity overrides ready: RuneLite {}, rev {}, client={}, stack={}, UUID={}.{}{}",
 			reference.get("runeliteVersion").getAsString(), reference.get("revision").getAsInt(), jarHash,
 			reference.get("stackSha256").getAsString(), platform.name, uuid.name, uuid.desc);
-		return patched;
+		List<ClassNode> touched = new ArrayList<>(List.of(client, platform));
+		if (characterId instanceof MethodInsnNode)
+		{
+			ClassNode holderOwner = classes.get(((MethodInsnNode) characterId).owner);
+			if (!touched.contains(holderOwner))
+			{
+				touched.add(holderOwner);
+			}
+		}
+		return touched;
 	}
 
 	private static void validateFieldAccess(Map<String, ClassNode> classes, FieldInsnNode field, String caller)
@@ -322,13 +403,29 @@ public final class GamepackIdentityPatch
 	/** Offline gate: resolve, transform and ask the JVM to link the actual classes. */
 	public static void main(String[] args) throws Exception
 	{
-		if (args.length != 2)
+		if (args.length != 2 && args.length != 3)
 		{
-			throw new IllegalArgumentException("Usage: GamepackIdentityPatch <injected-client.jar> <capture.json>");
+			throw new IllegalArgumentException("Usage: GamepackIdentityPatch <injected-client.jar> <capture.json> [account-hooks.properties]");
+		}
+		List<String> holders = new ArrayList<>();
+		if (args.length == 3)
+		{
+			Properties accounts = new Properties();
+			try (InputStream input = Files.newInputStream(Path.of(args[2])))
+			{
+				accounts.load(input);
+			}
+			for (String value : accounts.stringPropertyNames().stream().sorted().map(accounts::getProperty).toArray(String[]::new))
+			{
+				if (value.startsWith("holder:"))
+				{
+					holders.add(value.substring("holder:".length()));
+				}
+			}
 		}
 		try (JarFile jar = new JarFile(args[0]); InputStream capture = Files.newInputStream(Path.of(args[1])))
 		{
-			Map<String, byte[]> patched = prepare(jar, capture);
+			Map<String, byte[]> patched = prepare(jar, true, capture, holders);
 			ClassLoader loader = new ClassLoader(GamepackIdentityPatch.class.getClassLoader())
 			{
 				@Override
@@ -361,7 +458,17 @@ public final class GamepackIdentityPatch
 			{
 				loader.loadClass(name).getDeclaredMethods();
 			}
-			System.out.println("Identity overrides linked: " + patched.size() + " classes; 4 method replacements; game not started");
+			for (String holder : holders)
+			{
+				int split = holder.lastIndexOf('.');
+				Class<?> owner = loader.loadClass(holder.substring(0, split));
+				java.lang.reflect.Method getter = owner.getDeclaredMethod(HolderAccessors.getterName(holder.substring(split + 1)));
+				java.lang.reflect.Method setter = owner.getDeclaredMethod(holder.substring(split + 1), String.class);
+				require(java.lang.reflect.Modifier.isStatic(getter.getModifiers()) && getter.getReturnType() == String.class
+					&& java.lang.reflect.Modifier.isStatic(setter.getModifiers()), "Holder accessors did not link: " + holder);
+			}
+			System.out.println("Identity overrides linked: " + patched.size() + " classes; 4 method replacements; "
+				+ holders.size() + " credential holder getters; game not started");
 		}
 	}
 }

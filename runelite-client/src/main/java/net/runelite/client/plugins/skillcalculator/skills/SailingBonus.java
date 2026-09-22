@@ -29,15 +29,14 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter(onMethod_ = @Override)
-public enum FishingBonus implements SkillBonus
+public enum SailingBonus implements SkillBonus
 {
-	ANGLERS_OUTFIT("Angler's Outfit (+2.5%)", 0.025f),
-	DIABOLIC_WORMS("Diabolic Worms (66% XP)", -0.34f),
-	SHARK_LURE_1("Shark Lure x1 (25% XP)", -0.75f),
-	SHARK_LURE_3("Shark Lure x3 (20% XP)", -0.8f),
-	SHARK_LURE_5("Shark Lure x5 (16% XP)", -0.84f),
+	HORIZONS_LURE("Horizon's Lure (+2.5%)", 0.025f),
+	CREW_DECKHANDINESS_3("Crew Deckhandiness 3 (30% XP)", -0.7f),
+	CREW_DECKHANDINESS_4("Crew Deckhandiness 4 (40% XP)", -0.6f),
 	;
 
 	private final String name;
 	private final float value;
+
 }

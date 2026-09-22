@@ -40,6 +40,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -113,6 +114,7 @@ public class AttackStylesPlugin extends Plugin
 			castingModeVarbit);
 		updateWarning(false);
 		processWidgets();
+		fixListeners();
 	}
 
 	@Override
@@ -133,6 +135,26 @@ public class AttackStylesPlugin extends Plugin
 	public boolean isWarnedSkillSelected()
 	{
 		return warnedSkillSelected;
+	}
+
+	@Subscribe
+	private void onScriptPreFired(ScriptPreFired event)
+	{
+		if (event.getScriptId() == ScriptID.COMBAT_INTERFACE_SP)
+		{
+			// Attach the special-attack bar redraw listeners to the weapon name
+			// instead of the auto-retaliate text, which this plugin can hide.
+			event.getScriptEvent().getArguments()[1] = net.runelite.api.gameval.InterfaceID.CombatInterface.TITLE;
+		}
+	}
+
+	private void fixListeners()
+	{
+		// Re-run once so listeners attached before this plugin started move too.
+		if (client.getWidget(net.runelite.api.gameval.InterfaceID.CombatInterface.TITLE) != null)
+		{
+			client.runScript(ScriptID.COMBAT_INTERFACE_SP, net.runelite.api.gameval.InterfaceID.CombatInterface.TITLE);
+		}
 	}
 
 	@Subscribe

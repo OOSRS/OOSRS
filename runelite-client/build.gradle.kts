@@ -85,7 +85,7 @@ dependencies {
     implementation(group = "org.pf4j", name = "pf4j-update", version = "2.3.0")
     // implementation(group = "com.google.archivepatcher", name = "archive-patch-applier", version= "1.0.4")
 
-    // Renderer and native bridge from the exact RuneLite 1.12.38 source contract.
+    // Renderer and native bridge from the exact RuneLite 1.12.39 source contract.
     implementation("net.runelite:rlawt:1.8")
     implementation("org.lwjgl:lwjgl:3.3.2")
     implementation("org.lwjgl:lwjgl-opengl:3.3.2")

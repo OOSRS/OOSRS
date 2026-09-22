@@ -36,6 +36,7 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.GroundObject;
 import net.runelite.api.MenuAction;
+import net.runelite.api.Player;
 import net.runelite.api.NPC;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
@@ -46,6 +47,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -72,7 +74,7 @@ public class InteractHighlightPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private TileObject interactedObject;
-	private NPC interactedNpc;
+	private Actor interactedActor;
 	@Getter(AccessLevel.PACKAGE)
 	boolean attacked;
 	private int clickTick;
@@ -107,22 +109,32 @@ public class InteractHighlightPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		final Player localPlayer = client.getLocalPlayer();
+		final NPC npc = event.getNpc();
+		if (localPlayer != null && npc == localPlayer.getInteracting())
+		{
+			interactedActor = npc;
+		}
+	}
+
+	@Subscribe
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
-		if (npcDespawned.getNpc() == interactedNpc)
+		if (npcDespawned.getNpc() == interactedActor)
 		{
-			interactedNpc = null;
+			interactedActor = null;
 		}
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (client.getTickCount() > clickTick && client.getLocalDestinationLocation() == null)
+		if (client.getTickCount() > clickTick && client.getLocalDestinationLocation() == null && interactedActor == null)
 		{
 			// when the destination is reached, clear the interacting object
 			interactedObject = null;
-			interactedNpc = null;
 		}
 	}
 
@@ -130,10 +142,12 @@ public class InteractHighlightPlugin extends Plugin
 	public void onInteractingChanged(InteractingChanged interactingChanged)
 	{
 		if (interactingChanged.getSource() == client.getLocalPlayer()
-				&& client.getTickCount() > clickTick && interactingChanged.getTarget() != interactedNpc)
+				&& client.getTickCount() > clickTick)
 		{
-			interactedNpc = null;
-			attacked = interactingChanged.getTarget() != null && interactingChanged.getTarget().getCombatLevel() > 0;
+			final Actor target = interactingChanged.getTarget();
+			interactedObject = null;
+			interactedActor = target;
+			attacked = target != null && target.getCombatLevel() > 0;
 		}
 	}
 
@@ -154,7 +168,7 @@ public class InteractHighlightPlugin extends Plugin
 				int y = menuOptionClicked.getParam1();
 				int id = menuOptionClicked.getId();
 				interactedObject = findTileObject(x, y, id);
-				interactedNpc = null;
+				interactedActor = null;
 				clickTick = client.getTickCount();
 				gameCycle = client.getGameCycle();
 				break;
@@ -168,7 +182,7 @@ public class InteractHighlightPlugin extends Plugin
 			case NPC_FIFTH_OPTION:
 			{
 				interactedObject = null;
-				interactedNpc = menuOptionClicked.getMenuEntry().getNpc();
+				interactedActor = menuOptionClicked.getMenuEntry().getNpc();
 				attacked = menuOptionClicked.getMenuAction() == MenuAction.NPC_SECOND_OPTION ||
 					menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_NPC && WidgetInfo.TO_GROUP(client.getSelectedWidget().getId()) == WidgetID.SPELLBOOK_GROUP_ID;
 				clickTick = client.getTickCount();
@@ -194,13 +208,13 @@ public class InteractHighlightPlugin extends Plugin
 			case GROUND_ITEM_FOURTH_OPTION:
 			case GROUND_ITEM_FIFTH_OPTION:
 				interactedObject = null;
-				interactedNpc = null;
+				interactedActor = null;
 				break;
 			default:
 				if (menuOptionClicked.isItemOp())
 				{
 					interactedObject = null;
-					interactedNpc = null;
+					interactedActor = null;
 				}
 		}
 	}
@@ -244,6 +258,6 @@ public class InteractHighlightPlugin extends Plugin
 	@Nullable
 	Actor getInteractedTarget()
 	{
-		return interactedNpc != null ? interactedNpc : client.getLocalPlayer().getInteracting();
+		return interactedActor;
 	}
 }

@@ -21,7 +21,7 @@ import org.junit.runners.Parameterized;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-/** RLPlugins reference bytes compared with the production encoder and pinned native buffer. */
+/** Independently derived reference bytes compared with the production encoder and pinned native buffer. */
 @RunWith(Parameterized.class)
 public class PacketReferenceCompatibilityTest
 {

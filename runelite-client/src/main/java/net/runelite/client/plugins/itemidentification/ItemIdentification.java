@@ -356,6 +356,23 @@ enum ItemIdentification
 	LUCKY_IMPLING(Type.IMPLING_JAR, "Lucky", "L", ItemID.LUCKY_IMPLING_JAR),
 
 	// Tablets
+	SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Sap.T", "ST", net.runelite.api.gameval.ItemID.SAP_TREATED_LOGS),
+	OAK_SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Oak ST", "OAKST", net.runelite.api.gameval.ItemID.SAP_TREATED_OAK_LOGS),
+	WILLOW_SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Wil ST", "WILST", net.runelite.api.gameval.ItemID.SAP_TREATED_WILLOW_LOGS),
+	MAPLE_SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Map ST", "MAPST", net.runelite.api.gameval.ItemID.SAP_TREATED_MAPLE_LOGS),
+	YEW_SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Yew ST", "YEWST", net.runelite.api.gameval.ItemID.SAP_TREATED_YEW_LOGS),
+	MAGIC_SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Mag ST", "MAGST", net.runelite.api.gameval.ItemID.SAP_TREATED_MAGIC_LOGS),
+	REDWOOD_SAP_TREATED_LOGS(Type.LOGS_SAP_TREATED, "Red ST", "REDST", net.runelite.api.gameval.ItemID.SAP_TREATED_REDWOOD_LOGS),
+
+	TELEPORT_TO_BOAT(Type.TABLET, "To boat", "T.BT", net.runelite.api.gameval.ItemID.POH_TABLET_TELEPORTMETOBOAT),
+	SUMMON_BOAT(Type.TABLET, "Summon", "S.BT", net.runelite.api.gameval.ItemID.POH_TABLET_TELEPORTBOATTOME),
+	ALDARIN_TELEPORT(Type.TABLET, "Aldarin", "ALD", net.runelite.api.gameval.ItemID.NZONE_TELETAB_ALDARIN),
+	ARDEAGLAIS_TELEPORT(Type.SCROLL, "Ardeagl", "ARDGL", net.runelite.api.gameval.ItemID.TELEPORTSCROLL_ARDEAGLAIS),
+	CHASM_TELEPORT(Type.SCROLL, "Chasm", "CHASM", net.runelite.api.gameval.ItemID.TELEPORTSCROLL_CHASMOFFIRE),
+	COLOSSAL_WRYM_TELEPORT(Type.SCROLL, "C.Wyrm", "WYRM", net.runelite.api.gameval.ItemID.TELEPORTSCROLL_COLOSSAL_WYRM),
+	GUTHIXIAN_TEMPLE_TELEPORT(Type.SCROLL, "G.Temple", "G.TMP", net.runelite.api.gameval.ItemID.TELEPORTSCROLL_GUTHIXIAN_TEMPLE),
+	SPIDER_CAVE_TELEPORT(Type.SCROLL, "S.Cave", "SPIDER", net.runelite.api.gameval.ItemID.TELEPORTSCROLL_SPIDERCAVE),
+
 	VARROCK_TELEPORT(Type.TABLET, "Varro", "VAR", ItemID.VARROCK_TELEPORT),
 	LUMBRIDGE_TELEPORT(Type.TABLET, "Lumbr", "LUM", ItemID.LUMBRIDGE_TELEPORT),
 	FALADOR_TELEPORT(Type.TABLET, "Fala", "FAL", ItemID.FALADOR_TELEPORT),
@@ -556,6 +573,7 @@ enum ItemIdentification
 		HERB(ItemIdentificationConfig::showHerbs),
 		LOGS(ItemIdentificationConfig::showLogs),
 		LOGS_PYRE(ItemIdentificationConfig::showPyreLogs),
+		LOGS_SAP_TREATED(ItemIdentificationConfig::showSapTreatedLogs),
 		PLANK(ItemIdentificationConfig::showPlanks),
 		SAPLING(ItemIdentificationConfig::showSaplings),
 		COMPOST(ItemIdentificationConfig::showComposts),

@@ -478,7 +478,11 @@ public class ClientLoader implements Supplier<Object>
 	{
 		try (JarFile jarFile = new JarFile(jar))
 		{
-			Map<String, byte[]> identityOverrides = net.openosrs.api.identity.GamepackIdentityPatch.prepare(jarFile);
+			// The account mapping is verified against this exact artifact first: its
+			// credential holders need getters emitted before the game classes load.
+			java.util.Properties accounts = net.openosrs.client.accounts.JagexLoginBridge.verifiedMapping(jar.toPath());
+			Map<String, byte[]> identityOverrides = net.openosrs.api.identity.GamepackIdentityPatch.prepare(jarFile,
+				net.openosrs.client.accounts.JagexLoginBridge.holderSetters(accounts));
 			ClassLoader classLoader = new ClassLoader(ClientLoader.class.getClassLoader())
 			{
 				@Override
@@ -540,7 +544,7 @@ public class ClientLoader implements Supplier<Object>
 				}
 			}
 
-			if (!net.openosrs.client.accounts.JagexLoginBridge.register(jar.toPath(), classLoader))
+			if (!net.openosrs.client.accounts.JagexLoginBridge.register(accounts, classLoader))
 			{
 				log.info("Profiles login is unavailable: account mappings do not match the loaded client");
 			}

@@ -71,4 +71,18 @@ public enum FishingAction implements ItemSkillAction
 	private final int itemId;
 	private final int level;
 	private final float xp;
+
+	@Override
+	public boolean isBonusApplicable(SkillBonus bonus)
+	{
+		if (bonus == FishingBonus.DIABOLIC_WORMS)
+		{
+			return this == RAW_ANGLERFISH;
+		}
+		if (bonus == FishingBonus.SHARK_LURE_1 || bonus == FishingBonus.SHARK_LURE_3 || bonus == FishingBonus.SHARK_LURE_5)
+		{
+			return this == RAW_SHARK;
+		}
+		return !isIgnoreBonus();
+	}
 }

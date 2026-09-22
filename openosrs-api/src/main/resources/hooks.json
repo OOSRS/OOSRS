@@ -21,24 +21,31 @@
       "static": false,
       "width": "W0"
     },
-    "ah()I": {
-      "desc": "()I",
+    "aj(II)I": {
+      "desc": "(II)I",
       "owner": "xs",
-      "read": "I1",
+      "read": "I3",
       "static": false,
       "width": "W0"
     },
-    "am()I": {
-      "desc": "()I",
+    "ak(I)V": {
+      "desc": "(I)V",
       "owner": "xs",
-      "read": "I1",
+      "read": "V0",
       "static": false,
-      "width": "W0"
+      "width": "W1"
     },
     "an()I": {
       "desc": "()I",
       "owner": "xs",
       "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "ao(II)I": {
+      "desc": "(II)I",
+      "owner": "xs",
+      "read": "I3",
       "static": false,
       "width": "W0"
     },
@@ -63,18 +70,25 @@
       "static": false,
       "width": "W1"
     },
+    "av(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
+    },
+    "aw(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I4",
+      "static": true,
+      "width": "W0"
+    },
     "ax(B)I": {
       "desc": "(B)I",
       "owner": "xs",
       "read": "I2",
       "static": false,
-      "width": "W0"
-    },
-    "ax(Lxy;I)I": {
-      "desc": "(Lxy;I)I",
-      "owner": "xy",
-      "read": "I3",
-      "static": true,
       "width": "W0"
     },
     "ba(I)I": {
@@ -96,19 +110,12 @@
       "owner": "xy",
       "read": "V0",
       "static": false,
-      "width": "W1"
+      "width": "W3"
     },
     "bl(IB)V": {
       "desc": "(IB)V",
       "owner": "xy",
       "read": "V0",
-      "static": false,
-      "width": "W4"
-    },
-    "bm([BII)V": {
-      "desc": "([BII)V",
-      "owner": "xs",
-      "read": "V1",
       "static": false,
       "width": "W1"
     },
@@ -133,6 +140,20 @@
       "static": false,
       "width": "W0"
     },
+    "br([BII)V": {
+      "desc": "([BII)V",
+      "owner": "xs",
+      "read": "V1",
+      "static": false,
+      "width": "W1"
+    },
+    "bt([BII)V": {
+      "desc": "([BII)V",
+      "owner": "xs",
+      "read": "V1",
+      "static": false,
+      "width": "W1"
+    },
     "bu(I)I": {
       "desc": "(I)I",
       "owner": "xs",
@@ -154,22 +175,8 @@
       "static": false,
       "width": "W0"
     },
-    "bx(Lxy;I)V": {
-      "desc": "(Lxy;I)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": true,
-      "width": "W3"
-    },
     "bz(II)V": {
       "desc": "(II)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": false,
-      "width": "W4"
-    },
-    "cc(IB)V": {
-      "desc": "(IB)V",
       "owner": "xy",
       "read": "V0",
       "static": false,
@@ -203,26 +210,12 @@
       "static": false,
       "width": "W0"
     },
-    "ck(IB)V": {
-      "desc": "(IB)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": false,
-      "width": "W1"
-    },
     "cl([BIIB)V": {
       "desc": "([BIIB)V",
       "owner": "xy",
       "read": "V1",
       "static": false,
       "width": "W1"
-    },
-    "cm()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I1",
-      "static": false,
-      "width": "W0"
     },
     "cm(B)Ljava/lang/String;": {
       "desc": "(B)Ljava/lang/String;",
@@ -238,12 +231,12 @@
       "static": false,
       "width": "W0"
     },
-    "cp()I": {
-      "desc": "()I",
+    "co(II)V": {
+      "desc": "(II)V",
       "owner": "xy",
-      "read": "I1",
+      "read": "V0",
       "static": false,
-      "width": "W0"
+      "width": "W1"
     },
     "cp(Ljava/lang/String;I)V": {
       "desc": "(Ljava/lang/String;I)V",
@@ -271,7 +264,14 @@
       "owner": "xy",
       "read": "V0",
       "static": false,
-      "width": "W2"
+      "width": "W4"
+    },
+    "cs(Lxy;J)V": {
+      "desc": "(Lxy;J)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W8"
     },
     "ct(Ljava/lang/String;S)V": {
       "desc": "(Ljava/lang/String;S)V",
@@ -285,7 +285,14 @@
       "owner": "xy",
       "read": "V0",
       "static": false,
-      "width": "W8"
+      "width": "W6"
+    },
+    "cu(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": true,
+      "width": "W0"
     },
     "cv(IB)V": {
       "desc": "(IB)V",
@@ -306,7 +313,7 @@
       "owner": "xy",
       "read": "V0",
       "static": false,
-      "width": "W1"
+      "width": "W4"
     },
     "cz(B)I": {
       "desc": "(B)I",
@@ -315,24 +322,17 @@
       "static": false,
       "width": "W0"
     },
-    "cz(Lxy;)I": {
-      "desc": "(Lxy;)I",
-      "owner": "xy",
-      "read": "I1",
-      "static": true,
-      "width": "W0"
-    },
     "da(IB)V": {
       "desc": "(IB)V",
       "owner": "xy",
       "read": "V0",
       "static": false,
-      "width": "W2"
+      "width": "W1"
     },
     "db(I)I": {
       "desc": "(I)I",
       "owner": "xy",
-      "read": "I1",
+      "read": "I2",
       "static": false,
       "width": "W0"
     },
@@ -357,17 +357,17 @@
       "static": false,
       "width": "W0"
     },
-    "dj(Lxy;)I": {
-      "desc": "(Lxy;)I",
+    "dj(IB)V": {
+      "desc": "(IB)V",
       "owner": "xy",
-      "read": "I1",
-      "static": true,
-      "width": "W0"
+      "read": "V0",
+      "static": false,
+      "width": "W1"
     },
-    "dj(Lxy;[BII)V": {
-      "desc": "(Lxy;[BII)V",
-      "owner": "xy",
-      "read": "V1",
+    "dk(Lxs;I)V": {
+      "desc": "(Lxs;I)V",
+      "owner": "xs",
+      "read": "V0",
       "static": true,
       "width": "W1"
     },
@@ -402,7 +402,7 @@
     "du(I)I": {
       "desc": "(I)I",
       "owner": "xy",
-      "read": "I4",
+      "read": "I1",
       "static": false,
       "width": "W0"
     },
@@ -453,7 +453,7 @@
       "owner": "xy",
       "read": "V0",
       "static": false,
-      "width": "W3"
+      "width": "W2"
     },
     "ee(I)I": {
       "desc": "(I)I",
@@ -462,17 +462,10 @@
       "static": false,
       "width": "W0"
     },
-    "ef(II)V": {
-      "desc": "(II)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": false,
-      "width": "W4"
-    },
     "eg(I)I": {
       "desc": "(I)I",
       "owner": "xy",
-      "read": "I3",
+      "read": "I2",
       "static": false,
       "width": "W0"
     },
@@ -486,7 +479,7 @@
     "ei(I)I": {
       "desc": "(I)I",
       "owner": "xy",
-      "read": "I1",
+      "read": "I4",
       "static": false,
       "width": "W0"
     },
@@ -574,6 +567,13 @@
       "static": false,
       "width": "W0"
     },
+    "ev(IB)V": {
+      "desc": "(IB)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W4"
+    },
     "ew(I)I": {
       "desc": "(I)I",
       "owner": "xy",
@@ -586,13 +586,6 @@
       "owner": "xy",
       "read": "I2",
       "static": false,
-      "width": "W0"
-    },
-    "ex(Lxy;)I": {
-      "desc": "(Lxy;)I",
-      "owner": "xy",
-      "read": "I2",
-      "static": true,
       "width": "W0"
     },
     "ey(I)I": {
@@ -616,26 +609,19 @@
       "static": false,
       "width": "W8"
     },
-    "fc(J)V": {
-      "desc": "(J)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": false,
-      "width": "W6"
-    },
-    "fe(J)V": {
-      "desc": "(J)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": false,
-      "width": "W6"
-    },
     "ff(J)V": {
       "desc": "(J)V",
       "owner": "xy",
       "read": "V0",
       "static": false,
       "width": "W6"
+    },
+    "fi(Lxy;J)V": {
+      "desc": "(Lxy;J)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W8"
     },
     "fk(I)V": {
       "desc": "(I)V",
@@ -644,19 +630,12 @@
       "static": false,
       "width": "W3"
     },
-    "fm(J)V": {
-      "desc": "(J)V",
+    "fl(Lxy;J)V": {
+      "desc": "(Lxy;J)V",
       "owner": "xy",
       "read": "V0",
-      "static": false,
-      "width": "W8"
-    },
-    "fn(I)V": {
-      "desc": "(I)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": false,
-      "width": "W3"
+      "static": true,
+      "width": "W6"
     },
     "fp(I)V": {
       "desc": "(I)V",
@@ -679,12 +658,26 @@
       "static": false,
       "width": "W6"
     },
+    "fs(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W3"
+    },
     "ft(J)V": {
       "desc": "(J)V",
       "owner": "xy",
       "read": "V0",
       "static": false,
       "width": "W6"
+    },
+    "ft(Lxs;)I": {
+      "desc": "(Lxs;)I",
+      "owner": "xs",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
     },
     "fv(I)V": {
       "desc": "(I)V",
@@ -698,7 +691,7 @@
       "owner": "xy",
       "read": "V0",
       "static": false,
-      "width": "W4"
+      "width": "W1"
     },
     "fz(I)V": {
       "desc": "(I)V",
@@ -706,6 +699,13 @@
       "read": "V0",
       "static": false,
       "width": "W1"
+    },
+    "fz(Lxy;I)V": {
+      "desc": "(Lxy;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W3"
     },
     "ga(Ljava/lang/CharSequence;)V": {
       "desc": "(Ljava/lang/CharSequence;)V",
@@ -721,6 +721,13 @@
       "static": false,
       "width": "W7"
     },
+    "gc(Lxy;I)V": {
+      "desc": "(Lxy;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W2"
+    },
     "ge(I)V": {
       "desc": "(I)V",
       "owner": "xy",
@@ -728,29 +735,43 @@
       "static": false,
       "width": "W1"
     },
-    "gl(Lxy;)Ljava/lang/String;": {
-      "desc": "(Lxy;)Ljava/lang/String;",
+    "gg([BII)V": {
+      "desc": "([BII)V",
       "owner": "xy",
-      "read": "L2",
+      "read": "V1",
+      "static": false,
+      "width": "W1"
+    },
+    "gi(Lxy;I)I": {
+      "desc": "(Lxy;I)I",
+      "owner": "xy",
+      "read": "I1",
       "static": true,
       "width": "W0"
     },
-    "go(Ljava/lang/String;)V": {
-      "desc": "(Ljava/lang/String;)V",
+    "gj(I)V": {
+      "desc": "(I)V",
       "owner": "xy",
       "read": "V0",
       "static": false,
       "width": "W2"
     },
-    "gp(Ljava/lang/CharSequence;)V": {
-      "desc": "(Ljava/lang/CharSequence;)V",
+    "gk(Ljava/lang/String;)V": {
+      "desc": "(Ljava/lang/String;)V",
       "owner": "xy",
       "read": "V0",
       "static": false,
-      "width": "W7"
+      "width": "W1"
     },
-    "gs(I)V": {
-      "desc": "(I)V",
+    "gk(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": true,
+      "width": "W0"
+    },
+    "go(Ljava/lang/String;)V": {
+      "desc": "(Ljava/lang/String;)V",
       "owner": "xy",
       "read": "V0",
       "static": false,
@@ -784,66 +805,66 @@
       "static": false,
       "width": "W4"
     },
-    "gz(Lxy;I)I": {
-      "desc": "(Lxy;I)I",
+    "gz(Ljava/lang/CharSequence;)V": {
+      "desc": "(Ljava/lang/CharSequence;)V",
       "owner": "xy",
-      "read": "I3",
-      "static": true,
-      "width": "W0"
+      "read": "V0",
+      "static": false,
+      "width": "W7"
     },
     "ha()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I4",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "he()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
       "static": false,
       "width": "W0"
     },
     "hf()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I2",
+      "read": "I1",
       "static": false,
       "width": "W0"
     },
     "hh()I": {
       "desc": "()I",
       "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "hi(Lxy;Ljava/lang/CharSequence;)V": {
+      "desc": "(Lxy;Ljava/lang/CharSequence;)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W7"
+    },
+    "hj()I": {
+      "desc": "()I",
+      "owner": "xy",
       "read": "I3",
       "static": false,
       "width": "W0"
     },
-    "hj()I": {
+    "ho()I": {
       "desc": "()I",
       "owner": "xy",
       "read": "I2",
       "static": false,
       "width": "W0"
     },
-    "hj(Lxy;)B": {
-      "desc": "(Lxy;)B",
-      "owner": "xy",
-      "read": "B1",
-      "static": true,
-      "width": "W0"
-    },
-    "hk()B": {
-      "desc": "()B",
-      "owner": "xy",
-      "read": "B1",
-      "static": false,
-      "width": "W0"
-    },
-    "hm(Lxy;IB)V": {
-      "desc": "(Lxy;IB)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": true,
-      "width": "W1"
-    },
-    "ho()I": {
+    "hq()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I1",
+      "read": "I3",
       "static": false,
       "width": "W0"
     },
@@ -861,21 +882,28 @@
       "static": false,
       "width": "W0"
     },
-    "ia()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I1",
-      "static": false,
-      "width": "W0"
-    },
-    "ic()I": {
+    "hy()I": {
       "desc": "()I",
       "owner": "xy",
       "read": "I4",
       "static": false,
       "width": "W0"
     },
-    "id()I": {
+    "hz(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W1"
+    },
+    "ib()Ljava/lang/String;": {
+      "desc": "()Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": false,
+      "width": "W0"
+    },
+    "ic()I": {
       "desc": "()I",
       "owner": "xy",
       "read": "I1",
@@ -889,6 +917,13 @@
       "static": false,
       "width": "W0"
     },
+    "if([BII)V": {
+      "desc": "([BII)V",
+      "owner": "xy",
+      "read": "V1",
+      "static": false,
+      "width": "W1"
+    },
     "ig()Ljava/lang/String;": {
       "desc": "()Ljava/lang/String;",
       "owner": "xy",
@@ -896,31 +931,17 @@
       "static": false,
       "width": "W0"
     },
+    "ig(Lxy;Ljava/lang/CharSequence;I)V": {
+      "desc": "(Lxy;Ljava/lang/CharSequence;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W7"
+    },
     "ih()Ljava/lang/String;": {
       "desc": "()Ljava/lang/String;",
       "owner": "xy",
       "read": "L1",
-      "static": false,
-      "width": "W0"
-    },
-    "ii()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I2",
-      "static": false,
-      "width": "W0"
-    },
-    "ij()Ljava/lang/String;": {
-      "desc": "()Ljava/lang/String;",
-      "owner": "xy",
-      "read": "L1",
-      "static": false,
-      "width": "W0"
-    },
-    "ik()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I2",
       "static": false,
       "width": "W0"
     },
@@ -931,6 +952,20 @@
       "static": false,
       "width": "W0"
     },
+    "il(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": true,
+      "width": "W0"
+    },
+    "im()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
     "in()Ljava/lang/String;": {
       "desc": "()Ljava/lang/String;",
       "owner": "xy",
@@ -938,17 +973,10 @@
       "static": false,
       "width": "W0"
     },
-    "io()I": {
+    "iq()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I2",
-      "static": false,
-      "width": "W0"
-    },
-    "ip()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I2",
+      "read": "I1",
       "static": false,
       "width": "W0"
     },
@@ -962,37 +990,51 @@
     "it()Ljava/lang/String;": {
       "desc": "()Ljava/lang/String;",
       "owner": "xy",
-      "read": "L1",
+      "read": "L2",
       "static": false,
       "width": "W0"
+    },
+    "iu()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
+    },
+    "iu(Lxy;II)V": {
+      "desc": "(Lxy;II)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W4"
     },
     "iv()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I3",
+      "read": "I1",
       "static": false,
       "width": "W0"
     },
-    "iw()I": {
+    "ix()Ljava/lang/String;": {
+      "desc": "()Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": false,
+      "width": "W0"
+    },
+    "iy()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I2",
+      "read": "I1",
       "static": false,
       "width": "W0"
     },
-    "iw(Lxy;I)V": {
-      "desc": "(Lxy;I)V",
+    "iz([BII)V": {
+      "desc": "([BII)V",
       "owner": "xy",
-      "read": "V0",
-      "static": true,
-      "width": "W2"
-    },
-    "ja()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I2",
+      "read": "V1",
       "static": false,
-      "width": "W0"
+      "width": "W1"
     },
     "jd()I": {
       "desc": "()I",
@@ -1001,39 +1043,32 @@
       "static": false,
       "width": "W0"
     },
-    "jf()I": {
+    "jg()I": {
       "desc": "()I",
       "owner": "xy",
       "read": "I1",
       "static": false,
       "width": "W0"
     },
-    "ji(Lxy;I)Ljava/lang/String;": {
-      "desc": "(Lxy;I)Ljava/lang/String;",
-      "owner": "xy",
-      "read": "L1",
+    "jo(Lxs;)I": {
+      "desc": "(Lxs;)I",
+      "owner": "xs",
+      "read": "I1",
       "static": true,
-      "width": "W0"
-    },
-    "jo()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I3",
-      "static": false,
-      "width": "W0"
-    },
-    "jq()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I1",
-      "static": false,
       "width": "W0"
     },
     "ju()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I3",
+      "read": "I1",
       "static": false,
+      "width": "W0"
+    },
+    "jy(Lxy;S)I": {
+      "desc": "(Lxy;S)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
       "width": "W0"
     },
     "ka(I)V": {
@@ -1042,6 +1077,13 @@
       "read": "V0",
       "static": false,
       "width": "W1"
+    },
+    "kb()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I1",
+      "static": false,
+      "width": "W0"
     },
     "kc()B": {
       "desc": "()B",
@@ -1057,14 +1099,14 @@
       "static": false,
       "width": "W0"
     },
-    "ki(I)V": {
-      "desc": "(I)V",
+    "kj()I": {
+      "desc": "()I",
       "owner": "xy",
-      "read": "V0",
+      "read": "I1",
       "static": false,
-      "width": "W1"
+      "width": "W0"
     },
-    "kk()B": {
+    "kl()B": {
       "desc": "()B",
       "owner": "xy",
       "read": "B1",
@@ -1081,7 +1123,7 @@
     "kn()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I3",
+      "read": "I1",
       "static": false,
       "width": "W0"
     },
@@ -1092,26 +1134,19 @@
       "static": false,
       "width": "W1"
     },
-    "kr(I)V": {
-      "desc": "(I)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": false,
-      "width": "W1"
-    },
-    "kr(Lxy;)I": {
-      "desc": "(Lxy;)I",
-      "owner": "xy",
-      "read": "I3",
-      "static": true,
-      "width": "W0"
-    },
     "kt()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I2",
+      "read": "I1",
       "static": false,
       "width": "W0"
+    },
+    "kt(Lxy;I)V": {
+      "desc": "(Lxy;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W1"
     },
     "kv(I)V": {
       "desc": "(I)V",
@@ -1123,7 +1158,7 @@
     "kw()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I3",
+      "read": "I1",
       "static": false,
       "width": "W0"
     },
@@ -1158,14 +1193,14 @@
     "lc()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I4",
+      "read": "I2",
       "static": false,
       "width": "W0"
     },
     "ld()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I2",
+      "read": "I3",
       "static": false,
       "width": "W0"
     },
@@ -1183,19 +1218,26 @@
       "static": false,
       "width": "W2"
     },
-    "lh(Lxy;I)I": {
-      "desc": "(Lxy;I)I",
+    "lg(Lxy;IB)V": {
+      "desc": "(Lxy;IB)V",
       "owner": "xy",
-      "read": "I2",
+      "read": "V0",
       "static": true,
-      "width": "W0"
+      "width": "W2"
     },
-    "li()I": {
-      "desc": "()I",
+    "lh(I)V": {
+      "desc": "(I)V",
       "owner": "xy",
-      "read": "I2",
+      "read": "V0",
       "static": false,
-      "width": "W0"
+      "width": "W2"
+    },
+    "li(Lxy;J)V": {
+      "desc": "(Lxy;J)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W6"
     },
     "lj(I)V": {
       "desc": "(I)V",
@@ -1204,10 +1246,10 @@
       "static": false,
       "width": "W2"
     },
-    "ll()I": {
+    "lk()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I3",
+      "read": "I2",
       "static": false,
       "width": "W0"
     },
@@ -1218,10 +1260,17 @@
       "static": false,
       "width": "W2"
     },
+    "ln(I)V": {
+      "desc": "(I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": false,
+      "width": "W2"
+    },
     "lo()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I4",
+      "read": "I2",
       "static": false,
       "width": "W0"
     },
@@ -1235,49 +1284,49 @@
     "lq()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I2",
+      "read": "I3",
       "static": false,
       "width": "W0"
     },
     "lr()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I2",
-      "static": false,
-      "width": "W0"
-    },
-    "lt()I": {
-      "desc": "()I",
-      "owner": "xy",
       "read": "I4",
       "static": false,
       "width": "W0"
     },
-    "lt(Lxy;I)I": {
-      "desc": "(Lxy;I)I",
+    "ls()I": {
+      "desc": "()I",
       "owner": "xy",
-      "read": "I3",
-      "static": true,
+      "read": "I2",
+      "static": false,
       "width": "W0"
     },
     "lu()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I3",
+      "read": "I2",
       "static": false,
       "width": "W0"
     },
     "lv()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I3",
+      "read": "I2",
       "static": false,
       "width": "W0"
     },
     "lw()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I4",
+      "read": "I2",
+      "static": false,
+      "width": "W0"
+    },
+    "lx()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I2",
       "static": false,
       "width": "W0"
     },
@@ -1316,45 +1365,24 @@
       "static": false,
       "width": "W0"
     },
-    "me()I": {
+    "mf()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "mh()I": {
       "desc": "()I",
       "owner": "xy",
       "read": "I4",
       "static": false,
       "width": "W0"
     },
-    "me(Lxs;I)V": {
-      "desc": "(Lxs;I)V",
-      "owner": "xs",
-      "read": "V0",
-      "static": true,
-      "width": "W1"
-    },
-    "mf()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I1",
-      "static": false,
-      "width": "W0"
-    },
-    "mg(I)V": {
-      "desc": "(I)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": false,
-      "width": "W4"
-    },
-    "mh(Lxy;B)I": {
-      "desc": "(Lxy;B)I",
-      "owner": "xy",
-      "read": "I1",
-      "static": true,
-      "width": "W0"
-    },
     "mi()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I1",
+      "read": "I4",
       "static": false,
       "width": "W0"
     },
@@ -1365,88 +1393,95 @@
       "static": false,
       "width": "W4"
     },
-    "mk(I)V": {
-      "desc": "(I)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": false,
-      "width": "W4"
-    },
-    "mk(Lxs;II)I": {
-      "desc": "(Lxs;II)I",
-      "owner": "xs",
-      "read": "I3",
-      "static": true,
-      "width": "W0"
-    },
     "ml()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I1",
-      "static": false,
-      "width": "W0"
-    },
-    "mp()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I1",
-      "static": false,
-      "width": "W0"
-    },
-    "mq()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I2",
-      "static": false,
-      "width": "W0"
-    },
-    "mq(Lxy;I)I": {
-      "desc": "(Lxy;I)I",
-      "owner": "xy",
       "read": "I4",
-      "static": true,
-      "width": "W0"
-    },
-    "mr(Lxy;I)V": {
-      "desc": "(Lxy;I)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": true,
-      "width": "W2"
-    },
-    "ms()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I1",
       "static": false,
       "width": "W0"
     },
-    "mt()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I1",
-      "static": false,
-      "width": "W0"
-    },
-    "mu()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I1",
-      "static": false,
-      "width": "W0"
-    },
-    "mv([BII)V": {
+    "mm([BII)V": {
       "desc": "([BII)V",
       "owner": "xy",
       "read": "V1",
       "static": false,
       "width": "W1"
     },
+    "mn()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "mp()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I3",
+      "static": false,
+      "width": "W0"
+    },
+    "mp(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
+    },
+    "mq()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "mq(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": true,
+      "width": "W0"
+    },
+    "ms()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "ms(Lxy;I)V": {
+      "desc": "(Lxy;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W1"
+    },
+    "mt()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
+    "mu()I": {
+      "desc": "()I",
+      "owner": "xy",
+      "read": "I4",
+      "static": false,
+      "width": "W0"
+    },
     "mw()I": {
       "desc": "()I",
       "owner": "xy",
-      "read": "I1",
+      "read": "I3",
       "static": false,
+      "width": "W0"
+    },
+    "mw(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
       "width": "W0"
     },
     "my([BII)V": {
@@ -1456,213 +1491,178 @@
       "static": false,
       "width": "W1"
     },
-    "nc(Lxy;Ljava/lang/String;)V": {
-      "desc": "(Lxy;Ljava/lang/String;)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": true,
-      "width": "W1"
-    },
-    "ni(Lxy;I)V": {
-      "desc": "(Lxy;I)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": true,
-      "width": "W2"
-    },
-    "np()I": {
-      "desc": "()I",
-      "owner": "xy",
-      "read": "I2",
-      "static": false,
-      "width": "W0"
-    },
-    "nu(Lxy;I)I": {
-      "desc": "(Lxy;I)I",
-      "owner": "xy",
-      "read": "I1",
-      "static": true,
-      "width": "W0"
-    },
-    "ox(Lxy;[BII)V": {
-      "desc": "(Lxy;[BII)V",
-      "owner": "xy",
-      "read": "V1",
-      "static": true,
-      "width": "W1"
-    },
-    "pa(Lxy;Ljava/lang/String;S)V": {
-      "desc": "(Lxy;Ljava/lang/String;S)V",
-      "owner": "xy",
-      "read": "V0",
-      "static": true,
-      "width": "W1"
-    },
-    "pk(Lxy;[BII)V": {
-      "desc": "(Lxy;[BII)V",
-      "owner": "xy",
-      "read": "V1",
-      "static": true,
-      "width": "W1"
-    },
-    "pq(Lxy;)I": {
-      "desc": "(Lxy;)I",
-      "owner": "xy",
-      "read": "I1",
-      "static": true,
-      "width": "W0"
-    },
-    "ps(Lxy;[BII)V": {
-      "desc": "(Lxy;[BII)V",
-      "owner": "xy",
-      "read": "V1",
-      "static": true,
-      "width": "W1"
-    },
-    "pz(Lxy;S)I": {
-      "desc": "(Lxy;S)I",
-      "owner": "xy",
-      "read": "I1",
-      "static": true,
-      "width": "W0"
-    },
-    "qf(Lxy;I)I": {
-      "desc": "(Lxy;I)I",
-      "owner": "xy",
-      "read": "I2",
-      "static": true,
-      "width": "W0"
-    },
-    "qw(Lxy;)I": {
-      "desc": "(Lxy;)I",
-      "owner": "xy",
-      "read": "I1",
-      "static": true,
-      "width": "W0"
-    },
-    "rq(Lxy;)I": {
-      "desc": "(Lxy;)I",
-      "owner": "xy",
-      "read": "I2",
-      "static": true,
-      "width": "W0"
-    },
-    "sl(Lxy;I)I": {
-      "desc": "(Lxy;I)I",
-      "owner": "xy",
-      "read": "I2",
-      "static": true,
-      "width": "W0"
-    },
-    "sv()I": {
+    "mz()I": {
       "desc": "()I",
       "owner": "xy",
       "read": "I3",
       "static": false,
       "width": "W0"
     },
-    "sw(Lxy;)I": {
-      "desc": "(Lxy;)I",
+    "nn(Lxy;[BIII)V": {
+      "desc": "(Lxy;[BIII)V",
       "owner": "xy",
-      "read": "I4",
-      "static": true,
-      "width": "W0"
-    },
-    "td(Lxy;)Ljava/lang/String;": {
-      "desc": "(Lxy;)Ljava/lang/String;",
-      "owner": "xy",
-      "read": "L1",
-      "static": true,
-      "width": "W0"
-    },
-    "tt(Lxs;[BII)V": {
-      "desc": "(Lxs;[BII)V",
-      "owner": "xs",
       "read": "V1",
       "static": true,
       "width": "W1"
     },
-    "tt(Lxy;)I": {
-      "desc": "(Lxy;)I",
-      "owner": "xy",
-      "read": "I1",
-      "static": true,
-      "width": "W0"
-    },
-    "ue(Lxy;)Ljava/lang/String;": {
-      "desc": "(Lxy;)Ljava/lang/String;",
-      "owner": "xy",
-      "read": "L1",
-      "static": true,
-      "width": "W0"
-    },
-    "um(Lxy;I)V": {
+    "ob(Lxy;I)V": {
       "desc": "(Lxy;I)V",
       "owner": "xy",
       "read": "V0",
       "static": true,
-      "width": "W1"
+      "width": "W4"
     },
-    "uu()I": {
-      "desc": "()I",
+    "pg(Lxy;I)I": {
+      "desc": "(Lxy;I)I",
       "owner": "xy",
-      "read": "I4",
-      "static": false,
-      "width": "W0"
-    },
-    "vc(Lxy;)I": {
-      "desc": "(Lxy;)I",
-      "owner": "xy",
-      "read": "I4",
+      "read": "I2",
       "static": true,
       "width": "W0"
     },
-    "wa(Lxy;B)I": {
+    "pi(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I3",
+      "static": true,
+      "width": "W0"
+    },
+    "pl(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": true,
+      "width": "W0"
+    },
+    "qp(Lxy;I)V": {
+      "desc": "(Lxy;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W4"
+    },
+    "qx(Lxy;B)I": {
       "desc": "(Lxy;B)I",
       "owner": "xy",
       "read": "I2",
       "static": true,
       "width": "W0"
     },
-    "wi(Lxy;)I": {
+    "rn(Lxy;)I": {
       "desc": "(Lxy;)I",
       "owner": "xy",
       "read": "I1",
       "static": true,
       "width": "W0"
     },
-    "wi(Lxy;II)V": {
-      "desc": "(Lxy;II)V",
+    "rt(Lxy;)B": {
+      "desc": "(Lxy;)B",
+      "owner": "xy",
+      "read": "B1",
+      "static": true,
+      "width": "W0"
+    },
+    "sr(Lxy;IB)V": {
+      "desc": "(Lxy;IB)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W4"
+    },
+    "uo(Lxy;)Ljava/lang/String;": {
+      "desc": "(Lxy;)Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": true,
+      "width": "W0"
+    },
+    "vd(Lxy;I)V": {
+      "desc": "(Lxy;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W1"
+    },
+    "vx(Lxy;[BII)V": {
+      "desc": "(Lxy;[BII)V",
+      "owner": "xy",
+      "read": "V1",
+      "static": true,
+      "width": "W1"
+    },
+    "wk(Lxy;IB)V": {
+      "desc": "(Lxy;IB)V",
       "owner": "xy",
       "read": "V0",
       "static": true,
       "width": "W2"
     },
-    "ww(Lxy;B)B": {
-      "desc": "(Lxy;B)B",
-      "owner": "xy",
-      "read": "B1",
-      "static": true,
-      "width": "W0"
-    },
-    "xj(Lxy;I)I": {
-      "desc": "(Lxy;I)I",
+    "xl(Lxy;)I": {
+      "desc": "(Lxy;)I",
       "owner": "xy",
       "read": "I1",
       "static": true,
       "width": "W0"
     },
-    "xw()B": {
-      "desc": "()B",
+    "xs(Lxy;I)I": {
+      "desc": "(Lxy;I)I",
       "owner": "xy",
-      "read": "B1",
-      "static": false,
+      "read": "I3",
+      "static": true,
       "width": "W0"
     },
-    "zx(Lxs;[BII)V": {
-      "desc": "(Lxs;[BII)V",
+    "yj(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I1",
+      "static": true,
+      "width": "W0"
+    },
+    "yk(Lxy;I)V": {
+      "desc": "(Lxy;I)V",
+      "owner": "xy",
+      "read": "V0",
+      "static": true,
+      "width": "W4"
+    },
+    "yn(Lxy;I)I": {
+      "desc": "(Lxy;I)I",
+      "owner": "xy",
+      "read": "I3",
+      "static": true,
+      "width": "W0"
+    },
+    "yv(Lxy;I)Ljava/lang/String;": {
+      "desc": "(Lxy;I)Ljava/lang/String;",
+      "owner": "xy",
+      "read": "L1",
+      "static": true,
+      "width": "W0"
+    },
+    "yy(Lxy;)I": {
+      "desc": "(Lxy;)I",
+      "owner": "xy",
+      "read": "I2",
+      "static": true,
+      "width": "W0"
+    },
+    "zh(Lxy;B)I": {
+      "desc": "(Lxy;B)I",
+      "owner": "xy",
+      "read": "I4",
+      "static": true,
+      "width": "W0"
+    },
+    "zr(Lxs;)Z": {
+      "desc": "(Lxs;)Z",
       "owner": "xs",
-      "read": "V1",
+      "read": "Z1",
+      "static": true,
+      "width": "W0"
+    },
+    "zu(Lxy;IB)V": {
+      "desc": "(Lxy;IB)V",
+      "owner": "xy",
+      "read": "V0",
       "static": true,
       "width": "W1"
     }
@@ -1682,12 +1682,17 @@
     "serverPacketHolder": "dj",
     "writersReferencingBoth": [
       "bb",
+      "bd",
+      "bi",
       "bw",
       "cg",
       "client",
       "cr",
       "cv",
+      "cx",
+      "de",
       "di",
+      "ea",
       "ef",
       "hu",
       "ij",
@@ -1700,14 +1705,17 @@
       "qo",
       "qp",
       "sw",
+      "tm",
+      "uo",
       "vx",
       "wm",
       "xp",
-      "zj"
+      "zj",
+      "zm"
     ]
   },
   "format": "openosrs-hooks/2",
-  "jarSha256": "7fdedf1194261cc5b99faa35e0d2b4e45b6d56665402ccbde7f3aa6207c3f947",
+  "jarSha256": "25f42961c400bd9dfff1554402441c0ba6d1cffd011163cb9b0b4c42ae194f85",
   "layoutCoverage": {
     "noLayoutIds": [
       0,
@@ -1734,8 +1742,12 @@
       110
     ],
     "quarantinedFixedIds": [],
-    "quarantinedVariableIds": [],
-    "trustedCount": 95,
+    "quarantinedVariableIds": [
+      56,
+      61,
+      114
+    ],
+    "trustedCount": 92,
     "trustedIds": [
       1,
       2,
@@ -1780,12 +1792,10 @@
       52,
       54,
       55,
-      56,
       57,
       58,
       59,
       60,
-      61,
       62,
       63,
       64,
@@ -1829,7 +1839,6 @@
       111,
       112,
       113,
-      114,
       115,
       116
     ]
@@ -1855,30 +1864,30 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         }
       ]
@@ -1894,16 +1903,16 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(Lxy;IB)V",
-          "m": "hm",
-          "owner": "xy",
-          "static": true,
+          "d": "(IB)V",
+          "m": "dj",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -1919,7 +1928,7 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -1937,16 +1946,16 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -1988,23 +1997,23 @@
       "writes": [
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
@@ -2016,7 +2025,7 @@
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -2033,10 +2042,10 @@
       "name": "OPOBJ6",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
@@ -2048,7 +2057,7 @@
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -2072,17 +2081,10 @@
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
-          "w": "W2"
-        },
-        {
-          "d": "(II)V",
-          "m": "bv",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
@@ -2090,11 +2092,18 @@
           "m": "bz",
           "owner": "xs",
           "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "cy",
+          "owner": "xs",
+          "static": false,
           "w": "W4"
         },
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -2112,7 +2121,7 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
@@ -2129,15 +2138,15 @@
       "name": "REFLECTION_CHECK_REPLY",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "cy",
+          "m": "ds",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -2155,7 +2164,7 @@
       "writes": [
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -2169,14 +2178,14 @@
         },
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -2194,28 +2203,28 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         },
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -2233,42 +2242,42 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
         },
         {
           "d": "(II)V",
-          "m": "ef",
+          "m": "em",
           "owner": "xs",
           "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(Lxy;II)V",
+          "m": "iu",
+          "owner": "xy",
+          "static": true,
           "w": "W4"
         },
         {
           "d": "(II)V",
-          "m": "ez",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
         },
         {
-          "d": "(II)V",
-          "m": "bz",
-          "owner": "xs",
-          "static": false,
-          "w": "W4"
-        },
-        {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
@@ -2285,24 +2294,24 @@
       "name": "SET_CHATFILTERSETTINGS",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         }
       ]
@@ -2317,31 +2326,31 @@
       "name": "AFFINEDCLANSETTINGS_ADDBANNED_FROMCHANNEL",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -2381,16 +2390,16 @@
       "writes": [
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -2405,36 +2414,36 @@
       "name": "OPOBJ3_V2",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
+          "d": "(IB)V",
+          "m": "dj",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
           "d": "(Lxy;IB)V",
-          "m": "hm",
+          "m": "zu",
           "owner": "xy",
           "static": true,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
-          "w": "W1"
-        },
-        {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -2467,10 +2476,10 @@
       "name": "OPWORLDENTITY6",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -2511,17 +2520,17 @@
       "name": "CONNECTION_TELEMETRY",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "cv",
+          "d": "(Lxy;IB)V",
+          "m": "zu",
           "owner": "xy",
-          "static": false,
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(II)V",
+          "m": "ds",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -2536,10 +2545,10 @@
       "name": "EVENT_APPLET_FOCUS",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         }
       ]
@@ -2563,30 +2572,30 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
-          "d": "(Lxy;IB)V",
-          "m": "hm",
-          "owner": "xy",
-          "static": true,
+          "d": "(IB)V",
+          "m": "dj",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "ef",
+          "m": "em",
           "owner": "xs",
           "static": false,
           "w": "W4"
         },
         {
-          "d": "(II)V",
-          "m": "ez",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;II)V",
+          "m": "iu",
+          "owner": "xy",
+          "static": true,
           "w": "W4"
         }
       ]
@@ -2601,10 +2610,10 @@
       "name": "CLANCHANNEL_FULL_REQUEST",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         }
       ]
@@ -2628,23 +2637,23 @@
       "writes": [
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -2659,15 +2668,15 @@
       "name": "OPPLAYER3",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -2684,31 +2693,31 @@
       "name": "CLANCHANNEL_KICKUSER",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -2724,7 +2733,42 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "cy",
+          "owner": "xs",
+          "static": false,
+          "w": "W4"
+        },
+        {
+          "d": "(IB)V",
+          "m": "da",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(IS)V",
+          "m": "el",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -2732,41 +2776,6 @@
         {
           "d": "(II)V",
           "m": "bz",
-          "owner": "xs",
-          "static": false,
-          "w": "W4"
-        },
-        {
-          "d": "(IB)V",
-          "m": "cv",
-          "owner": "xs",
-          "static": false,
-          "w": "W1"
-        },
-        {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
-          "w": "W2"
-        },
-        {
-          "d": "(IS)V",
-          "m": "el",
-          "owner": "xs",
-          "static": false,
-          "w": "W2"
-        },
-        {
-          "d": "(IS)V",
-          "m": "el",
-          "owner": "xs",
-          "static": false,
-          "w": "W2"
-        },
-        {
-          "d": "(II)V",
-          "m": "bv",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -2783,38 +2792,38 @@
       "name": "IF_BUTTOND",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
@@ -2836,10 +2845,10 @@
       "name": "EVENT_MOUSE_CLICK_V2",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
@@ -2851,7 +2860,7 @@
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -2875,17 +2884,17 @@
       "name": "OPPLAYER8",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         }
       ]
@@ -2900,24 +2909,24 @@
       "name": "OPPLAYERU",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
-          "d": "(II)V",
-          "m": "ez",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;II)V",
+          "m": "iu",
+          "owner": "xy",
+          "static": true,
           "w": "W4"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
@@ -2946,24 +2955,24 @@
       "name": "OPNPC3_V2",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
-          "d": "(Lxy;IB)V",
-          "m": "hm",
-          "owner": "xy",
-          "static": true,
+          "d": "(IB)V",
+          "m": "dj",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -2978,22 +2987,22 @@
       "name": "WINDOW_STATUS",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -3010,31 +3019,31 @@
       "name": "OPPLAYERT",
       "writes": [
         {
-          "d": "(Lxy;IB)V",
-          "m": "hm",
-          "owner": "xy",
-          "static": true,
+          "d": "(IB)V",
+          "m": "dj",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "em",
+          "m": "ez",
           "owner": "xs",
           "static": false,
           "w": "W4"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
@@ -3057,7 +3066,7 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
@@ -3075,16 +3084,16 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(Lxy;II)V",
-          "m": "wi",
-          "owner": "xy",
-          "static": true,
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
           "w": "W2"
         }
       ]
@@ -3100,14 +3109,14 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -3125,16 +3134,16 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         }
       ]
@@ -3150,16 +3159,16 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -3174,17 +3183,17 @@
       "name": "FRIENDCHAT_KICK",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -3199,15 +3208,15 @@
       "name": "OPPLAYER5",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -3232,17 +3241,17 @@
       "name": "RESUME_P_STRINGDIALOG",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -3258,16 +3267,16 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -3277,25 +3286,8 @@
         "cp"
       ],
       "id": 56,
-      "layoutSource": "derived-verified",
       "length": -1,
-      "name": "MESSAGE_PUBLIC",
-      "writes": [
-        {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
-          "w": "W1"
-        },
-        {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
-          "w": "W1"
-        }
-      ]
+      "name": "MESSAGE_PUBLIC"
     },
     {
       "fields": [
@@ -3307,15 +3299,15 @@
       "name": "OPPLAYER1",
       "writes": [
         {
-          "d": "(Lxy;IB)V",
-          "m": "hm",
-          "owner": "xy",
-          "static": true,
+          "d": "(IB)V",
+          "m": "dj",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -3333,44 +3325,44 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "em",
+          "m": "ez",
           "owner": "xs",
           "static": false,
           "w": "W4"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "em",
+          "m": "ez",
           "owner": "xs",
           "static": false,
           "w": "W4"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
-          "w": "W2"
-        },
-        {
-          "d": "(Lxy;II)V",
-          "m": "wi",
+          "d": "(Lxy;IB)V",
+          "m": "wk",
           "owner": "xy",
           "static": true,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
           "w": "W2"
         }
       ]
@@ -3385,22 +3377,22 @@
       "name": "OPNPC1_V2",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -3417,31 +3409,31 @@
       "name": "AFFINEDCLANSETTINGS_SETMUTED_FROMCHANNEL",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -3451,53 +3443,8 @@
         "cs"
       ],
       "id": 61,
-      "layoutSource": "derived-verified",
       "length": -1,
-      "name": "MOVE_MINIMAPCLICK",
-      "writes": [
-        {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
-          "w": "W1"
-        },
-        {
-          "d": "(IS)V",
-          "m": "el",
-          "owner": "xs",
-          "static": false,
-          "w": "W2"
-        },
-        {
-          "d": "(Lxy;IB)V",
-          "m": "hm",
-          "owner": "xy",
-          "static": true,
-          "w": "W1"
-        },
-        {
-          "d": "(IS)V",
-          "m": "el",
-          "owner": "xs",
-          "static": false,
-          "w": "W2"
-        },
-        {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
-          "w": "W1"
-        },
-        {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
-          "w": "W1"
-        }
-      ]
+      "name": "MOVE_MINIMAPCLICK"
     },
     {
       "fields": [
@@ -3510,7 +3457,7 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
@@ -3528,21 +3475,21 @@
       "writes": [
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "ef",
+          "m": "em",
           "owner": "xs",
           "static": false,
           "w": "W4"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -3555,10 +3502,10 @@
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -3574,14 +3521,14 @@
       "writes": [
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -3598,15 +3545,15 @@
       "name": "OPOBJ4_V2",
       "writes": [
         {
-          "d": "(Lxy;IB)V",
-          "m": "hm",
-          "owner": "xy",
-          "static": true,
+          "d": "(IB)V",
+          "m": "dj",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         },
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -3619,17 +3566,17 @@
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -3644,24 +3591,24 @@
       "name": "FRIENDCHAT_SETRANK",
       "writes": [
         {
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
           "d": "(IB)V",
-          "m": "ck",
+          "m": "dj",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
-          "d": "(Lxy;IB)V",
-          "m": "hm",
-          "owner": "xy",
-          "static": true,
-          "w": "W1"
-        },
-        {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -3676,17 +3623,17 @@
       "name": "FRIENDLIST_ADD",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -3702,21 +3649,14 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "bv",
-          "owner": "xs",
-          "static": false,
-          "w": "W2"
-        },
-        {
-          "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -3726,27 +3666,34 @@
           "m": "bz",
           "owner": "xs",
           "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "cy",
+          "owner": "xs",
+          "static": false,
           "w": "W4"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -3762,35 +3709,35 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "bv",
-          "owner": "xs",
-          "static": false,
-          "w": "W2"
-        },
-        {
-          "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -3807,17 +3754,17 @@
       "name": "RESUME_P_NAMEDIALOG",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -3850,22 +3797,22 @@
       "name": "OPNPC5_V2",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
-          "w": "W1"
-        },
-        {
           "d": "(Lxy;IB)V",
-          "m": "hm",
+          "m": "zu",
           "owner": "xy",
           "static": true,
           "w": "W1"
         },
         {
+          "d": "(IB)V",
+          "m": "dj",
+          "owner": "xs",
+          "static": false,
+          "w": "W1"
+        },
+        {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -3883,7 +3830,7 @@
       "writes": [
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -3896,10 +3843,10 @@
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
@@ -3910,10 +3857,10 @@
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -3935,31 +3882,31 @@
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
+          "w": "W2"
         },
         {
           "d": "(IB)V",
           "m": "da",
           "owner": "xs",
           "static": false,
-          "w": "W2"
-        },
-        {
-          "d": "(IB)V",
-          "m": "cv",
-          "owner": "xs",
-          "static": false,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -3982,29 +3929,29 @@
       "name": "OPLOC5_V2",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "da",
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "bv",
-          "owner": "xs",
-          "static": false,
-          "w": "W2"
-        },
-        {
-          "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -4029,7 +3976,7 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "ef",
+          "m": "em",
           "owner": "xs",
           "static": false,
           "w": "W4"
@@ -4046,24 +3993,24 @@
       "name": "CLIENT_CHEAT",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
-          "w": "W1"
-        },
-        {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
+          "d": "(Lxy;IB)V",
+          "m": "zu",
           "owner": "xy",
           "static": true,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
           "owner": "xs",
           "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         }
       ]
@@ -4078,15 +4025,15 @@
       "name": "IF_BUTTONT",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
@@ -4099,10 +4046,10 @@
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
@@ -4113,10 +4060,10 @@
           "w": "W2"
         },
         {
-          "d": "(II)V",
-          "m": "ez",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;II)V",
+          "m": "iu",
+          "owner": "xy",
+          "static": true,
           "w": "W4"
         }
       ]
@@ -4131,17 +4078,17 @@
       "name": "IGNORELIST_ADD",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -4157,7 +4104,7 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
@@ -4182,7 +4129,7 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -4206,45 +4153,45 @@
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
+          "w": "W2"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "bv",
-          "owner": "xs",
-          "static": false,
-          "w": "W2"
-        },
-        {
-          "d": "(II)V",
-          "m": "em",
+          "m": "ez",
           "owner": "xs",
           "static": false,
           "w": "W4"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -4267,7 +4214,7 @@
         },
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
@@ -4280,15 +4227,15 @@
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -4305,17 +4252,17 @@
       "name": "IGNORELIST_DEL",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -4330,22 +4277,22 @@
       "name": "OPNPC2_V2",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -4379,37 +4326,37 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
-        },
-        {
-          "d": "(Lxy;IB)V",
-          "m": "hm",
-          "owner": "xy",
-          "static": true,
-          "w": "W1"
         },
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "dj",
           "owner": "xs",
           "static": false,
           "w": "W1"
-        },
-        {
-          "d": "(II)V",
-          "m": "bv",
-          "owner": "xs",
-          "static": false,
-          "w": "W2"
         },
         {
           "d": "(IB)V",
           "m": "da",
           "owner": "xs",
           "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(II)V",
+          "m": "bz",
+          "owner": "xs",
+          "static": false,
+          "w": "W2"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -4432,31 +4379,31 @@
       "name": "SEND_SNAPSHOT",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
-          "w": "W1"
-        },
-        {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
+          "d": "(Lxy;IB)V",
+          "m": "zu",
           "owner": "xy",
           "static": true,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         }
       ]
@@ -4472,7 +4419,7 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -4505,37 +4452,37 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         }
       ]
@@ -4551,16 +4498,16 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(Lxy;IB)V",
-          "m": "hm",
-          "owner": "xy",
-          "static": true,
+          "d": "(IB)V",
+          "m": "dj",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -4575,17 +4522,17 @@
       "name": "FRIENDCHAT_JOIN_LEAVE",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -4620,10 +4567,10 @@
       "name": "CLANSETTINGS_FULL_REQUEST",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         }
       ]
@@ -4638,10 +4585,10 @@
       "name": "OPNPC6",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -4656,10 +4603,10 @@
       "name": "MOVE_GAMECLICK",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
@@ -4670,10 +4617,10 @@
           "w": "W2"
         },
         {
-          "d": "(Lxy;IB)V",
-          "m": "hm",
-          "owner": "xy",
-          "static": true,
+          "d": "(IB)V",
+          "m": "dj",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         },
         {
@@ -4696,7 +4643,7 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
@@ -4721,10 +4668,10 @@
       "name": "OPLOC6",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         }
       ]
@@ -4747,36 +4694,36 @@
       "name": "OPNPCU",
       "writes": [
         {
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
+          "w": "W2"
+        },
+        {
           "d": "(IB)V",
-          "m": "da",
+          "m": "dj",
           "owner": "xs",
           "static": false,
+          "w": "W1"
+        },
+        {
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
           "d": "(Lxy;IB)V",
-          "m": "hm",
+          "m": "lg",
           "owner": "xy",
           "static": true,
-          "w": "W1"
-        },
-        {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
-          "w": "W2"
-        },
-        {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "bz",
+          "m": "cy",
           "owner": "xs",
           "static": false,
           "w": "W4"
@@ -4794,23 +4741,23 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         },
         {
-          "d": "(Lxy;II)V",
-          "m": "wi",
-          "owner": "xy",
-          "static": true,
+          "d": "(II)V",
+          "m": "bv",
+          "owner": "xs",
+          "static": false,
           "w": "W2"
         }
       ]
@@ -4826,7 +4773,7 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -4851,10 +4798,10 @@
       "name": "RESUME_P_COUNTDIALOG_LONG",
       "writes": [
         {
-          "d": "(J)V",
-          "m": "cu",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;J)V",
+          "m": "fi",
+          "owner": "xy",
+          "static": true,
           "w": "W8"
         }
       ]
@@ -4869,17 +4816,17 @@
       "name": "OPOBJ1_V2",
       "writes": [
         {
-          "d": "(Lxy;IB)V",
-          "m": "hm",
-          "owner": "xy",
-          "static": true,
+          "d": "(IB)V",
+          "m": "dj",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
@@ -4891,14 +4838,14 @@
         },
         {
           "d": "(IB)V",
-          "m": "cv",
+          "m": "da",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
@@ -4915,36 +4862,36 @@
       "name": "OPOBJ2_V2",
       "writes": [
         {
-          "d": "(Lxy;IB)V",
-          "m": "hm",
-          "owner": "xy",
-          "static": true,
+          "d": "(IB)V",
+          "m": "dj",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "cc",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "lg",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
@@ -4956,18 +4903,8 @@
         "en"
       ],
       "id": 114,
-      "layoutSource": "derived-verified",
       "length": -1,
-      "name": "EVENT_MOUSE_MOVE",
-      "writes": [
-        {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
-          "w": "W1"
-        }
-      ]
+      "name": "EVENT_MOUSE_MOVE"
     },
     {
       "fields": [
@@ -4979,17 +4916,17 @@
       "name": "FRIENDLIST_DEL",
       "writes": [
         {
-          "d": "(IB)V",
-          "m": "ck",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "zu",
+          "owner": "xy",
+          "static": true,
           "w": "W1"
         },
         {
-          "d": "(Lxy;Ljava/lang/String;S)V",
-          "m": "pa",
-          "owner": "xy",
-          "static": true,
+          "d": "(Ljava/lang/String;S)V",
+          "m": "ct",
+          "owner": "xs",
+          "static": false,
           "w": "W1"
         }
       ]
@@ -5005,30 +4942,30 @@
       "writes": [
         {
           "d": "(II)V",
-          "m": "bv",
+          "m": "bz",
           "owner": "xs",
           "static": false,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
-          "d": "(IB)V",
-          "m": "da",
-          "owner": "xs",
-          "static": false,
+          "d": "(Lxy;IB)V",
+          "m": "wk",
+          "owner": "xy",
+          "static": true,
           "w": "W2"
         },
         {
@@ -5040,14 +4977,14 @@
         },
         {
           "d": "(II)V",
-          "m": "ds",
+          "m": "co",
           "owner": "xs",
           "static": false,
           "w": "W1"
         },
         {
           "d": "(II)V",
-          "m": "ef",
+          "m": "em",
           "owner": "xs",
           "static": false,
           "w": "W4"

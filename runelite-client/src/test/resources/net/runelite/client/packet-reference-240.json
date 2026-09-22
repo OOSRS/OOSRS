@@ -1,8 +1,8 @@
 {
   "revision": 240,
-  "gamepackSha256": "7fdedf1194261cc5b99faa35e0d2b4e45b6d56665402ccbde7f3aa6207c3f947",
+  "gamepackSha256": "25f42961c400bd9dfff1554402441c0ba6d1cffd011163cb9b0b4c42ae194f85",
   "referenceSha256": "0036b658ee779911d11f80ac4187df0d08ef77e0930247ab4f883a12cc901e04",
-  "source": "RLPlugins VitaLite runtime packet catalog; independent wire fixtures",
+  "source": "Independent runtime packet catalog; wire fixtures derived outside this client",
   "packetCount": 39,
   "fixtures": [
     {

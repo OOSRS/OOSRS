@@ -95,4 +95,16 @@ public interface SkillAction
 	{
 		return false;
 	}
+
+	/**
+	 * Returns {@code true} if the given bonus boosts this action. Defaults to
+	 * {@code !isIgnoreBonus()}; actions override it when only some bonuses apply.
+	 *
+	 * @param bonus The selected skill bonus.
+	 * @return {@code true} if the bonus applies to this action.
+	 */
+	default boolean isBonusApplicable(SkillBonus bonus)
+	{
+		return !isIgnoreBonus();
+	}
 }

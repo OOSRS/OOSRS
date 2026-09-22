@@ -187,7 +187,7 @@ public final class DeviceIdentity
         }
     }
 
-	/** VitaLite-style generated pair, stable for the lifetime of this JVM. */
+	/** One of two generated stack values, fixed for the lifetime of this JVM. */
 	public static synchronized String packedStack(int index)
 	{
 		if (index < 0 || index > 1)
