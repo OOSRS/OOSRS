@@ -53,4 +53,4 @@ The existing launcher downloads this client update through its client update cha
 
 ## Reference
 
-The browser/game-session protocol was compared with [VitaLite's pinned account service](https://github.com/Tonic-Box/VitaLite/blob/bdad782b73335516974e092ff41d04cd70340556/plugins/src/main/java/com/tonic/plugins/profiles/jagex/JagexAccountService.java). This implementation uses its own UI, account store, response validation and native game bridge. It does not bundle VitaLite code or its mixin runtime.
+The browser and game-session protocol follows the official Jagex account flow. This implementation has its own UI, account store, response validation and native game bridge.

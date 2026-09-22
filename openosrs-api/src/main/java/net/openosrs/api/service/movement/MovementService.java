@@ -61,9 +61,8 @@ public class MovementService
 	/**
 	 * Submit a walk command to a world point.
 	 *
-	 * When packet dispatch is available and cipher is ready, routes directly
-	 * via MOVE_GAMECLICK (packet 102: prefix, worldY, ctrl, worldX).
-	 * Otherwise falls back to the native menu tier (MenuAction.WALK).
+	 * Human mouse mode submits a scene-tile click through the input router.
+	 * Packet mode uses MOVE_GAMECLICK when available, otherwise the native menu tier.
 	 */
 	public boolean walkTo(WorldPoint target)
 	{
@@ -75,6 +74,28 @@ public class MovementService
 		if (target == null)
 		{
 			return false;
+		}
+		net.openosrs.api.input.InputMode mode = net.openosrs.api.input.InputScope.current();
+		if (mode == null)
+		{
+			net.openosrs.api.input.InputSettings input = net.openosrs.api.Context.isInitialized()
+				? net.openosrs.api.Context.getService(net.openosrs.api.input.InputSettings.class) : null;
+			if (input != null) mode = input.getDefaultMode();
+		}
+		if (mode == net.openosrs.api.input.InputMode.HUMAN_MOUSE)
+		{
+			if (!client.isClientThread()) return false;
+			net.runelite.api.WorldView view = client.getTopLevelWorldView();
+			LocalPoint local = view == null ? null : LocalPoint.fromWorld(view, target);
+			if (local == null) return false;
+			if (!ctrl) return walkLocal(local);
+			// A person holds Ctrl while clicking the tile to toggle run for that walk.
+			net.openosrs.api.input.InputRouter router = net.openosrs.api.Context.isInitialized()
+				? net.openosrs.api.Context.getService(net.openosrs.api.input.InputRouter.class) : null;
+			net.openosrs.api.input.MouseDriver driver = router == null ? null : router.getMouseDriver();
+			return driver != null && driver.submitHoldingKey(java.awt.event.KeyEvent.VK_CONTROL,
+				net.openosrs.api.input.MenuRequest.of(MenuAction.WALK, 0, local.getSceneX(), local.getSceneY(),
+					"Walk here", "", -1, local.getWorldView()));
 		}
 		net.openosrs.api.dispatch.PacketDispatcher p = packets != null ? packets : net.openosrs.api.Context.getService(net.openosrs.api.dispatch.PacketDispatcher.class);
 		if (p != null && p.available() && p.cipherReady())

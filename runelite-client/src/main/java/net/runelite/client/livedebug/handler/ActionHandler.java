@@ -15,10 +15,16 @@ import net.openosrs.api.dispatch.MenuDispatcher;
 import net.openosrs.api.dispatch.SubmissionResult;
 import net.openosrs.api.service.bank.BankItem;
 import net.openosrs.api.service.inventory.InventoryItem;
+import net.openosrs.api.input.InputMode;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
+import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.livedebug.LiveDebugContext;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginManager;
 
 @Singleton
 public class ActionHandler implements LiveDebugHandler
@@ -26,13 +32,23 @@ public class ActionHandler implements LiveDebugHandler
 	private final Client client;
 	private final ClientThread clientThread;
 	private final MenuDispatcher menuDispatcher;
+	private final PluginManager pluginManager;
+	private final ConfigManager configManager;
+
+	public ActionHandler(Client client, ClientThread clientThread, MenuDispatcher menuDispatcher)
+	{
+		this(client, clientThread, menuDispatcher, null, null);
+	}
 
 	@Inject
-	public ActionHandler(Client client, ClientThread clientThread, MenuDispatcher menuDispatcher)
+	public ActionHandler(Client client, ClientThread clientThread, MenuDispatcher menuDispatcher,
+		PluginManager pluginManager, ConfigManager configManager)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
 		this.menuDispatcher = menuDispatcher;
+		this.pluginManager = pluginManager;
+		this.configManager = configManager;
 	}
 
 	@Override
@@ -79,6 +95,10 @@ public class ActionHandler implements LiveDebugHandler
 				return runOnClientThread(() -> bankDeposit(params));
 			case "action.bank_withdraw":
 				return runOnClientThread(() -> bankWithdraw(params));
+			case "action.mouse_toggle":
+				return runOnClientThread(this::mouseToggle);
+			case "action.mouse_set_enabled":
+				return runOnClientThread(() -> mouseSetEnabled(params));
 			default:
 				throw new IllegalArgumentException("Unknown action method: " + method);
 		}
@@ -237,6 +257,48 @@ public class ActionHandler implements LiveDebugHandler
 		result.addProperty("success", true);
 		result.addProperty("withdrawnItemId", itemId);
 		result.addProperty("withdrawnQuantity", qty);
+		return result;
+	}
+
+	private ConfigManager getConfigManager()
+	{
+		return configManager != null ? configManager : LiveDebugContext.inject(ConfigManager.class);
+	}
+
+
+	private JsonObject mouseToggle()
+	{
+		JsonObject result = new JsonObject();
+		ConfigManager cm = getConfigManager();
+		boolean next = false;
+		if (cm != null)
+		{
+			Boolean current = cm.getConfiguration("mousesettings", "humanMouse", Boolean.class);
+			next = current == null || !current;
+			cm.setConfiguration("mousesettings", "humanMouse", next);
+		}
+		result.addProperty("success", true);
+		result.addProperty("enabled", next);
+		return result;
+	}
+
+	private JsonObject mouseSetEnabled(JsonObject params)
+	{
+		JsonObject result = new JsonObject();
+		if (params == null || !params.has("enabled"))
+		{
+			result.addProperty("success", false);
+			result.addProperty("error", "Missing enabled parameter (boolean)");
+			return result;
+		}
+		boolean enabled = params.get("enabled").getAsBoolean();
+		ConfigManager cm = getConfigManager();
+		if (cm != null)
+		{
+			cm.setConfiguration("mousesettings", "humanMouse", enabled);
+		}
+		result.addProperty("success", true);
+		result.addProperty("enabled", enabled);
 		return result;
 	}
 }

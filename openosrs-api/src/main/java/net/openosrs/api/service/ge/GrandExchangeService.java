@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.openosrs.api.Context;
 import net.openosrs.api.service.dialogue.DialogueService;
+import net.openosrs.api.service.dialogue.SearchResult;
 import net.openosrs.api.service.inventory.InventoryItem;
 import net.openosrs.api.service.npc.NpcRef;
 import net.openosrs.api.service.npc.NpcService;
@@ -136,6 +137,18 @@ public class GrandExchangeService
 	public void typeSearch(String query)
 	{
 		if (query == null || client.getCanvas() == null) return;
+		net.openosrs.api.input.InputRouter router = net.openosrs.api.Context.isInitialized()
+			? net.openosrs.api.Context.getService(net.openosrs.api.input.InputRouter.class) : null;
+		if (router != null && router.selectedMode() == net.openosrs.api.input.InputMode.HUMAN_MOUSE)
+		{
+			// Typed like a person, owned by the cursor, and never mistaken for the player's own keys.
+			net.openosrs.api.input.MouseDriver driver = router.getMouseDriver();
+			int layer = client.getVarcIntValue(net.runelite.api.gameval.VarClientID.MESLAYERMODE);
+			if (driver == null || layer == 0 || !driver.typeText(query, false,
+				() -> client.getVarcIntValue(net.runelite.api.gameval.VarClientID.MESLAYERMODE) == layer))
+				throw new IllegalStateException("Search text was not accepted");
+			return;
+		}
 		java.awt.Canvas canvas = client.getCanvas();
 		for (char ch : query.toCharArray())
 		{
@@ -146,66 +159,48 @@ public class GrandExchangeService
 		}
 	}
 
-	/** Selects an item from the active search results by item ID. */
+	/** The items listed under the search prompt, in the order shown. */
+	public List<SearchResult> searchResults()
+	{
+		return dialogue.searchResults();
+	}
+
+	/** Selects an item from the search results by item ID, scrolling the list to it if needed. */
 	public boolean selectBuyItem(int itemId)
 	{
-		List<WidgetRef> children = widgets.descendants(InterfaceID.Chatbox.MES_LAYER_SCROLLCONTENTS);
-		for (int i = 0; i + 2 < children.size(); i += 3)
+		for (SearchResult result : dialogue.searchResults())
 		{
-			WidgetRef button = children.get(i);
-			WidgetRef sprite = children.get(i + 2);
-			if (sprite.getItemId() == itemId)
+			if (result.getItemId() == itemId)
 			{
-				widgets.interact(button, 1, 0, -1);
-				return true;
-			}
-		}
-		for (WidgetRef widget : children)
-		{
-			if (widget.isVisible() && widget.getItemId() == itemId)
-			{
-				widgets.click(widget);
+				dialogue.choose(result);
 				return true;
 			}
 		}
 		return false;
 	}
 
-	/** Selects an item from the active search results by matching its displayed name. */
+	/**
+	 * Selects an item from the search results by name. An exact match wins over a partial
+	 * one, so "Rune platebody" is not mistaken for "Rune platebody (g)".
+	 */
 	public boolean selectBuyItem(String itemName)
 	{
 		if (itemName == null) return false;
-		String target = itemName.toLowerCase(java.util.Locale.ROOT);
-		List<WidgetRef> children = widgets.descendants(InterfaceID.Chatbox.MES_LAYER_SCROLLCONTENTS);
-		for (int i = 0; i + 2 < children.size(); i += 3)
+		String target = itemName.trim().toLowerCase(java.util.Locale.ROOT);
+		SearchResult partial = null;
+		for (SearchResult result : dialogue.searchResults())
 		{
-			WidgetRef button = children.get(i);
-			WidgetRef label = children.get(i + 1);
-			if (label.getText() != null && label.getText().toLowerCase(java.util.Locale.ROOT).contains(target))
+			String name = result.getName().toLowerCase(java.util.Locale.ROOT);
+			if (name.equals(target))
 			{
-				widgets.interact(button, 1, 0, -1);
+				dialogue.choose(result);
 				return true;
 			}
+			if (partial == null && name.contains(target)) partial = result;
 		}
-		for (WidgetRef widget : children)
-		{
-			if (widget.isVisible())
-			{
-				String text = widget.getText();
-				if (text != null && text.toLowerCase(java.util.Locale.ROOT).contains(target))
-				{
-					widgets.click(widget);
-					return true;
-				}
-				String name = widget.getName();
-				if (name != null && name.toLowerCase(java.util.Locale.ROOT).contains(target))
-				{
-					widgets.click(widget);
-					return true;
-				}
-			}
-		}
-		return false;
+		if (partial == null) return false;
+		dialogue.choose(partial);
+		return true;
 	}
 
 	public List<GrandExchangeSlot> offers()
@@ -242,16 +237,8 @@ public class GrandExchangeService
 				return;
 			}
 		}
-		// Empty GE slots expose stable native child buttons: child 3 is Buy, child 4 is Sell (action op 1).
-		int targetChild = buy ? 3 : 4;
-		for (WidgetRef widget : widgets.descendants(component))
-		{
-			if (widget.isVisible() && widget.getIndex() == targetChild)
-			{
-				widgets.interact(widget, 1, 0, -1);
-				return;
-			}
-		}
+		// The slot's buttons are drawn a moment before the game script gives them their
+		// actions. Clicking one before then does nothing, so report it as not loaded yet.
 		throw new IllegalStateException("GE slot action is not loaded");
 	}
 

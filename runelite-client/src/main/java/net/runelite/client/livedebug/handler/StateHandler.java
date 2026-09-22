@@ -84,6 +84,8 @@ public class StateHandler implements LiveDebugHandler
 				return runOnClientThread(this::queryObjects);
 			case "state.query_ground_items":
 				return runOnClientThread(this::queryGroundItems);
+			case "state.agility_status":
+				return runOnClientThread(this::agilityStatus);
 			default:
 				throw new IllegalArgumentException("Unknown state method: " + method);
 		}
@@ -305,5 +307,23 @@ public class StateHandler implements LiveDebugHandler
 		result.add("groundItems", itemsArray);
 		result.addProperty("count", itemsArray.size());
 		return result;
+	}
+
+	private JsonObject agilityStatus()
+	{
+		try
+		{
+			ActionHandler ah = net.runelite.client.livedebug.LiveDebugContext.inject(ActionHandler.class);
+			if (ah != null)
+			{
+				return ah.handle("action.agility_status", new JsonObject());
+			}
+		}
+		catch (Exception ignored)
+		{
+		}
+		JsonObject obj = new JsonObject();
+		obj.addProperty("available", false);
+		return obj;
 	}
 }

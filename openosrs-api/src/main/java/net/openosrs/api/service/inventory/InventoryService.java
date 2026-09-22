@@ -116,106 +116,89 @@ public class InventoryService
 		return container != null && container.size() > 0 && container.count() >= container.size();
 	}
 
-	public void use(InventoryItem item)
-	{
-		net.openosrs.api.operation.SelectionTransaction.run(client, () -> selectNative(item));
-	}
+	@Inject private net.openosrs.api.operation.SelectionActions selectionActions;
 
-	private void selectNative(InventoryItem item)
+	public void use(InventoryItem item) { useAsync(item).requireSubmitted(); }
+
+	/** Native selection completion; never wait on the client thread. */
+	public net.openosrs.api.dispatch.SubmissionResult useAsync(InventoryItem item)
+	{ return selectAndTarget(item, () -> {}, null); }
+
+	private net.openosrs.api.dispatch.SubmissionResult selectNative(InventoryItem item)
 	{
 		require(item);
-		dispatcher.submit(MenuAction.WIDGET_TARGET, 0, item.getSlot(), InterfaceID.Inventory.ITEMS,
-			"Use", item.getName(), item.getId(), -1).requireSubmitted();
-		requireSelection(item);
+		return dispatcher.submit(MenuAction.WIDGET_TARGET, 0, item.getSlot(), InterfaceID.Inventory.ITEMS,
+			"Use", item.getName(), item.getId(), -1);
 	}
 
-	/** Use an inventory item on an NPC through the native menu tuple. */
-	public void useOn(InventoryItem item, NpcRef npc)
+	private net.openosrs.api.dispatch.SubmissionResult selectAndTarget(InventoryItem item, Runnable validate,
+		java.util.function.Supplier<net.openosrs.api.dispatch.SubmissionResult> target)
 	{
-		net.openosrs.api.operation.SelectionTransaction.run(client, () ->
-		{
-		require(item);
-		if (npc == null) throw new IllegalArgumentException("npc is required");
-		requireView(npc.getWorldViewId());
-		npc.requireCurrent(client);
-		net.runelite.api.NPC current = net.runelite.api.ActorLookup.npc(client, npc.getWorldViewId(), npc.getIndex());
-		if (current == null || current.getId() != npc.getId()) throw new IllegalStateException("NPC target changed");
-		selectNative(item);
-		npc.requireCurrent(client);
-		requireView(npc.getWorldViewId());
-		requireSelection(item);
-		dispatcher.submit(MenuAction.WIDGET_TARGET_ON_NPC, npc.getIndex(), 0,
-			0, "Use", npc.getName(), -1, npc.getWorldViewId()).requireSubmitted();
-			});
+		require(item); validate.run();
+		Runnable selected = () -> { require(item); validate.run(); requireSelection(item); };
+		if (selectionActions != null) return selectionActions.submit(() -> selectNative(item), selected, target);
+		// Directly constructed legacy services use the synchronous native backend.
+		final net.openosrs.api.dispatch.SubmissionResult[] result = new net.openosrs.api.dispatch.SubmissionResult[1];
+		net.openosrs.api.operation.SelectionTransaction.run(client, () -> {
+			selectNative(item).requireSubmitted(); selected.run();
+			result[0] = target == null ? net.openosrs.api.dispatch.SubmissionResult.submitted() : target.get();
+		});
+		return result[0];
 	}
 
-	/** Use an inventory item on another player through the native menu tuple. */
-	public void useOn(InventoryItem item, PlayerRef player)
+	public void useOn(InventoryItem item, NpcRef npc) { useOnAsync(item, npc).requireSubmitted(); }
+
+	/** Selects the item, waits for native acknowledgement, then revalidates and clicks the target. */
+	public net.openosrs.api.dispatch.SubmissionResult useOnAsync(InventoryItem item, NpcRef npc)
 	{
-		net.openosrs.api.operation.SelectionTransaction.run(client, () ->
-		{
-		require(item);
-		if (player == null) throw new IllegalArgumentException("player is required");
-		requireView(player.getWorldViewId());
-		player.requireCurrent(client);
-		net.runelite.api.Player current = net.runelite.api.ActorLookup.player(client, player.getWorldViewId(), player.getIndex());
-		if (current == null || !java.util.Objects.equals(current.getName(), player.getName())) throw new IllegalStateException("Player target changed");
-		selectNative(item);
-		player.requireCurrent(client);
-		requireView(player.getWorldViewId());
-		requireSelection(item);
-		dispatcher.submit(MenuAction.WIDGET_TARGET_ON_PLAYER, player.getIndex(), 0,
-			0, "Use", player.getName(), -1, player.getWorldViewId()).requireSubmitted();
-			});
+		if (npc == null) throw new IllegalArgumentException("target is required");
+		return selectAndTarget(item, () -> { npc.requireCurrent(client); requireView(npc.getWorldViewId()); },
+			() -> dispatcher.submit(MenuAction.WIDGET_TARGET_ON_NPC, npc.getIndex(), 0, 0,
+				"Use", npc.getName(), -1, npc.getWorldViewId()));
 	}
 
-	/** Use an inventory item on a scene object through the native menu tuple. */
-	public void useOn(InventoryItem item, ObjectRef object)
+	public void useOn(InventoryItem item, PlayerRef player) { useOnAsync(item, player).requireSubmitted(); }
+
+	/** Selects the item, waits for native acknowledgement, then revalidates and clicks the target. */
+	public net.openosrs.api.dispatch.SubmissionResult useOnAsync(InventoryItem item, PlayerRef player)
 	{
-		net.openosrs.api.operation.SelectionTransaction.run(client, () ->
-		{
-		require(item);
-		if (object == null) throw new IllegalArgumentException("object is required");
-		requireView(object.getWorldViewId());
-		object.requireCurrent(client);
-		selectNative(item);
-		object.requireCurrent(client);
-		requireSelection(item);
-		dispatcher.submit(MenuAction.WIDGET_TARGET_ON_GAME_OBJECT, object.getId(), object.getSceneX(),
-			object.getSceneY(), "Use", object.getName(), -1, object.getWorldViewId()).requireSubmitted();
-			});
+		if (player == null) throw new IllegalArgumentException("target is required");
+		return selectAndTarget(item, () -> { player.requireCurrent(client); requireView(player.getWorldViewId()); },
+			() -> dispatcher.submit(MenuAction.WIDGET_TARGET_ON_PLAYER, player.getIndex(), 0, 0,
+				"Use", player.getName(), -1, player.getWorldViewId()));
 	}
 
-	/** Use an inventory item on a ground item through the native menu tuple. */
-	public void useOn(InventoryItem item, GroundItemRef groundItem)
+	public void useOn(InventoryItem item, ObjectRef object) { useOnAsync(item, object).requireSubmitted(); }
+
+	/** Selects the item, waits for native acknowledgement, then revalidates and clicks the target. */
+	public net.openosrs.api.dispatch.SubmissionResult useOnAsync(InventoryItem item, ObjectRef object)
 	{
-		net.openosrs.api.operation.SelectionTransaction.run(client, () ->
-		{
-		require(item);
-		if (groundItem == null) throw new IllegalArgumentException("ground item is required");
-		requireView(groundItem.getWorldViewId());
-		groundItem.requireCurrent(client);
-		selectNative(item);
-		groundItem.requireCurrent(client);
-		requireSelection(item);
-		dispatcher.submit(MenuAction.WIDGET_TARGET_ON_GROUND_ITEM, groundItem.getId(), groundItem.getSceneX(),
-			groundItem.getSceneY(), "Use", groundItem.getName(), -1, groundItem.getWorldViewId()).requireSubmitted();
-			});
+		if (object == null) throw new IllegalArgumentException("target is required");
+		return selectAndTarget(item, () -> { object.requireCurrent(client); requireView(object.getWorldViewId()); },
+			() -> dispatcher.submit(MenuAction.WIDGET_TARGET_ON_GAME_OBJECT, object.getId(), object.getSceneX(), object.getSceneY(),
+				"Use", object.getName(), -1, object.getWorldViewId()));
 	}
 
-	/** Use an inventory item on another inventory item through the native menu tuple. */
-	public void useOn(InventoryItem item, InventoryItem target)
+	public void useOn(InventoryItem item, GroundItemRef groundItem) { useOnAsync(item, groundItem).requireSubmitted(); }
+
+	/** Selects the item, waits for native acknowledgement, then revalidates and clicks the target. */
+	public net.openosrs.api.dispatch.SubmissionResult useOnAsync(InventoryItem item, GroundItemRef groundItem)
 	{
-		net.openosrs.api.operation.SelectionTransaction.run(client, () ->
-		{
-		require(item);
-		require(target);
-		selectNative(item);
-		require(target);
-		requireSelection(item);
-		dispatcher.submit(MenuAction.WIDGET_TARGET_ON_WIDGET, 0, target.getSlot(),
-			InterfaceID.Inventory.ITEMS, "Use", target.getName(), target.getId(), -1).requireSubmitted();
-			});
+		if (groundItem == null) throw new IllegalArgumentException("target is required");
+		return selectAndTarget(item, () -> { groundItem.requireCurrent(client); requireView(groundItem.getWorldViewId()); },
+			() -> dispatcher.submit(MenuAction.WIDGET_TARGET_ON_GROUND_ITEM, groundItem.getId(), groundItem.getSceneX(), groundItem.getSceneY(),
+				"Use", groundItem.getName(), -1, groundItem.getWorldViewId()));
+	}
+
+	public void useOn(InventoryItem item, InventoryItem target) { useOnAsync(item, target).requireSubmitted(); }
+
+	/** Selects the item, waits for native acknowledgement, then revalidates and clicks the target. */
+	public net.openosrs.api.dispatch.SubmissionResult useOnAsync(InventoryItem item, InventoryItem target)
+	{
+		if (target == null) throw new IllegalArgumentException("target is required");
+		return selectAndTarget(item, () -> { require(target); },
+			() -> dispatcher.submit(MenuAction.WIDGET_TARGET_ON_WIDGET, 0, target.getSlot(), InterfaceID.Inventory.ITEMS,
+				"Use", target.getName(), target.getId(), -1));
 	}
 
 	public void interact(InventoryItem item, String action)
@@ -227,7 +210,7 @@ public class InventoryService
 		int index = actionIndex(liveActions == null ? Collections.emptyList() : java.util.Arrays.asList(liveActions), action);
 		if (action == null || (index < 0 && !action.equalsIgnoreCase("Examine")))
 			throw new IllegalArgumentException("inventory action unavailable: " + action);
-		// RLPlugins InventoryAPI component-op mapping; these are not legacy item opcodes.
+		// Component-op mapping; these are not legacy item opcodes.
 		int componentOp = action.equalsIgnoreCase("Examine") ? 10
 			: action.equalsIgnoreCase("Drop") ? 7
 			: action.equalsIgnoreCase("Wear") || action.equalsIgnoreCase("Wield") || action.equalsIgnoreCase("Equip") ? 3
@@ -251,7 +234,12 @@ public class InventoryService
 		require(item);
 	}
 
-	private void require(InventoryItem item)
+	/**
+	 * Checks that the item is still in its slot, without requiring the inventory to be on
+	 * screen. Spells aimed at an item are selected from the spellbook, and the game only
+	 * brings the inventory back once the spell is selected.
+	 */
+	public void requireHeld(InventoryItem item)
 	{
 		if (item == null) throw new IllegalArgumentException("inventory item is required");
 		if (!client.isClientThread()) throw new IllegalStateException("Inventory actions require the client thread");
@@ -264,6 +252,12 @@ public class InventoryService
 		if (items == null || slot < 0 || slot >= items.length || items[slot] == null
 			|| items[slot].getId() != item.getId() || items[slot].getQuantity() != item.getQuantity())
 			throw new IllegalStateException("Inventory slot changed");
+	}
+
+	private void require(InventoryItem item)
+	{
+		requireHeld(item);
+		int slot = item.getSlot();
 		Widget parent = client.getWidget(InterfaceID.Inventory.ITEMS);
 		Widget child = parent == null ? null : parent.getChild(slot);
 		if (parent == null || parent.isHidden() || child == null || child.isHidden()

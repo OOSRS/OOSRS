@@ -12,9 +12,15 @@ import net.runelite.client.eventbus.Subscribe;
 @Singleton
 public final class ApiClockLifecycle
 {
+    @Inject private net.runelite.client.input.cursor.CursorInputBackend cursor;
+    @Inject private net.openosrs.api.operation.SelectionActions selections;
     @Subscribe(priority = 10000) public void onMenuOptionClicked(net.runelite.api.events.MenuOptionClicked event)
     {
+        if (selections != null
+            && !net.openosrs.api.operation.OperationLeases.isDispatching(net.openosrs.api.operation.OperationLeases.Resource.SELECTION)
+            && (cursor == null || !cursor.ownsClick(event, net.openosrs.api.operation.OperationLeases.Resource.SELECTION))) selections.cancelSession();
         if (net.openosrs.api.operation.OperationLeases.isDispatching(net.openosrs.api.operation.OperationLeases.Resource.CHATBOX)) return;
+        if (cursor != null && cursor.ownsClick(event, net.openosrs.api.operation.OperationLeases.Resource.CHATBOX)) return;
         if (amountInputs != null) amountInputs.cancelSession();
         if (dialogues != null) dialogues.cancelSession();
         if (teleports != null) teleports.cancelSession();
@@ -96,6 +102,7 @@ public final class ApiClockLifecycle
         try { owners.close(); }
         finally
         {
+            if (selections != null) selections.cancelSession();
             if (amountInputs != null) amountInputs.cancelSession();
             if (dialogues != null) dialogues.cancelSession();
             if (teleports != null) teleports.cancelSession();
@@ -114,6 +121,7 @@ public final class ApiClockLifecycle
         if (state == GameState.LOADING)
         {
             sceneState.invalidateScene(); actions.cancelSession();
+            if (selections != null) selections.cancelSession();
             if (amountInputs != null) amountInputs.cancelSession();
             if (dialogues != null) dialogues.cancelSession();
         }
@@ -121,6 +129,7 @@ public final class ApiClockLifecycle
             || state == GameState.CONNECTION_LOST || state == GameState.HOPPING)
         {
             clock.invalidateSession();
+            if (selections != null) selections.cancelSession();
             if (amountInputs != null) amountInputs.cancelSession();
             if (dialogues != null) dialogues.cancelSession();
             if (teleports != null) teleports.cancelSession();

@@ -77,8 +77,30 @@ public class BankService
 	public void close()
 	{
 		if (!isOpen()) return;
-		dispatcher.submit(MenuAction.WIDGET_CLOSE, 0, -1, InterfaceID.Bankmain.UNIVERSE,
-			"Close", "Bank", -1, -1).requireSubmitted();
+		for (WidgetRef w : widgets.descendants(InterfaceID.Bankmain.FRAME))
+		{
+			if (w.isVisible() && (w.hasAction("Close") || w.getIndex() == 11))
+			{
+				if (w.hasAction("Close"))
+				{
+					widgets.interact(w, "Close");
+				}
+				else
+				{
+					widgets.interact(w, 1, 0, -1);
+				}
+				return;
+			}
+		}
+		for (WidgetRef widget : widgets.descendants(InterfaceID.Bankmain.UNIVERSE))
+		{
+			if (widget.isVisible() && widget.hasAction("Close"))
+			{
+				widgets.interact(widget, "Close");
+				return;
+			}
+		}
+		throw new IllegalStateException("No visible bank close control");
 	}
 
 	public List<BankItem> all()
@@ -201,6 +223,65 @@ public class BankService
 	{
 		if (insertMode() == insert) return;
 		widgets.click(required(InterfaceID.Bankmain.SWAP_INSERT));
+	}
+
+	public boolean isItemVisible(int itemId)
+	{
+		return isItemVisible(first(itemId));
+	}
+
+	public boolean isItemVisible(BankItem item)
+	{
+		if (item == null) return false;
+		net.runelite.api.widgets.Widget bankContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
+		if (bankContainer == null || bankContainer.isHidden()) return false;
+		net.runelite.api.widgets.Widget[] children = bankContainer.getDynamicChildren();
+		if (children == null) return false;
+		for (net.runelite.api.widgets.Widget child : children)
+		{
+			if (child != null && child.getItemId() == item.getId() && !child.isSelfHidden())
+			{
+				java.awt.Rectangle bounds = child.getBounds();
+				java.awt.Rectangle parentBounds = bankContainer.getBounds();
+				if (bounds != null && parentBounds != null)
+				{
+					return bounds.y >= parentBounds.y && (bounds.y + bounds.height) <= (parentBounds.y + parentBounds.height);
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean scroll(int itemId)
+	{
+		return scroll(first(itemId));
+	}
+
+	public boolean scroll(BankItem item)
+	{
+		if (item == null) return false;
+		if (isItemVisible(item)) return true;
+		net.runelite.api.widgets.Widget bankContainer = client.getWidget(InterfaceID.Bankmain.ITEMS);
+		if (bankContainer == null || bankContainer.isHidden()) return false;
+		net.runelite.api.widgets.Widget[] children = bankContainer.getDynamicChildren();
+		if (children == null) return false;
+		net.runelite.api.widgets.Widget targetWidget = null;
+		for (net.runelite.api.widgets.Widget child : children)
+		{
+			if (child != null && child.getItemId() == item.getId() && !child.isSelfHidden())
+			{
+				targetWidget = child;
+				break;
+			}
+		}
+		if (targetWidget == null) return false;
+		final net.runelite.api.widgets.Widget w = targetWidget;
+		boolean scrollUp = w.getBounds() != null && bankContainer.getBounds() != null && w.getBounds().y < bankContainer.getBounds().y;
+		// Only the cursor needs the item on screen; direct delivery reaches it wherever it is.
+		net.openosrs.api.input.InputRouter router = net.openosrs.api.Context.isInitialized()
+			? net.openosrs.api.Context.getService(net.openosrs.api.input.InputRouter.class) : null;
+		net.openosrs.api.input.MouseDriver driver = router == null ? null : router.getMouseDriver();
+		return driver != null && driver.scroll(scrollUp, 5000, () -> isItemVisible(item));
 	}
 
 	private WidgetRef bankWidget(int slot, int itemId)

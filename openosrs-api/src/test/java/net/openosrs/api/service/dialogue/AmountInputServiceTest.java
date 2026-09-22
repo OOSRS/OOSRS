@@ -121,4 +121,68 @@ class AmountInputServiceTest
 		assertEquals(AmountInputService.Status.SUBMITTED, operation.getStatus());
 		verify(packets).send("RESUME_P_COUNTDIALOG", 123);
 	}
+	@Test void nativeModeCanPrecedeVisiblePromptWithoutCancelling()
+	{
+		AmountInputService.Operation operation = begin(7);
+		mode = 7; when(title.isHidden()).thenReturn(true);
+		service.advance();
+		assertEquals(AmountInputService.Status.WAITING_INPUT, operation.getStatus());
+		verifyNoInteractions(packets);
+		when(title.isHidden()).thenReturn(false); service.advance();
+		assertEquals(AmountInputService.Status.SUBMITTED, operation.getStatus());
+		verify(packets).send("RESUME_P_COUNTDIALOG", 123);
+	}
+
+	@Test void mouseModeTypesInsteadOfSendingCountPacket() throws Exception
+	{
+		var router = mock(net.openosrs.api.input.InputRouter.class);
+		var driver = mock(net.openosrs.api.input.MouseDriver.class);
+		when(router.selectedMode()).thenReturn(net.openosrs.api.input.InputMode.HUMAN_MOUSE);
+		when(router.getMouseDriver()).thenReturn(driver);
+		when(router.cursorBackend()).thenReturn(java.util.Optional.empty());
+		when(driver.typeText(eq("123"), eq(true), any())).thenReturn(true);
+		var field = AmountInputService.class.getDeclaredField("inputRouter");
+		field.setAccessible(true); field.set(service, router);
+		AmountInputService.Operation operation = begin(7); mode = 7;
+		service.advance(); service.advance();
+		assertEquals(AmountInputService.Status.SUBMITTED, operation.getStatus());
+		verify(driver, times(1)).typeText(eq("123"), eq(true), any());
+		verifyNoInteractions(packets, event);
+		verify(client, never()).runScript(138);
+		verify(client, never()).setVarcStrValue(anyInt(), anyString());
+	}
+
+	@Test void mouseOperationRetainsModeAfterCallingScopeCloses() throws Exception
+	{
+		var settings = new net.openosrs.api.input.InputSettings();
+		var router = new net.openosrs.api.input.InputRouter(mock(net.openosrs.api.input.PacketInputBackend.class), settings);
+		var driver = mock(net.openosrs.api.input.MouseDriver.class);
+		router.setMouseDriver(driver);
+		when(driver.typeText(eq("123"), eq(true), any())).thenReturn(true);
+		var field = AmountInputService.class.getDeclaredField("inputRouter");
+		field.setAccessible(true); field.set(service, router);
+		try (var scope = net.openosrs.api.input.InputScope.humanMouse()) { begin(7); }
+		assertEquals(net.openosrs.api.input.InputMode.PACKET, router.selectedMode());
+		mode = 7; service.advance();
+		verify(driver).typeText(eq("123"), eq(true), any());
+		verifyNoInteractions(packets, event);
+		assertNull(net.openosrs.api.input.InputScope.current());
+	}
+
+	@Test void currentMousePromptKeepsItsLeaseUntilCompletionOrCancellation() throws Exception
+	{
+		var router = new net.openosrs.api.input.InputRouter(mock(net.openosrs.api.input.PacketInputBackend.class), new net.openosrs.api.input.InputSettings());
+		var driver = mock(net.openosrs.api.input.MouseDriver.class);
+		router.setMouseDriver(driver);
+		when(driver.typeText(eq("123"), eq(true), any())).thenReturn(true);
+		var field = AmountInputService.class.getDeclaredField("inputRouter");
+		field.setAccessible(true); field.set(service, router);
+		mode = 7;
+		try (var scope = net.openosrs.api.input.InputScope.humanMouse()) { service.submitCurrent(123); }
+		var permit = org.mockito.ArgumentCaptor.forClass(java.util.function.BooleanSupplier.class);
+		verify(driver).typeText(eq("123"), eq(true), permit.capture());
+		assertTrue(permit.getValue().getAsBoolean());
+		service.cancelSession(); assertFalse(permit.getValue().getAsBoolean());
+		verifyNoInteractions(packets, event);
+	}
 }

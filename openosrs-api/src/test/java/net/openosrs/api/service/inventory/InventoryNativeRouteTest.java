@@ -49,7 +49,7 @@ class InventoryNativeRouteTest
 		verify(client, times(1)).menuAction(7, InterfaceID.Inventory.ITEMS, MenuAction.WIDGET_TARGET, 0, 385, "Use", "Shark");
 	}
 
-	@Test void normalActionsUseRlpluginsComponentIndices()
+	@Test void normalActionsUseNativeComponentIndices()
 	{
 		String[] names = {"Eat", "Wear", "Rub", "Drop", "Examine"}; int[] indices = {2, 3, 6, 7, 10};
 		for (int i = 0; i < names.length; i++)

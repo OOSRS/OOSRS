@@ -85,11 +85,17 @@ public class GroundItemService
 
 	public void take(GroundItemRef item)
 	{
+		submitTake(item).requireSubmitted();
+	}
+
+	/** Submission acknowledgement; inventory changes confirm a successful pickup. */
+	public net.openosrs.api.dispatch.SubmissionResult submitTake(GroundItemRef item)
+	{
 		if (item == null) throw new IllegalArgumentException("ground item is required");
 		item.requireCurrent(client);
-		// RLPlugins TileItemAPI: Take is index 0, mapped to OPOBJ1 on this revision.
-		dispatcher.submit(MenuAction.GROUND_ITEM_FIRST_OPTION, item.getId(),
-			item.getSceneX(), item.getSceneY(), "Take", item.getName(), -1, item.getWorldViewId()).requireSubmitted();
+		// Native ground menus place Take in the third option slot (OPOBJ3).
+		return dispatcher.submit(MenuAction.GROUND_ITEM_THIRD_OPTION, item.getId(),
+			item.getSceneX(), item.getSceneY(), "Take", item.getName(), -1, item.getWorldViewId());
 	}
 
 	public void lootAt(WorldPoint location)

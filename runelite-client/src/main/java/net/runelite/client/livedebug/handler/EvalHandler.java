@@ -21,6 +21,19 @@ public class EvalHandler implements LiveDebugHandler
 	}
 
 	@Override
+	public void start()
+	{
+		// JShell warm-up takes seconds; never hold up server start for it.
+		new Thread(evaluator::init, "LiveDebug-Evaluator-Init").start();
+	}
+
+	@Override
+	public void stop()
+	{
+		evaluator.close();
+	}
+
+	@Override
 	public String getCategory()
 	{
 		return "eval";

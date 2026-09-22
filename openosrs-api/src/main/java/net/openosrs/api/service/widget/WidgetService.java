@@ -166,9 +166,16 @@ public class WidgetService
 	{
 		require(widget);
 		if (actionIndex < 1 || actionIndex > 10 || subOp < 0 || subOp > 256) { throw new IllegalArgumentException("Invalid widget action index or sub-operation"); }
-		if (itemId != widget.getItemId())
+		if (itemId >= 0 && itemId != widget.getItemId())
 		{
 			SubmissionResult.rejected(SubmissionStatus.REJECTED_STALE_TARGET, "Widget item no longer matches").requireSubmitted();
+		}
+		// -1 means "whatever the slot holds". Resolve it here, from the snapshot the
+		// caller acted on, so the dispatcher only ever receives an item id it can
+		// check against the live widget and write into the packet unchanged.
+		if (itemId < 0)
+		{
+			itemId = widget.getItemId();
 		}
 		String option = "";
 		if (widget.getActions() != null && actionIndex <= widget.getActions().size() && widget.getActions().get(actionIndex - 1) != null)

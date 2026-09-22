@@ -24,6 +24,7 @@ public final class ClientActions implements AutoCloseable
 	private final Set<CompletableFuture<SubmissionResult>> pending = ConcurrentHashMap.newKeySet();
 	private final Object executionLock = new Object();
 	private volatile boolean closed;
+	@Inject private net.openosrs.api.input.InputRouter inputRouter;
 	@Inject public ClientActions(Client client, ClientExecutor executor, SessionTickClock clock)
 	{
 		this.client = client; this.executor = executor; this.clock = clock;
@@ -31,6 +32,8 @@ public final class ClientActions implements AutoCloseable
 	public CompletableFuture<SubmissionResult> submit(OperationOwner owner, Supplier<SubmissionResult> action)
 	{
 		java.util.Objects.requireNonNull(owner); java.util.Objects.requireNonNull(action);
+		net.openosrs.api.input.InputMode mode = inputRouter == null
+			? net.openosrs.api.input.InputScope.current() : inputRouter.selectedMode();
 		long epoch = clock.getSessionEpoch();
 		CompletableFuture<SubmissionResult> future = new CompletableFuture<>();
 		pending.add(future);
@@ -57,7 +60,8 @@ public final class ClientActions implements AutoCloseable
 							{
 								return SubmissionResult.rejected(SubmissionStatus.REJECTED_NOT_LOGGED_IN, "A logged-in session is required");
 							}
-							return java.util.Objects.requireNonNull(action.get(), "Action result");
+							try (net.openosrs.api.input.InputScope scope = mode == null ? null : net.openosrs.api.input.InputScope.of(mode))
+							{ return java.util.Objects.requireNonNull(action.get(), "Action result"); }
 						}, contextRejected()));
 					}
 				}

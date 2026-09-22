@@ -32,3 +32,7 @@ References and item wrappers describe observed state. Re-query before an action 
 - [Build locally](BUILDING.md) with `./gradlew apiDocs`.
 
 The initial release keeps incomplete or ambiguous packet layouts disabled. Reading state, resolving an action, dispatching it, and observing its game result are separate steps. Consult method documentation and handle failures without blocking the client thread.
+
+## Input backends
+
+Services route menu interactions through `InputRouter`. Plugins may choose `PACKET` or `HUMAN_MOUSE` with `InputScope`; packet fallback is opt-in. Mouse actions are asynchronous: acceptance is separate from native delivery and from the resulting game state. Read the [human input guide](HUMAN_INPUT.md) before integrating mouse actions or selection sequences.

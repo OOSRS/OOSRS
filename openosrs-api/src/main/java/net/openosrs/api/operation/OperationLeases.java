@@ -8,6 +8,8 @@ import javax.inject.Singleton;
 public final class OperationLeases
 {
 	private static final ThreadLocal<Lease> CURRENT = new ThreadLocal<>();
+	/** Capture only while dispatching an owned operation; the lease must remain active. */
+	public static Lease current() { return CURRENT.get(); }
 	public static boolean isDispatching(Resource resource)
 	{ Lease lease = CURRENT.get(); return lease != null && lease.resource == resource && lease.isActive(); }
 	public synchronized void requireAccess(Resource resource)
@@ -44,6 +46,7 @@ public final class OperationLeases
 		private Lease(Resource resource, OperationOwner owner, long epoch)
 		{ this.resource = resource; this.owner = owner; this.epoch = epoch; }
 		public boolean isActive() { return !closed && owner.isActive(); }
+		public Resource getResource() { return resource; }
 		public void run(Runnable action)
 		{
 			if (!isActive()) throw new IllegalStateException("Operation lease has ended");

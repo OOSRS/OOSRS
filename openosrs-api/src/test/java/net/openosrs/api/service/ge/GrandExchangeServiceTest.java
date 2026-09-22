@@ -3,6 +3,7 @@ package net.openosrs.api.service.ge;
 import java.util.Collections;
 import java.util.List;
 import net.openosrs.api.service.dialogue.DialogueService;
+import net.openosrs.api.service.dialogue.SearchResult;
 import net.openosrs.api.service.npc.NpcRef;
 import net.openosrs.api.service.npc.NpcService;
 import net.openosrs.api.service.object.ObjectRef;
@@ -129,39 +130,36 @@ class GrandExchangeServiceTest
 	}
 
 	@Test
-	void selectBuyItemByIdClicksMatchingWidget()
+	void selectBuyItemByIdChoosesMatchingResult()
 	{
-		WidgetRef item1 = mock(WidgetRef.class);
-		when(item1.isVisible()).thenReturn(true);
-		when(item1.getItemId()).thenReturn(4151);
-
-		WidgetRef item2 = mock(WidgetRef.class);
-		when(item2.isVisible()).thenReturn(true);
-		when(item2.getItemId()).thenReturn(995);
-
-		when(widgets.descendants(InterfaceID.Chatbox.MES_LAYER_SCROLLCONTENTS)).thenReturn(List.of(item1, item2));
+		SearchResult whip = result(4151, "Abyssal whip");
+		SearchResult coins = result(995, "Coins");
+		when(dialogue.searchResults()).thenReturn(List.of(whip, coins));
 
 		assertTrue(service.selectBuyItem(995));
-		verify(widgets).click(item2);
-		verify(widgets, never()).click(item1);
+		verify(dialogue).choose(coins);
+		verify(dialogue, never()).choose(whip);
+		assertFalse(service.selectBuyItem(1));
 	}
 
 	@Test
-	void selectBuyItemByNameMatchesCaseInsensitive()
+	void selectBuyItemByNamePrefersAnExactMatch()
 	{
-		WidgetRef item1 = mock(WidgetRef.class);
-		when(item1.isVisible()).thenReturn(true);
-		when(item1.getText()).thenReturn("Abyssal whip");
+		SearchResult ornament = result(12277, "Mithril platebody (g)");
+		SearchResult plain = result(1121, "Mithril platebody");
+		when(dialogue.searchResults()).thenReturn(List.of(ornament, plain));
 
-		WidgetRef item2 = mock(WidgetRef.class);
-		when(item2.isVisible()).thenReturn(true);
-		when(item2.getText()).thenReturn("Coins");
+		assertTrue(service.selectBuyItem("mithril platebody"));
+		verify(dialogue).choose(plain);
+		verify(dialogue, never()).choose(ornament);
+	}
 
-		when(widgets.descendants(InterfaceID.Chatbox.MES_LAYER_SCROLLCONTENTS)).thenReturn(List.of(item1, item2));
-
-		assertTrue(service.selectBuyItem("abyssal"));
-		verify(widgets).click(item1);
-		verify(widgets, never()).click(item2);
+	private static SearchResult result(int itemId, String name)
+	{
+		SearchResult result = mock(SearchResult.class);
+		when(result.getItemId()).thenReturn(itemId);
+		when(result.getName()).thenReturn(name);
+		return result;
 	}
 
 	@Test

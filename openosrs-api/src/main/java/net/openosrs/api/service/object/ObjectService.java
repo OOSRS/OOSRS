@@ -253,7 +253,12 @@ public class ObjectService
 			return;
 		}
 		WorldView worldView = object.getWorldView();
-		result.add(new ObjectRef(object.getId(), object.getHash(), local.getSceneX(), local.getSceneY(),
+		// Native menu coordinates address the scene anchor, not a multi-tile model center.
+		net.runelite.api.Point anchor = object instanceof net.runelite.api.GameObject
+			? ((net.runelite.api.GameObject) object).getSceneMinLocation()
+			: new net.runelite.api.Point(local.getSceneX(), local.getSceneY());
+		if (anchor == null) return;
+		result.add(new ObjectRef(object.getId(), object.getHash(), anchor.getX(), anchor.getY(),
 			worldView == null ? 0 : worldView.getId(), composition == null ? null : composition.getName(),
 			object.getWorldLocation(), actions, lifetimes.capture(object, tile)));
 	}

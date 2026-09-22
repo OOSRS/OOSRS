@@ -62,3 +62,7 @@ Create a public GitHub repository containing your source and a root `plugins.jso
 In OpenOSRS, open **External Plugin Manager**, choose **Add new GitHub repository**, then enter the repository owner and name. The loader uses the repository’s default branch, reads `plugins.json`, downloads the selected JAR, and discovers its extension classes. Enable the installed plugin in the client’s plugin list.
 
 The examples repository is added to the client through its external repository feature. If you remove it, add it back with owner **`OOSRS`** and repository **`OOSRS-Plugins`**. To distribute your own plugins, use your own owner and repository name. Use a unique `Plugin-Id`; keep its value identical in the JAR manifest and catalog.
+
+## Mouse and packet support
+
+Use the shared services and an explicit input scope. Never block the client thread waiting for a mouse action. The [human input guide](HUMAN_INPUT.md) shows how to retain plugin ownership, receive native delivery results and handle unsupported actions. The human mouse ships in OpenOSRS 1.2.0 and later.

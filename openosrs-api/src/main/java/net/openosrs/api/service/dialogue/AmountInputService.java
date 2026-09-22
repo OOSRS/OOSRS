@@ -29,6 +29,7 @@ public final class AmountInputService
 	private final net.openosrs.api.dispatch.PacketDispatcher packets;
 	private final Set<Operation> active = ConcurrentHashMap.newKeySet();
 	private Operation lastOperation;
+	@Inject private net.openosrs.api.input.InputRouter inputRouter;
 
 	public AmountInputService(Client client, SessionTickClock clock, OperationLeases leases)
 	{ this(client, clock, leases, null); }
@@ -73,6 +74,20 @@ public final class AmountInputService
 		Widget input = client.getWidget(InterfaceID.Chatbox.MES_TEXT2);
 		if ((mode != 7 && mode != 16 && mode != 19) || input == null || input.isHidden())
 			throw new IllegalStateException("No numeric input is visible");
+		if (inputRouter != null && inputRouter.selectedMode() == net.openosrs.api.input.InputMode.HUMAN_MOUSE)
+		{
+			OperationOwner owner = OperationOwner.currentOrNew();
+			SessionTickClock.Snapshot now = clock.sample();
+			OperationLeases.Lease lease = leases.acquire(OperationLeases.Resource.CHATBOX, owner, now.epoch);
+			if (lease == null) throw new IllegalStateException("Chatbox belongs to a pending operation");
+			Operation operation = new Operation(owner, lease, amount, mode, now,
+				() -> client.getWidget(InterfaceID.Chatbox.MES_TEXT2) == input, title -> true);
+			lastOperation = operation;
+			active.add(operation);
+			operation.detach = owner.onCancel(operation::close);
+			operation.advance();
+			return;
+		}
 		try (OperationOwner owner = new OperationOwner())
 		{
 			OperationLeases.Lease lease = leases.acquire(OperationLeases.Resource.CHATBOX, owner, clock.sample().epoch);
@@ -90,6 +105,22 @@ public final class AmountInputService
 	/** Server count prompts use the resume packet; Make-X keeps its local quantity handler. */
 	void submit(int amount, Widget input)
 	{
+		submit(amount, input, () -> true);
+	}
+
+	private void submit(int amount, Widget input, BooleanSupplier permit)
+	{
+		if (inputRouter != null && inputRouter.selectedMode() == net.openosrs.api.input.InputMode.HUMAN_MOUSE)
+		{
+			int mode = client.getVarcIntValue(VarClientID.MESLAYERMODE);
+			net.openosrs.api.input.MouseDriver driver = inputRouter.getMouseDriver();
+			if (driver == null || !driver.typeText(Integer.toString(amount), true,
+				() -> permit.getAsBoolean() && client.getGameState() == GameState.LOGGED_IN
+					&& client.getVarcIntValue(VarClientID.MESLAYERMODE) == mode
+					&& client.getWidget(InterfaceID.Chatbox.MES_TEXT2) == input && !input.isHidden()))
+				throw new IllegalStateException("Numeric canvas input was not accepted");
+			return;
+		}
 		if (client.getVarcIntValue(VarClientID.MESLAYERMODE) == 7)
 		{
 			net.openosrs.api.dispatch.PacketDispatcher dispatcher = packets != null ? packets : net.openosrs.api.Context.getService(net.openosrs.api.dispatch.PacketDispatcher.class);
@@ -126,6 +157,7 @@ public final class AmountInputService
 		private final OperationOwner owner;
 		private final OperationLeases.Lease lease;
 		private final int amount, mode;
+		private final net.openosrs.api.input.InputMode inputMode;
 		private final long epoch, deadline;
 		private final BooleanSupplier context;
 		private final Predicate<String> prompt;
@@ -138,6 +170,7 @@ public final class AmountInputService
 			SessionTickClock.Snapshot now, BooleanSupplier context, Predicate<String> prompt)
 		{
 			this.owner = owner; this.lease = lease; this.amount = amount; this.mode = mode;
+			inputMode = inputRouter == null ? net.openosrs.api.input.InputMode.PACKET : inputRouter.selectedMode();
 			epoch = now.epoch; deadline = now.tick + 20; this.context = context; this.prompt = prompt;
 		}
 		public Status getStatus() { return status; }
@@ -148,7 +181,10 @@ public final class AmountInputService
 			if (isDone()) return;
 			try
 			{
-				owner.whileActive(() -> { step(); return true; }, false);
+				owner.whileActive(() -> {
+					try (net.openosrs.api.input.InputScope scope = net.openosrs.api.input.InputScope.of(inputMode))
+					{ step(); return true; }
+				}, false);
 				if (!owner.isActive()) close();
 			}
 			catch (RuntimeException failure) { this.failure = failure.getMessage(); finish(Status.FAILED); }
@@ -164,21 +200,27 @@ public final class AmountInputService
 			if (status == Status.SUBMITTED)
 			{
 				if (currentMode <= 0) finish(Status.INPUT_CLOSED);
-				else if (currentMode != mode || input != submittedInput
+				else if (currentMode != mode || input == null || input != submittedInput
 					|| !Arrays.equals(submittedListener, input.getOnKeyListener())) close();
 				return;
 			}
 			if (!context.getAsBoolean()) { close(); return; }
 			if (currentMode <= 0) return;
 			Widget title = client.getWidget(InterfaceID.Chatbox.MES_TEXT);
-			if (currentMode != mode || title == null || title.isHidden() || input == null || input.isHidden()
-				|| !prompt.test(strip(title.getText()))) { close(); return; }
+			if (currentMode != mode) { close(); return; }
+			// Mode and chatbox widgets are populated on separate client frames.
+			// Keep waiting for our visible prompt within the existing lease/deadline.
+			if (title == null || title.isHidden() || input == null || input.isHidden()) return;
+			if (!prompt.test(strip(title.getText()))) { close(); return; }
 			String existing = client.getVarcStrValue(VarClientID.MESLAYERINPUT);
 			if (existing != null && !existing.isEmpty()) { close(); return; }
+			if (inputRouter != null && inputMode == net.openosrs.api.input.InputMode.HUMAN_MOUSE
+				&& inputRouter.cursorBackend().map(net.openosrs.api.input.InputBackend::isBusy).orElse(false)) return;
 			submittedInput = input;
 			submittedListener = input.getOnKeyListener() == null ? null : input.getOnKeyListener().clone();
 			status = Status.SUBMITTED; // Never retry after any part of native submission.
-			lease.run(() -> submit(amount, input));
+			lease.run(() -> submit(amount, input, () -> !isDone() && owner.isActive() && lease.isActive()
+				&& clock.getSessionEpoch() == epoch));
 		}
 		private void finish(Status terminal)
 		{

@@ -131,6 +131,27 @@ public class RuneLiteModule extends AbstractModule
 		bind(PluginManager.class);
 		bind(SessionManager.class);
 
+		// Cursor input is shared state: the router holds one backend, the backend
+		// writes what the overlay reads. Guice creates just-in-time bindings in
+		// whichever injector first asks, so a plugin's child injector would
+		// otherwise build its own copies and the two halves would never meet.
+		bind(net.openosrs.api.input.InputSettings.class);
+		bind(net.openosrs.api.input.PacketInputBackend.class);
+		bind(net.openosrs.api.input.InputRouter.class);
+		bind(net.openosrs.api.input.motion.MouseProfileStore.class);
+		bind(net.runelite.client.input.cursor.ClientReads.class);
+		bind(net.runelite.client.input.cursor.CanvasInput.class);
+		bind(net.runelite.client.input.cursor.CursorTasks.class);
+		bind(net.runelite.client.input.cursor.CursorInputGuard.class);
+		bind(net.runelite.client.input.cursor.CursorAnticipation.class);
+		bind(net.openosrs.api.input.motion.PatternPredictor.class);
+		bind(net.runelite.client.input.cursor.CursorState.class);
+		bind(net.runelite.client.input.cursor.CameraController.class);
+		bind(net.runelite.client.input.cursor.DestinationResolver.class);
+		bind(net.runelite.client.input.cursor.CursorInputBackend.class);
+		bind(net.runelite.client.input.cursor.CursorOverlay.class);
+		bind(net.runelite.client.input.cursor.CursorInfoOverlay.class);
+
 		bind(Gson.class).toInstance(RuneLiteAPI.GSON);
 
 		bind(Callbacks.class).to(Hooks.class);

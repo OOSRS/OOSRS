@@ -1,6 +1,6 @@
 # Contribute to OpenOSRS
 
-Use JDK 21 and the included Gradle wrapper. Keep changes focused and preserve plugin compatibility. Describe the problem, resulting behavior, and the affected build or runtime check in your pull request.
+Use JDK 11 and the included Gradle wrapper. Keep changes focused and preserve plugin compatibility. Describe the problem, resulting behavior, and the affected build or runtime check in your pull request.
 
 Preserve source license headers. Do not commit build outputs, game binaries, account data, caches, private traces, credentials, or local machine settings.
 

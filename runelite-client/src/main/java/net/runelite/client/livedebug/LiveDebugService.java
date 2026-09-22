@@ -15,6 +15,8 @@ import net.runelite.api.Client;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.livedebug.handler.ActionHandler;
 import net.runelite.client.livedebug.handler.EvalHandler;
+import net.runelite.client.livedebug.handler.LiveDebugHandler;
+import net.runelite.client.livedebug.handler.UnavailableEvalHandler;
 import net.runelite.client.livedebug.handler.GrandExchangeHandler;
 import net.runelite.client.livedebug.handler.OverlayHandler;
 import net.runelite.client.livedebug.handler.PacketHandler;
@@ -30,13 +32,13 @@ public class LiveDebugService
 	private final ClientThread clientThread;
 	private final OverlayManager overlayManager;
 	private final LiveDebugOverlay overlay;
-	private final LiveDebugEvaluator evaluator;
+	private final Injector injector;
 
 	private final StateHandler stateHandler;
 	private final ActionHandler actionHandler;
 	private final GrandExchangeHandler geHandler;
 	private final PacketHandler packetHandler;
-	private final EvalHandler evalHandler;
+	private LiveDebugHandler evalHandler;
 	private final OverlayHandler overlayHandler;
 
 	private LiveDebugAuth auth;
@@ -51,12 +53,10 @@ public class LiveDebugService
 		Injector injector,
 		OverlayManager overlayManager,
 		LiveDebugOverlay overlay,
-		LiveDebugEvaluator evaluator,
 		StateHandler stateHandler,
 		ActionHandler actionHandler,
 		GrandExchangeHandler geHandler,
 		PacketHandler packetHandler,
-		EvalHandler evalHandler,
 		OverlayHandler overlayHandler,
 		PacketDispatcher packetDispatcher,
 		MenuDispatcher menuDispatcher)
@@ -66,13 +66,12 @@ public class LiveDebugService
 		this.clientThread = clientThread;
 		this.overlayManager = overlayManager;
 		this.overlay = overlay;
-		this.evaluator = evaluator;
+		this.injector = injector;
 
 		this.stateHandler = stateHandler;
 		this.actionHandler = actionHandler;
 		this.geHandler = geHandler;
 		this.packetHandler = packetHandler;
-		this.evalHandler = evalHandler;
 		this.overlayHandler = overlayHandler;
 
 		// Populate static context for scripts
@@ -82,6 +81,11 @@ public class LiveDebugService
 		LiveDebugContext.setPacketDispatcher(packetDispatcher);
 		LiveDebugContext.setMenuDispatcher(menuDispatcher);
 		LiveDebugContext.setOverlay(overlay);
+	}
+
+	static boolean jshellAvailable()
+	{
+		return ModuleLayer.boot().findModule("jdk.jshell").isPresent();
 	}
 
 	public synchronized void start()
@@ -100,6 +104,14 @@ public class LiveDebugService
 			server.registerHandler(actionHandler);
 			server.registerHandler(geHandler);
 			server.registerHandler(packetHandler);
+			// The evaluator is resolved only after confirming the runtime has JShell.
+			// Letting the injector see it on a runtime without the module fails the
+			// whole client at startup, not just evaluation.
+			evalHandler = jshellAvailable() ? injector.getInstance(EvalHandler.class) : new UnavailableEvalHandler();
+			if (evalHandler instanceof UnavailableEvalHandler)
+			{
+				log.info("LiveDebug eval is unavailable: this runtime has no jdk.jshell module");
+			}
 			server.registerHandler(evalHandler);
 			server.registerHandler(overlayHandler);
 
@@ -109,8 +121,7 @@ public class LiveDebugService
 			overlayManager.add(overlay);
 			overlay.setStatus("INITIALIZED", "Listening on port " + config.getPort(), java.awt.Color.GREEN);
 
-			// Warm up JShell in background
-			new Thread(evaluator::init, "LiveDebug-Evaluator-Init").start();
+			evalHandler.start();
 
 			running = true;
 			log.info("LiveDebugService started successfully on port {}", config.getPort());
@@ -141,7 +152,11 @@ public class LiveDebugService
 		}
 
 		overlayManager.remove(overlay);
-		evaluator.close();
+		if (evalHandler != null)
+		{
+			evalHandler.stop();
+			evalHandler = null;
+		}
 
 		running = false;
 		log.info("LiveDebugService stopped");

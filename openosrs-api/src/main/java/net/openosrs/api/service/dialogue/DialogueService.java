@@ -31,6 +31,37 @@ public class DialogueService
 	}
 
 	@Inject private net.openosrs.api.operation.OperationLeases leases;
+	@Inject private net.openosrs.api.input.InputRouter inputRouter;
+	@Inject private net.runelite.api.Client client;
+
+	/** The cursor driver when mouse input is selected, otherwise {@code null}. */
+	private net.openosrs.api.input.MouseDriver mouseDriver(String action)
+	{
+		if (inputRouter == null || inputRouter.selectedMode() != net.openosrs.api.input.InputMode.HUMAN_MOUSE) return null;
+		net.openosrs.api.input.MouseDriver driver = inputRouter.getMouseDriver();
+		if (driver == null) throw new IllegalStateException(action + ": mouse input is selected but the cursor is unavailable");
+		return driver;
+	}
+
+	private net.runelite.api.Client client()
+	{
+		return client != null ? client : net.openosrs.api.Context.client();
+	}
+
+	/** The open chatbox prompt's layer, which must stay unchanged while the cursor types into it. */
+	private int openPromptLayer(String action)
+	{
+		int layer = client().getVarcIntValue(net.runelite.api.gameval.VarClientID.MESLAYERMODE);
+		if (layer == 0) throw new IllegalStateException(action + ": no chatbox prompt is open");
+		return layer;
+	}
+
+	private java.util.function.BooleanSupplier promptStillOpen(int layer)
+	{
+		net.runelite.api.Client c = client();
+		return () -> c.getGameState() == net.runelite.api.GameState.LOGGED_IN
+			&& c.getVarcIntValue(net.runelite.api.gameval.VarClientID.MESLAYERMODE) == layer;
+	}
 	private void requireChatboxAccess()
 	{
 		if (leases != null) leases.requireAccess(net.openosrs.api.operation.OperationLeases.Resource.CHATBOX);
@@ -194,6 +225,15 @@ public class DialogueService
 		{
 			throw new IllegalArgumentException("name must contain at most 254 characters and no NUL");
 		}
+		net.openosrs.api.input.MouseDriver driver = mouseDriver("Name dialogue");
+		if (driver != null)
+		{
+			// A person types the name into the prompt and presses Enter.
+			int layer = openPromptLayer("Name dialogue");
+			if (!driver.typeText(name, true, promptStillOpen(layer)))
+				throw new IllegalStateException("Name input was not accepted");
+			return;
+		}
 		// The packet carries a byte length followed by a CP-1252 string.
 		if (!packets.send("RESUME_P_NAMEDIALOG", name.length() + 1, name))
 		{
@@ -205,11 +245,69 @@ public class DialogueService
 	{
 		requireChatboxAccess();
 		if (itemId < 0) throw new IllegalArgumentException("item id must be non-negative");
+		net.openosrs.api.input.MouseDriver driver = mouseDriver("Object dialogue");
+		if (driver != null)
+		{
+			// A person searches for the item by name, then clicks its result.
+			int layer = openPromptLayer("Object dialogue");
+			String query = searchableName(itemId);
+			if (!driver.typeAndChoose(query, () -> objectResult(itemId), 3000, promptStillOpen(layer)))
+				throw new IllegalStateException("Object input was not accepted");
+			return;
+		}
 		// The active layout owns the item-id encoding.
 		if (!packets.send("RESUME_P_OBJDIALOG", itemId))
 		{
 			throw new IllegalStateException("object dialogue packet was not accepted");
 		}
+	}
+
+	private String searchableName(int itemId)
+	{
+		net.runelite.api.ItemComposition item = client().getItemDefinition(itemId);
+		String name = item == null ? null : item.getName();
+		if (name == null || name.isBlank() || "null".equalsIgnoreCase(name))
+			throw new IllegalArgumentException("item " + itemId + " has no searchable name");
+		// Search matches on prefixes; printable ASCII is all the prompt accepts.
+		String query = name.replaceAll("[^\\x20-\\x7E]", "").trim();
+		if (query.isEmpty()) throw new IllegalArgumentException("item " + itemId + " has no typeable name");
+		return query.length() > 40 ? query.substring(0, 40) : query;
+	}
+
+	/** The entries listed under the open chatbox item search, in the order shown. */
+	public List<SearchResult> searchResults()
+	{
+		return SearchResult.parse(widgets.descendants(InterfaceID.Chatbox.MES_LAYER_SCROLLCONTENTS),
+			InterfaceID.Chatbox.MES_LAYER_SCROLLCONTENTS);
+	}
+
+	/**
+	 * Selects an entry from the item search. With the mouse, the cursor scrolls the list
+	 * until the entry is on screen before clicking it.
+	 */
+	public void choose(SearchResult result)
+	{
+		requireChatboxAccess();
+		if (result == null) throw new IllegalArgumentException("search result is required");
+		WidgetRef button = result.getButton();
+		if (!button.isVisible() || button.getActions().isEmpty() || button.getActions().get(0) == null)
+			throw new IllegalStateException("search result " + result + " cannot be selected yet");
+		widgets.interact(button, button.getActions().get(0));
+	}
+
+	/** The interaction that picks {@code itemId} from the open search results, or {@code null}. */
+	private net.openosrs.api.input.MenuRequest objectResult(int itemId)
+	{
+		for (SearchResult result : searchResults())
+		{
+			WidgetRef button = result.getButton();
+			if (result.getItemId() != itemId || !button.isVisible()) continue;
+			String option = button.getActions().isEmpty() || button.getActions().get(0) == null
+				? "" : button.getActions().get(0);
+			return net.openosrs.api.input.MenuRequest.of(net.runelite.api.MenuAction.CC_OP, 1, button.getIndex(),
+				button.getId(), option, "", button.getItemId(), -1);
+		}
+		return null;
 	}
 
 	private WidgetRef continueWidget()
