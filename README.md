@@ -90,3 +90,5 @@ See [LICENSE](LICENSE), [NOTICE](NOTICE), and individual source headers. This re
 ### Human mouse
 
 Plugins built on the OpenOSRS API can act through a real, moving cursor instead of submitting interactions directly. It is off by default; switch it on under **Mouse settings**. See the [human input guide](docs/HUMAN_INPUT.md) for the settings, plugin integration, completion handling and current limits.
+
+See the [1.2.0 verification status](docs/STATUS.md) for the released build and the scope of live mouse checks.
