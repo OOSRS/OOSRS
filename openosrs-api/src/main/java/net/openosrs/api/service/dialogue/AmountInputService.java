@@ -148,8 +148,8 @@ public final class AmountInputService
 
 	private void requireClient()
 	{
-		if (!client.isClientThread() || client.getGameState() != GameState.LOGGED_IN || client.getRevision() != 240)
-			throw new IllegalStateException("Numeric input requires the logged-in revision-240 client thread");
+		if (!client.isClientThread() || client.getGameState() != GameState.LOGGED_IN || client.getRevision() != 241)
+			throw new IllegalStateException("Numeric input requires the logged-in revision-241 client thread");
 	}
 
 	public final class Operation implements AutoCloseable

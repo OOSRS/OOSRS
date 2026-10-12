@@ -883,7 +883,7 @@ public class MusicPlugin extends Plugin
 		{
 			int val = getValue();
 			int varVal = Math.round((float) val / (max / 100.f));
-			client.getVarps()[this.var] = varVal;
+			client.setVarpValue(this.var, varVal);
 		}
 
 		public void shutDown()

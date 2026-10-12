@@ -9,12 +9,12 @@ public final class GrandExchangeSlot
 	private final int itemId;
 	private final int quantity;
 	private final int completedQuantity;
-	private final int price;
-	private final int spent;
+	private final long price;
+	private final long spent;
 	private final GrandExchangeOfferState state;
 
 	GrandExchangeSlot(int slot, int itemId, int quantity, int completedQuantity,
-		int price, int spent, GrandExchangeOfferState state)
+		long price, long spent, GrandExchangeOfferState state)
 	{
 		this.slot = slot;
 		this.itemId = itemId;
@@ -29,8 +29,8 @@ public final class GrandExchangeSlot
 	public int getItemId() { return itemId; }
 	public int getQuantity() { return quantity; }
 	public int getCompletedQuantity() { return completedQuantity; }
-	public int getPrice() { return price; }
-	public int getSpent() { return spent; }
+	public long getPrice() { return price; }
+	public long getSpent() { return spent; }
 	public GrandExchangeOfferState getState() { return state; }
 	public boolean isEmpty() { return state == GrandExchangeOfferState.EMPTY; }
 	public boolean isDone() { return state == GrandExchangeOfferState.BOUGHT || state == GrandExchangeOfferState.SOLD; }

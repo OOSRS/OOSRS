@@ -22,7 +22,7 @@ class PrayerMappingTest
 	{
 		when(client.isClientThread()).thenReturn(true);
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
-		when(client.getRevision()).thenReturn(240);
+		when(client.getRevision()).thenReturn(241);
 		when(client.getVarps()).thenReturn(new int[20000]);
 		when(client.getRealSkillLevel(any(Skill.class))).thenReturn(99);
 		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
@@ -123,7 +123,7 @@ class PrayerMappingTest
 		when(client.isClientThread()).thenReturn(false);
 		assertThrows(IllegalStateException.class, () -> prayers.toggle(Prayer.THICK_SKIN));
 		when(client.isClientThread()).thenReturn(true);
-		when(client.getRevision()).thenReturn(241);
+		when(client.getRevision()).thenReturn(242);
 		assertThrows(IllegalStateException.class, () -> prayers.toggle(Prayer.THICK_SKIN));
 		verifyNoInteractions(widgets);
 	}

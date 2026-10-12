@@ -31,7 +31,7 @@ class RunControlTest
 	}
 	private void ready()
 	{
-		when(client.isClientThread()).thenReturn(true); when(client.getRevision()).thenReturn(240);
+		when(client.isClientThread()).thenReturn(true); when(client.getRevision()).thenReturn(241);
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		when(dispatcher.submit(any(), anyInt(), anyInt(), anyInt(), anyString(), anyString(), anyInt(), anyInt())).thenReturn(net.openosrs.api.dispatch.SubmissionResult.submitted());
 	}
@@ -68,7 +68,7 @@ class RunControlTest
 	@Test void wrongThreadAndLoggedOutDoNotReadControls()
 	{
 		assertThrows(IllegalStateException.class, service::toggleRun);
-		when(client.isClientThread()).thenReturn(true); when(client.getRevision()).thenReturn(240);
+		when(client.isClientThread()).thenReturn(true); when(client.getRevision()).thenReturn(241);
 		when(client.getGameState()).thenReturn(GameState.LOGIN_SCREEN);
 		assertThrows(IllegalStateException.class, () -> service.ensureRunEnabled(false));
 		verify(client, never()).getWidget(anyInt()); verifyNoInteractions(dispatcher);

@@ -113,8 +113,8 @@ public class RuntimeAbiAdaptersTest
         Path gamepack = Path.of("src/main/resources/injected-client.oprs");
         try (URLClassLoader loader = new URLClassLoader(new URL[]{gamepack.toUri().toURL()}, getClass().getClassLoader()))
         {
-            // This name is a fixture for the pinned revision 240, never a runtime mapping.
-            Class<?> widgetClass = Class.forName("lw", false, loader);
+            // This name is a fixture for the pinned revision 241, never a runtime mapping.
+            Class<?> widgetClass = Class.forName("ld", false, loader);
             Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
             Field field = unsafeClass.getDeclaredField("theUnsafe");
             field.setAccessible(true);

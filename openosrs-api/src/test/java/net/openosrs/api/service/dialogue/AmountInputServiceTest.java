@@ -25,7 +25,7 @@ class AmountInputServiceTest
 	{
 		when(client.isClientThread()).thenReturn(true);
 		when(packets.send("RESUME_P_COUNTDIALOG", 123)).thenReturn(true);
-		when(client.getRevision()).thenReturn(240);
+		when(client.getRevision()).thenReturn(241);
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		when(client.getTickCount()).thenAnswer(call -> tick);
 		when(client.getVarcIntValue(VarClientID.MESLAYERMODE)).thenAnswer(call -> mode);

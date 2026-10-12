@@ -29,15 +29,15 @@ public class PacketReferenceCompatibilityTest
     public static Collection<Object[]> fixtures() throws Exception
     {
         try (InputStreamReader reader = new InputStreamReader(
-            PacketReferenceCompatibilityTest.class.getResourceAsStream("packet-reference-240.json"),
+            PacketReferenceCompatibilityTest.class.getResourceAsStream("packet-reference-241.json"),
             StandardCharsets.UTF_8))
         {
             JsonObject root = new JsonParser().parse(reader).getAsJsonObject();
-            assertEquals(240, root.get("revision").getAsInt());
+            assertEquals(241, root.get("revision").getAsInt());
             assertEquals(HooksFile.load().getJarSha256(), root.get("gamepackSha256").getAsString());
-            assertEquals(39, root.get("packetCount").getAsInt());
+            assertEquals(62, root.get("packetCount").getAsInt());
             JsonArray fixtures = root.getAsJsonArray("fixtures");
-            assertEquals(78, fixtures.size());
+            assertEquals(248, fixtures.size());
             Collection<Object[]> result = new ArrayList<>();
             for (JsonElement fixture : fixtures)
             {
@@ -74,7 +74,7 @@ public class PacketReferenceCompatibilityTest
             Object[] values = new Object[supplied.size()];
             for (int i = 0; i < values.length; i++)
                 values[i] = supplied.get(i).getAsJsonPrimitive().isString()
-                    ? supplied.get(i).getAsString() : supplied.get(i).getAsInt();
+                    ? supplied.get(i).getAsString() : supplied.get(i).getAsLong();
             HooksFile.PacketDef packet = file.packetById(fixture.get("id").getAsInt());
             assertEquals(fixture.get("length").getAsInt(), packet.getLength().intValue());
             String hex = fixture.get("hex").getAsString();

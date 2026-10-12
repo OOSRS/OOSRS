@@ -1,18 +1,11 @@
-# OpenOSRS 1.2.0 status
+# OpenOSRS 1.13.1
 
-OpenOSRS 1.2.0 is the current published client release. It uses RuneLite
-1.12.39 and game revision 240. The [tagged build and publish job](https://github.com/OOSRS/OOSRS/actions/runs/35799648663)
-passed, and the [release](https://github.com/OOSRS/OOSRS/releases/tag/v1.2.0)
-includes the client JAR, API artifacts, checksums and launcher update metadata.
+This release targets the served RuneLite 1.13.1 client and Old School RuneScape revision 241. Client and API versions now follow the targeted RuneLite version; launcher 1.0.4 remains the current launcher. See the [release notes](releases/1.13.1.md).
 
-The human mouse is included in the client and is off by default. Plugins can
-use the existing OpenOSRS service API with either packet or mouse input. The
-[release notes](releases/1.2.0.md) record a logged-in Grand Exchange purchase,
-inventory setup and 26 High Alchemy casts through the mouse. Contract tests
-passed in the release job: 627 client tests and 206 API tests.
+The update refreshes the game artifact, API, IDs, script sources, account mappings and normal-launch call stack. Price values now use 64-bit integers throughout the affected Grand Exchange and item-value paths. Existing OpenOSRS plugin and human mouse features remain included; the mouse is off by default.
 
-That scenario does not verify every service method, target, argument or recovery
-path. Treat a delivered click and a game-state change as separate checks. The
-[human input guide](HUMAN_INPUT.md) describes mode selection and completion
-handling. The external human-input example has not been published to the
-plugin catalog.
+Independent packet fixtures cover 62 packet IDs and 248 wire samples. All 102 outgoing slots are accounted for: 82 verified layouts, five zero-length packets, six unreferenced slots and nine unresolved layouts. Unresolved layouts remain disabled. The pinned ABI baseline retains 31 existing native obligations and permits no new missing signatures.
+
+The release contracts passed 795 client checks and 206 API checks with no failures. The candidate loaded revision 241 hooks and the native first-launch screen using the launcher's downloaded Java 11 runtime.
+
+The release checks and isolated startup establish artifact compatibility and initialization. They do not prove game-account login or all gameplay APIs. Full logged-in API scenario coverage remains open. The [human input guide](HUMAN_INPUT.md) describes mode selection and completion handling.

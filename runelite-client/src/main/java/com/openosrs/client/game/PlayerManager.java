@@ -265,7 +265,7 @@ public class PlayerManager
 
 	private void updatePlayerGear(PlayerContainer player)
 	{
-		final Map<Integer, Integer> prices = new HashMap<>();
+		final Map<Integer, Long> prices = new HashMap<>();
 
 		if (player.getPlayer().getPlayerComposition() == null)
 		{
@@ -364,14 +364,14 @@ public class PlayerManager
 
 			if (ItemReclaimCost.breaksOnDeath(id))
 			{
-				prices.put(id, itemManager.getRepairValue(id));
+				prices.put(id, (long) itemManager.getRepairValue(id));
 				log.debug("Item has a broken value: Id {}, Value {}", id, itemManager.getRepairValue(id));
 				continue;
 			}
 
 			if (!itemComposition.isTradeable() && !ItemMapping.isMapped(id))
 			{
-				prices.put(id, itemComposition.getPrice());
+				prices.put(id, (long) itemComposition.getPrice());
 			}
 			else if (itemComposition.isTradeable())
 			{
@@ -401,7 +401,7 @@ public class PlayerManager
 		updateMeleeStyle(player);
 	}
 
-	private void updateGear(PlayerContainer player, Map<Integer, Integer> prices)
+	private void updateGear(PlayerContainer player, Map<Integer, Long> prices)
 	{
 		player.setGear(prices.entrySet()
 			.stream()
@@ -427,8 +427,8 @@ public class PlayerManager
 			}
 		}
 
-		int risk = 0;
-		for (int val : player.getRiskedGear().values())
+		long risk = 0;
+		for (long val : player.getRiskedGear().values())
 			risk += val;
 		player.setRisk(risk);
 	}
@@ -513,9 +513,9 @@ public class PlayerManager
 		}
 	}
 
-	private static void removeEntries(LinkedHashMap<Integer, Integer> map, int quantity)
+	private static void removeEntries(LinkedHashMap<Integer, Long> map, int quantity)
 	{
-		final Iterator<Map.Entry<Integer, Integer>> it = map.entrySet().iterator();
+		final Iterator<Map.Entry<Integer, Long>> it = map.entrySet().iterator();
 		for (int i = 0; it.hasNext() && i < quantity; i++)
 		{
 			it.next();

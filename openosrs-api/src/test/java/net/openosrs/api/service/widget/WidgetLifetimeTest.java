@@ -17,7 +17,7 @@ class WidgetLifetimeTest
 	private final WidgetService widgets = new WidgetService(client, dispatcher, null);
 	private Widget ready()
 	{
-		when(client.isClientThread()).thenReturn(true); when(client.getRevision()).thenReturn(240); when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
+		when(client.isClientThread()).thenReturn(true); when(client.getRevision()).thenReturn(241); when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		WorldView view = mock(WorldView.class); when(view.getId()).thenReturn(-1); when(view.getScene()).thenReturn(mock(Scene.class));
 		when(client.getTopLevelWorldView()).thenReturn(view);
 		Widget widget = mock(Widget.class); when(widget.getId()).thenReturn(123); when(widget.getIndex()).thenReturn(-1);
@@ -73,9 +73,9 @@ class WidgetLifetimeTest
 	@Test void readOnlyCapabilityReportsRevisionActionAndThreadWithoutSending()
 	{
 		ready(); WidgetRef ref = widgets.get(123); assertTrue(widgets.capability(ref, "Select").isSupported());
-		assertEquals(240, widgets.capability(ref, "Select").getRevision());
+		assertEquals(241, widgets.capability(ref, "Select").getRevision());
 		assertFalse(widgets.capability(ref, "Unknown").isSupported());
-		when(client.getRevision()).thenReturn(241); assertFalse(widgets.capability(ref, "Select").isSupported());
+		when(client.getRevision()).thenReturn(242); assertFalse(widgets.capability(ref, "Select").isSupported());
 		when(client.isClientThread()).thenReturn(false);
 		assertEquals(net.openosrs.api.dispatch.SubmissionStatus.REJECTED_WRONG_THREAD, widgets.capability(ref, "Select").getRejectionStatus());
 		verifyNoInteractions(dispatcher);

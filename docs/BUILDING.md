@@ -13,7 +13,7 @@ git clone https://github.com/OOSRS/OOSRS.git
 cd OOSRS
 java -version
 ./gradlew :runelite-client:shadowJar
-java -jar runelite-client/build/libs/openosrs-client-1.0.3.jar
+java -jar runelite-client/build/libs/openosrs-client-1.13.1.jar
 ```
 
 Windows: replace `./gradlew` with `gradlew.bat`.
@@ -39,8 +39,7 @@ xvfb-run -a ./gradlew verifyApiContracts verifyReleaseAbi
 ```
 
 The release gate rejects new binary compatibility failures. Its revision- and hash-pinned
-[deferred list](../config/runtime-abi-deferred.json) contains 32 known legacy obligations
-(21 distinct signatures). It does not claim full compatibility. `./gradlew verifyRuntimeAbi`
+[deferred list](../config/runtime-abi-deferred.json) contains 31 known legacy obligations. It does not claim full compatibility. `./gradlew verifyRuntimeAbi`
 runs the strict check and reports those outstanding methods as failures.
 See [the release notes](releases/1.0.2.md) for affected methods.
 

@@ -146,7 +146,7 @@ public class WidgetService
 		if (!client.isClientThread()) { return WidgetCapability.rejected(-1, SubmissionStatus.REJECTED_WRONG_THREAD, "Widget checks require the client thread"); }
 		if (sceneState.isClosed()) { return WidgetCapability.rejected(-1, SubmissionStatus.REJECTED_CONTEXT, "API scene context has shut down"); }
 		int revision = client.getRevision();
-		if (revision != 240) { return WidgetCapability.rejected(revision, SubmissionStatus.REJECTED_UNSUPPORTED_ACTION, "No widget action mapping for this revision"); }
+		if (revision != 241) { return WidgetCapability.rejected(revision, SubmissionStatus.REJECTED_UNSUPPORTED_ACTION, "No widget action mapping for this revision"); }
 		try { require(widget); }
 		catch (SubmissionRejectedException e)
 		{
@@ -265,7 +265,7 @@ public class WidgetService
 	{
 		sceneState.requireClientThread();
 		if (widget == null) { throw new IllegalArgumentException("widget is required"); }
-		if (client.getRevision() != 240)
+		if (client.getRevision() != 241)
 		{
 			SubmissionResult.rejected(SubmissionStatus.REJECTED_UNSUPPORTED_ACTION, "No widget action mapping for this revision").requireSubmitted();
 		}

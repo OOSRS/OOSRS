@@ -17,27 +17,27 @@ import static org.junit.Assert.*;
  */
 public class PacketEncodingGoldenTest
 {
-	private static final String BUFFER = "xy";
-	private static final String OFFSET_FIELD = "ay";
-	private static final String ARRAY_FIELD = "aj";
-	private static final int OFFSET_DECODE = 702114061;
+	private static final String BUFFER = "xw";
+	private static final String OFFSET_FIELD = "ab";
+	private static final String ARRAY_FIELD = "ah";
+	private static final int OFFSET_DECODE = -1851950461;
 
 	private static final String U16 = "bz";                 // high byte, low byte
-	private static final String U32 = "cy";                 // big-endian int
-	private static final String U16_ADD = "lg";             // high byte, low byte + 128
-	private static final String U8 = "zu";                  // byte
-	private static final String U8_SUB = "cv";              // 128 - value
-	private static final String U16_LE = "ed";              // low byte, high byte
-	private static final String U8_ADD = "co";              // value + 128
-	private static final String U32_LE = "em";              // little-endian int
-	private static final String U16_ADD_LE = "el";          // low byte + 128, high byte
-	private static final String U32_MIDDLE = "ez";          // middle-endian int
-	private static final String U32_INVERSE_MIDDLE = "cs";  // inverse middle-endian int
-	private static final String U8_NEG = "dj";              // 0 - value
-	private static final String U64 = "fi";                 // big-endian long
-	private static final String CP1252 = "ct";              // CP-1252 text and terminator
-	private static final String PATCH_U8_LENGTH = "ds";     // back-patch a one-byte length prefix
-	private static final String PATCH_U16_LENGTH = "bv";    // back-patch a two-byte length prefix
+	private static final String U32 = "cp";                 // big-endian int
+	private static final String U16_ADD = "so";             // high byte, low byte + 128
+	private static final String U8 = "qg";                  // byte
+	private static final String U8_SUB = "eh";              // 128 - value
+	private static final String U16_LE = "zy";              // low byte, high byte
+	private static final String U8_ADD = "ef";              // value + 128
+	private static final String U32_LE = "ec";              // little-endian int
+	private static final String U16_ADD_LE = "es";          // low byte + 128, high byte
+	private static final String U32_MIDDLE = "fm";          // middle-endian int
+	private static final String U32_INVERSE_MIDDLE = "fk";  // inverse middle-endian int
+	private static final String U8_NEG = "el";              // 0 - value
+	private static final String U64 = "gn";                 // big-endian long
+	private static final String CP1252 = "cv";              // CP-1252 text and terminator
+	private static final String PATCH_U8_LENGTH = "ae";     // back-patch a one-byte length prefix
+	private static final String PATCH_U16_LENGTH = "gr";    // back-patch a two-byte length prefix
 
 	@Test public void nonzeroTransformsHaveTheExpectedByteOrder() throws Exception
 	{
@@ -47,13 +47,13 @@ public class PacketEncodingGoldenTest
 			check(type, U16, int.class, 0x12345678, "5678");
 			check(type, U32, int.class, 0x12345678, "12345678");
 			check(type, U16_ADD, byte.class, 0x12345678, "56f8");
-			check(type, U8, byte.class, 0x12345678, "78");
-			check(type, U8_SUB, byte.class, 0x12345678, "08");
-			check(type, U16_LE, byte.class, 0x12345678, "7856");
+			check(type, U8, int.class, 0x12345678, "78");
+			check(type, U8_SUB, int.class, 0x12345678, "08");
+			check(type, U16_LE, int.class, 0x12345678, "7856");
 			check(type, U8_ADD, int.class, 0x12345678, "f8");
 			check(type, U32_LE, int.class, 0x12345678, "78563412");
-			check(type, U16_ADD_LE, short.class, 0x12345678, "f856");
-			check(type, U32_MIDDLE, int.class, 0x12345678, "56781234");
+			check(type, U16_ADD_LE, int.class, 0x12345678, "f856");
+			check(type, U32_MIDDLE, byte.class, 0x12345678, "56781234");
 			check(type, U32_INVERSE_MIDDLE, int.class, 0x12345678, "34127856");
 			check(type, U8_NEG, byte.class, 0x78, "88");
 			Object buffer = buffer(type);
@@ -72,10 +72,10 @@ public class PacketEncodingGoldenTest
 			check(type, U32, int.class, -1, "ffffffff");
 			check(type, U16, int.class, 65535, "ffff");
 			check(type, U16, int.class, 65536, "0000");
-			check(type, U8_SUB, byte.class, 128, "00");
+			check(type, U8_SUB, int.class, 128, "00");
 			check(type, U8_ADD, int.class, 128, "00");
-			check(type, U8, byte.class, 256, "00");
-			check(type, U8, byte.class, 0, "00");
+			check(type, U8, int.class, 256, "00");
+			check(type, U8, int.class, 0, "00");
 		}
 	}
 
@@ -84,19 +84,19 @@ public class PacketEncodingGoldenTest
 		try (URLClassLoader loader = PacketScratchIsolationTest.gameLoader())
 		{
 			Class<?> type = loader.loadClass(BUFFER);
-			Writer string = writer(type, CP1252, String.class, short.class);
+			Writer string = writer(type, CP1252, String.class, int.class);
 			Object buffer = buffer(type);
-			string.invoke(buffer, "A€ŒŸ漢", (short) 0);
+			string.invoke(buffer, "A€ŒŸ漢", 0);
 			assertBytes(type, buffer, "41808c9f3f00");
 			buffer = buffer(type);
-			writer(type, U8, int.class, byte.class).invoke(buffer, 0, (byte) 0);
-			string.invoke(buffer, "€", (short) 0);
+			writer(type, U8, int.class, int.class).invoke(buffer, 0, 0);
+			string.invoke(buffer, "€", 0);
 			writer(type, PATCH_U8_LENGTH, int.class, int.class).invoke(buffer, 2, 0);
 			assertBytes(type, buffer, "028000");
 			buffer = buffer(type);
 			writer(type, U16, int.class, int.class).invoke(buffer, 0, 0);
-			string.invoke(buffer, "€", (short) 0);
-			writer(type, PATCH_U16_LENGTH, int.class, int.class).invoke(buffer, 2, 0);
+			string.invoke(buffer, "€", 0);
+			writer(type, PATCH_U16_LENGTH, int.class).invoke(buffer, 2);
 			assertBytes(type, buffer, "00028000");
 		}
 	}

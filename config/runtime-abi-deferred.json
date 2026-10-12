@@ -1,10 +1,13 @@
 {
-  "gamepackSha256": "25f42961c400bd9dfff1554402441c0ba6d1cffd011163cb9b0b4c42ae194f85",
-  "revision": "240",
+  "gamepackSha256": "981eba4888f4cf0ec8fd74f09b9ed85728d7b2bc8c1f57194883aed64dec768a",
+  "revision": "241",
   "errors": [
-    "Missing implementation: bi -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
-    "Missing implementation: bs -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
-    "Missing implementation: cj -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
+    "Missing implementation: ai -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
+    "Missing implementation: as -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
+    "Missing implementation: bd -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
+    "Missing implementation: bh -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
+    "Missing implementation: cc -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
+    "Missing implementation: ch -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
     "Missing implementation: client -> net/runelite/api/Client.getStringStackSize()I",
     "Missing implementation: client -> net/runelite/api/Client.getStringStack()[Ljava/lang/String;",
     "Missing implementation: client -> net/runelite/api/Client.getCameraX2()I",
@@ -23,15 +26,12 @@
     "Missing implementation: client -> net/runelite/api/Client.getVar(Lnet/runelite/api/VarClientInt;)I",
     "Missing implementation: client -> net/runelite/api/Client.getVar(Lnet/runelite/api/VarClientStr;)Ljava/lang/String;",
     "Missing implementation: client -> net/runelite/api/Client.setVar(Lnet/runelite/api/VarPlayer;I)V",
-    "Missing implementation: ct -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
-    "Missing implementation: dl -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
-    "Missing implementation: dn -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
-    "Missing implementation: dy -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
-    "Missing implementation: er -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
-    "Missing implementation: ez -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
-    "Missing implementation: fx -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
+    "Missing implementation: cq -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
+    "Missing implementation: ee -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
+    "Missing implementation: ei -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
+    "Missing implementation: fv -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
     "Missing implementation: rl24 -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
-    "Missing implementation: si -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
-    "Missing implementation: zr -> net/runelite/api/ScriptEvent.setSource(Lnet/runelite/api/widgets/Widget;)Lnet/runelite/api/ScriptEvent;"
+    "Missing implementation: sm -> net/runelite/api/Renderable.draw(IIIIIIIIJ)V",
+    "Missing implementation: zx -> net/runelite/api/ScriptEvent.setSource(Lnet/runelite/api/widgets/Widget;)Lnet/runelite/api/ScriptEvent;"
   ]
 }

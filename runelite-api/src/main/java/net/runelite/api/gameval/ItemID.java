@@ -90623,6 +90623,13 @@ public final class ItemID
 	 */
 	public static final int DOGQ_STUFFED_DOG = 34602;
 
+	/**
+	 * Coins and platinum
+	 */
+	public static final int COINS_AND_PLATINUM = 34604;
+	public static final int COINS_AND_PLATINUM_MID = 34605;
+	public static final int COINS_AND_PLATINUM_HIGH = 34606;
+
 	public static final class Cert
 	{
 		public static final int TWPART1 = 7;
@@ -95341,6 +95348,7 @@ public final class ItemID
 		public static final int FIRE_RUBY = 34423;
 		public static final int AMULET_OF_FIRE = 34426;
 		public static final int ELEMENTAL_AMULET = 34429;
+		public static final int BLANKRUNE_DAEYALT = 34603;
 	}
 
 	public static final class Placeholder

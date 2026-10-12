@@ -11,7 +11,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
 
-/** Revision 240 standard-book controls; enum order is never a component ID. */
+/** Revision 241 standard-book controls; enum order is never a component ID. */
 final class PrayerWidgetResolver
 {
 	private static final EnumMap<Prayer, Entry> STANDARD = new EnumMap<>(Prayer.class);
@@ -55,8 +55,8 @@ final class PrayerWidgetResolver
 	static void requireContext(Client client)
 	{
 		if (!client.isClientThread()) throw new IllegalStateException("Prayer commands require the client thread");
-		if (client.getRevision() != 240 || client.getGameState() != GameState.LOGGED_IN)
-			throw new IllegalStateException("Prayer commands require a logged-in revision 240 session");
+		if (client.getRevision() != 241 || client.getGameState() != GameState.LOGGED_IN)
+			throw new IllegalStateException("Prayer commands require a logged-in revision 241 session");
 	}
 
 	static WidgetRef resolve(Client client, WidgetService widgets, Prayer prayer, boolean enabled)

@@ -22,7 +22,7 @@ class InventoryNativeRouteTest
 
 	InventoryNativeRouteTest()
 	{
-		when(client.isClientThread()).thenReturn(true); when(client.getRevision()).thenReturn(240);
+		when(client.isClientThread()).thenReturn(true); when(client.getRevision()).thenReturn(241);
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		when(client.getTopLevelWorldView()).thenReturn(mock(WorldView.class));
 		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(container);

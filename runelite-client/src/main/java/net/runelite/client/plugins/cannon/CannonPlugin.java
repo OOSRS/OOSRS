@@ -140,11 +140,14 @@ public class CannonPlugin extends Plugin
 	{
 		overlayManager.add(cannonOverlay);
 		overlayManager.add(cannonSpotOverlay);
-		clientThread.invoke(() ->
+		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			cballsLeft = client.getVarpValue(VarPlayer.CANNON_AMMO);
-			cannonDecayed = client.getVarbitValue(net.runelite.api.gameval.VarbitID.MCANNON_DECAYED) == 1;
-		});
+			clientThread.invoke(() ->
+			{
+				cballsLeft = client.getVarpValue(VarPlayer.CANNON_AMMO);
+				cannonDecayed = client.getVarbitValue(net.runelite.api.gameval.VarbitID.MCANNON_DECAYED) == 1;
+			});
+		}
 	}
 
 	@Override

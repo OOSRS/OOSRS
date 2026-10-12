@@ -1,0 +1,4046 @@
+{
+  "gamepackSha256": "981eba4888f4cf0ec8fd74f09b9ed85728d7b2bc8c1f57194883aed64dec768a",
+  "revision": 241,
+  "source": "RSProt scalar codec adapter; wire order only, not API argument semantics",
+  "fixtures": [
+    {
+      "name": "IF_CRMVIEW_OP/0",
+      "id": 0,
+      "length": 22,
+      "roles": [
+        "serverTarget",
+        "sub",
+        "behaviour1",
+        "behaviour2",
+        "behaviour3",
+        "combinedId"
+      ],
+      "values": [
+        288775040,
+        12373,
+        1333041598,
+        1855174877,
+        -1917659140,
+        -1395526117
+      ],
+      "hex": "805b3611553099be4f746e93b8dd8db2d7fcacd1f61b"
+    },
+    {
+      "name": "IF_CRMVIEW_OP/1",
+      "id": 0,
+      "length": 22,
+      "roles": [
+        "serverTarget",
+        "sub",
+        "behaviour1",
+        "behaviour2",
+        "behaviour3",
+        "combinedId"
+      ],
+      "values": [
+        1181454517,
+        25994,
+        -2069246221,
+        -1547113198,
+        -1025045455,
+        -519689392
+      ],
+      "hex": "b5906b468a65cef384a9a3c8ed12c2e70c31e1062b50"
+    },
+    {
+      "name": "IF_CRMVIEW_OP/2",
+      "id": 0,
+      "length": 22,
+      "roles": [
+        "serverTarget",
+        "sub",
+        "behaviour1",
+        "behaviour2",
+        "behaviour3",
+        "combinedId"
+      ],
+      "values": [
+        -1,
+        65535,
+        -1,
+        -1,
+        -1,
+        -1
+      ],
+      "hex": "ffffffffffffffffffffffffffffffffffffffffffff"
+    },
+    {
+      "name": "IF_CRMVIEW_OP/3",
+      "id": 0,
+      "length": 22,
+      "roles": [
+        "serverTarget",
+        "sub",
+        "behaviour1",
+        "behaviour2",
+        "behaviour3",
+        "combinedId"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "00000000000000000000000000000000000000000000"
+    },
+    {
+      "name": "RESUME_P_OBJDIALOG/0",
+      "id": 3,
+      "length": 2,
+      "roles": [
+        "obj"
+      ],
+      "values": [
+        4406
+      ],
+      "hex": "1136"
+    },
+    {
+      "name": "RESUME_P_OBJDIALOG/1",
+      "id": 3,
+      "length": 2,
+      "roles": [
+        "obj"
+      ],
+      "values": [
+        18027
+      ],
+      "hex": "466b"
+    },
+    {
+      "name": "RESUME_P_OBJDIALOG/2",
+      "id": 3,
+      "length": 2,
+      "roles": [
+        "obj"
+      ],
+      "values": [
+        65535
+      ],
+      "hex": "ffff"
+    },
+    {
+      "name": "RESUME_P_OBJDIALOG/3",
+      "id": 3,
+      "length": 2,
+      "roles": [
+        "obj"
+      ],
+      "values": [
+        0
+      ],
+      "hex": "0000"
+    },
+    {
+      "name": "OPLOC2_V2/0",
+      "id": 4,
+      "length": 8,
+      "roles": [
+        "controlKey",
+        "z",
+        "id",
+        "subop",
+        "x"
+      ],
+      "values": [
+        17,
+        12373,
+        20340,
+        110,
+        36274
+      ],
+      "hex": "6f30554ff4928db2"
+    },
+    {
+      "name": "OPLOC2_V2/1",
+      "id": 4,
+      "length": 8,
+      "roles": [
+        "controlKey",
+        "z",
+        "id",
+        "subop",
+        "x"
+      ],
+      "values": [
+        70,
+        25994,
+        33961,
+        163,
+        49895
+      ],
+      "hex": "3a658a84295dc2e7"
+    },
+    {
+      "name": "OPLOC2_V2/2",
+      "id": 4,
+      "length": 8,
+      "roles": [
+        "controlKey",
+        "z",
+        "id",
+        "subop",
+        "x"
+      ],
+      "values": [
+        255,
+        65535,
+        65535,
+        255,
+        65535
+      ],
+      "hex": "81ffffff7f01ffff"
+    },
+    {
+      "name": "OPLOC2_V2/3",
+      "id": 4,
+      "length": 8,
+      "roles": [
+        "controlKey",
+        "z",
+        "id",
+        "subop",
+        "x"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "8000000080000000"
+    },
+    {
+      "name": "OPWORLDENTITY6/0",
+      "id": 5,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        4406
+      ],
+      "hex": "11b6"
+    },
+    {
+      "name": "OPWORLDENTITY6/1",
+      "id": 5,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        18027
+      ],
+      "hex": "46eb"
+    },
+    {
+      "name": "OPWORLDENTITY6/2",
+      "id": 5,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        65535
+      ],
+      "hex": "ff7f"
+    },
+    {
+      "name": "OPWORLDENTITY6/3",
+      "id": 5,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        0
+      ],
+      "hex": "0080"
+    },
+    {
+      "name": "OPWORLDENTITY5/0",
+      "id": 6,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        17,
+        12373
+      ],
+      "hex": "915530"
+    },
+    {
+      "name": "OPWORLDENTITY5/1",
+      "id": 6,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        70,
+        25994
+      ],
+      "hex": "c68a65"
+    },
+    {
+      "name": "OPWORLDENTITY5/2",
+      "id": 6,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        255,
+        65535
+      ],
+      "hex": "7fffff"
+    },
+    {
+      "name": "OPWORLDENTITY5/3",
+      "id": 6,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "800000"
+    },
+    {
+      "name": "OPLOCT/0",
+      "id": 8,
+      "length": 15,
+      "roles": [
+        "selectedSub",
+        "id",
+        "controlKey",
+        "z",
+        "x",
+        "selectedObj",
+        "selectedCombinedId"
+      ],
+      "values": [
+        4406,
+        12373,
+        79,
+        28307,
+        36274,
+        44241,
+        -873458374
+      ],
+      "hex": "11b630554f6e13328dacd13a15f0cb"
+    },
+    {
+      "name": "OPLOCT/1",
+      "id": 8,
+      "length": 15,
+      "roles": [
+        "selectedSub",
+        "id",
+        "controlKey",
+        "z",
+        "x",
+        "selectedObj",
+        "selectedCombinedId"
+      ],
+      "values": [
+        18027,
+        25994,
+        132,
+        41928,
+        49895,
+        57606,
+        2443887
+      ],
+      "hex": "46eb658a84a34867c2e1066f4a2500"
+    },
+    {
+      "name": "OPLOCT/2",
+      "id": 8,
+      "length": 15,
+      "roles": [
+        "selectedSub",
+        "id",
+        "controlKey",
+        "z",
+        "x",
+        "selectedObj",
+        "selectedCombinedId"
+      ],
+      "values": [
+        65535,
+        65535,
+        255,
+        65535,
+        65535,
+        65535,
+        -1
+      ],
+      "hex": "ff7fffffffff7f7fffffffffffffff"
+    },
+    {
+      "name": "OPLOCT/3",
+      "id": 8,
+      "length": 15,
+      "roles": [
+        "selectedSub",
+        "id",
+        "controlKey",
+        "z",
+        "x",
+        "selectedObj",
+        "selectedCombinedId"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "008000000000808000000000000000"
+    },
+    {
+      "name": "OPOBJ5_V2/0",
+      "id": 9,
+      "length": 8,
+      "roles": [
+        "id",
+        "z",
+        "controlKey",
+        "x",
+        "subop"
+      ],
+      "values": [
+        4406,
+        12373,
+        79,
+        28307,
+        141
+      ],
+      "hex": "b6115530316e13f3"
+    },
+    {
+      "name": "OPOBJ5_V2/1",
+      "id": 9,
+      "length": 8,
+      "roles": [
+        "id",
+        "z",
+        "controlKey",
+        "x",
+        "subop"
+      ],
+      "values": [
+        18027,
+        25994,
+        132,
+        41928,
+        194
+      ],
+      "hex": "eb468a65fca348be"
+    },
+    {
+      "name": "OPOBJ5_V2/2",
+      "id": 9,
+      "length": 8,
+      "roles": [
+        "id",
+        "z",
+        "controlKey",
+        "x",
+        "subop"
+      ],
+      "values": [
+        65535,
+        65535,
+        255,
+        65535,
+        255
+      ],
+      "hex": "7fffffff81ff7f81"
+    },
+    {
+      "name": "OPOBJ5_V2/3",
+      "id": 9,
+      "length": 8,
+      "roles": [
+        "id",
+        "z",
+        "controlKey",
+        "x",
+        "subop"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "8000000080008080"
+    },
+    {
+      "name": "RESUME_P_LONGDIALOG/0",
+      "id": 10,
+      "length": 8,
+      "roles": [
+        "count"
+      ],
+      "values": [
+        1240279355482631956
+      ],
+      "hex": "11365b80a5caef14"
+    },
+    {
+      "name": "RESUME_P_LONGDIALOG/1",
+      "id": 10,
+      "length": 8,
+      "roles": [
+        "count"
+      ],
+      "values": [
+        5074308515900630089
+      ],
+      "hex": "466b90b5daff2449"
+    },
+    {
+      "name": "RESUME_P_LONGDIALOG/2",
+      "id": 10,
+      "length": 8,
+      "roles": [
+        "count"
+      ],
+      "values": [
+        -1
+      ],
+      "hex": "ffffffffffffffff"
+    },
+    {
+      "name": "RESUME_P_LONGDIALOG/3",
+      "id": 10,
+      "length": 8,
+      "roles": [
+        "count"
+      ],
+      "values": [
+        0
+      ],
+      "hex": "0000000000000000"
+    },
+    {
+      "name": "SEND_PING_REPLY/0",
+      "id": 11,
+      "length": 10,
+      "roles": [
+        "value1",
+        "value2",
+        "fps",
+        "gcPercentTime"
+      ],
+      "values": [
+        288775040,
+        810908319,
+        79,
+        110
+      ],
+      "hex": "805b361155309f7a3192"
+    },
+    {
+      "name": "SEND_PING_REPLY/1",
+      "id": 11,
+      "length": 10,
+      "roles": [
+        "value1",
+        "value2",
+        "fps",
+        "gcPercentTime"
+      ],
+      "values": [
+        1181454517,
+        1703587796,
+        132,
+        163
+      ],
+      "hex": "b5906b468a65d4affc5d"
+    },
+    {
+      "name": "SEND_PING_REPLY/2",
+      "id": 11,
+      "length": 10,
+      "roles": [
+        "value1",
+        "value2",
+        "fps",
+        "gcPercentTime"
+      ],
+      "values": [
+        -1,
+        -1,
+        255,
+        255
+      ],
+      "hex": "ffffffffffffffff8101"
+    },
+    {
+      "name": "SEND_PING_REPLY/3",
+      "id": 11,
+      "length": 10,
+      "roles": [
+        "value1",
+        "value2",
+        "fps",
+        "gcPercentTime"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "00000000000000008000"
+    },
+    {
+      "name": "OPPLAYER1/0",
+      "id": 12,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        4406,
+        48
+      ],
+      "hex": "b611d0"
+    },
+    {
+      "name": "OPPLAYER1/1",
+      "id": 12,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        18027,
+        101
+      ],
+      "hex": "eb469b"
+    },
+    {
+      "name": "OPPLAYER1/2",
+      "id": 12,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        65535,
+        255
+      ],
+      "hex": "7fff01"
+    },
+    {
+      "name": "OPPLAYER1/3",
+      "id": 12,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "800000"
+    },
+    {
+      "name": "OPWORLDENTITY2/0",
+      "id": 13,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        4406,
+        48
+      ],
+      "hex": "b611b0"
+    },
+    {
+      "name": "OPWORLDENTITY2/1",
+      "id": 13,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        18027,
+        101
+      ],
+      "hex": "eb46e5"
+    },
+    {
+      "name": "OPWORLDENTITY2/2",
+      "id": 13,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        65535,
+        255
+      ],
+      "hex": "7fff7f"
+    },
+    {
+      "name": "OPWORLDENTITY2/3",
+      "id": 13,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "800080"
+    },
+    {
+      "name": "IF_BUTTONT/0",
+      "id": 15,
+      "length": 16,
+      "roles": [
+        "targetCombinedId",
+        "selectedObj",
+        "selectedCombinedId",
+        "targetObj",
+        "targetSub",
+        "selectedSub"
+      ],
+      "values": [
+        288775040,
+        12373,
+        1333041598,
+        28307,
+        36274,
+        44241
+      ],
+      "hex": "805b3611d53099be4f74136e8db251ac"
+    },
+    {
+      "name": "IF_BUTTONT/1",
+      "id": 15,
+      "length": 16,
+      "roles": [
+        "targetCombinedId",
+        "selectedObj",
+        "selectedCombinedId",
+        "targetObj",
+        "targetSub",
+        "selectedSub"
+      ],
+      "values": [
+        1181454517,
+        25994,
+        -2069246221,
+        41928,
+        49895,
+        57606
+      ],
+      "hex": "b5906b460a65cef384a948a3c2e786e1"
+    },
+    {
+      "name": "IF_BUTTONT/2",
+      "id": 15,
+      "length": 16,
+      "roles": [
+        "targetCombinedId",
+        "selectedObj",
+        "selectedCombinedId",
+        "targetObj",
+        "targetSub",
+        "selectedSub"
+      ],
+      "values": [
+        -1,
+        65535,
+        -1,
+        65535,
+        65535,
+        65535
+      ],
+      "hex": "ffffffff7fffffffffff7fffffff7fff"
+    },
+    {
+      "name": "IF_BUTTONT/3",
+      "id": 15,
+      "length": 16,
+      "roles": [
+        "targetCombinedId",
+        "selectedObj",
+        "selectedCombinedId",
+        "targetObj",
+        "targetSub",
+        "selectedSub"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "00000000800000000000800000008000"
+    },
+    {
+      "name": "RESUME_PAUSEBUTTON/0",
+      "id": 16,
+      "length": 6,
+      "roles": [
+        "sub",
+        "combinedId"
+      ],
+      "values": [
+        4406,
+        810908319
+      ],
+      "hex": "36119f7a5530"
+    },
+    {
+      "name": "RESUME_PAUSEBUTTON/1",
+      "id": 16,
+      "length": 6,
+      "roles": [
+        "sub",
+        "combinedId"
+      ],
+      "values": [
+        18027,
+        1703587796
+      ],
+      "hex": "6b46d4af8a65"
+    },
+    {
+      "name": "RESUME_PAUSEBUTTON/2",
+      "id": 16,
+      "length": 6,
+      "roles": [
+        "sub",
+        "combinedId"
+      ],
+      "values": [
+        65535,
+        -1
+      ],
+      "hex": "ffffffffffff"
+    },
+    {
+      "name": "RESUME_PAUSEBUTTON/3",
+      "id": 16,
+      "length": 6,
+      "roles": [
+        "sub",
+        "combinedId"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "000000000000"
+    },
+    {
+      "name": "TELEPORT/0",
+      "id": 18,
+      "length": 9,
+      "roles": [
+        "z",
+        "x",
+        "oculusSyncValue",
+        "level"
+      ],
+      "values": [
+        4406,
+        12373,
+        1333041598,
+        110
+      ],
+      "hex": "11b6d530744fbe9992"
+    },
+    {
+      "name": "TELEPORT/1",
+      "id": 18,
+      "length": 9,
+      "roles": [
+        "z",
+        "x",
+        "oculusSyncValue",
+        "level"
+      ],
+      "values": [
+        18027,
+        25994,
+        -2069246221,
+        163
+      ],
+      "hex": "46eb0a65a984f3ce5d"
+    },
+    {
+      "name": "TELEPORT/2",
+      "id": 18,
+      "length": 9,
+      "roles": [
+        "z",
+        "x",
+        "oculusSyncValue",
+        "level"
+      ],
+      "values": [
+        65535,
+        65535,
+        -1,
+        255
+      ],
+      "hex": "ff7f7fffffffffff01"
+    },
+    {
+      "name": "TELEPORT/3",
+      "id": 18,
+      "length": 9,
+      "roles": [
+        "z",
+        "x",
+        "oculusSyncValue",
+        "level"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "008080000000000000"
+    },
+    {
+      "name": "SET_CHATFILTERSETTINGS/0",
+      "id": 19,
+      "length": 3,
+      "roles": [
+        "publicChatFilter",
+        "privateChatFilter",
+        "tradeChatFilter"
+      ],
+      "values": [
+        17,
+        48,
+        79
+      ],
+      "hex": "11304f"
+    },
+    {
+      "name": "SET_CHATFILTERSETTINGS/1",
+      "id": 19,
+      "length": 3,
+      "roles": [
+        "publicChatFilter",
+        "privateChatFilter",
+        "tradeChatFilter"
+      ],
+      "values": [
+        70,
+        101,
+        132
+      ],
+      "hex": "466584"
+    },
+    {
+      "name": "SET_CHATFILTERSETTINGS/2",
+      "id": 19,
+      "length": 3,
+      "roles": [
+        "publicChatFilter",
+        "privateChatFilter",
+        "tradeChatFilter"
+      ],
+      "values": [
+        255,
+        255,
+        255
+      ],
+      "hex": "ffffff"
+    },
+    {
+      "name": "SET_CHATFILTERSETTINGS/3",
+      "id": 19,
+      "length": 3,
+      "roles": [
+        "publicChatFilter",
+        "privateChatFilter",
+        "tradeChatFilter"
+      ],
+      "values": [
+        0,
+        0,
+        0
+      ],
+      "hex": "000000"
+    },
+    {
+      "name": "OPWORLDENTITY4/0",
+      "id": 21,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        17,
+        12373
+      ],
+      "hex": "6f3055"
+    },
+    {
+      "name": "OPWORLDENTITY4/1",
+      "id": 21,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        70,
+        25994
+      ],
+      "hex": "3a658a"
+    },
+    {
+      "name": "OPWORLDENTITY4/2",
+      "id": 21,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        255,
+        65535
+      ],
+      "hex": "81ffff"
+    },
+    {
+      "name": "OPWORLDENTITY4/3",
+      "id": 21,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "800000"
+    },
+    {
+      "name": "OPLOC5_V2/0",
+      "id": 24,
+      "length": 8,
+      "roles": [
+        "z",
+        "id",
+        "subop",
+        "controlKey",
+        "x"
+      ],
+      "values": [
+        4406,
+        12373,
+        79,
+        110,
+        36274
+      ],
+      "hex": "b61155304fee8d32"
+    },
+    {
+      "name": "OPLOC5_V2/1",
+      "id": 24,
+      "length": 8,
+      "roles": [
+        "z",
+        "id",
+        "subop",
+        "controlKey",
+        "x"
+      ],
+      "values": [
+        18027,
+        25994,
+        132,
+        163,
+        49895
+      ],
+      "hex": "eb468a658423c267"
+    },
+    {
+      "name": "OPLOC5_V2/2",
+      "id": 24,
+      "length": 8,
+      "roles": [
+        "z",
+        "id",
+        "subop",
+        "controlKey",
+        "x"
+      ],
+      "values": [
+        65535,
+        65535,
+        255,
+        255,
+        65535
+      ],
+      "hex": "7fffffffff7fff7f"
+    },
+    {
+      "name": "OPLOC5_V2/3",
+      "id": 24,
+      "length": 8,
+      "roles": [
+        "z",
+        "id",
+        "subop",
+        "controlKey",
+        "x"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "8000000000800080"
+    },
+    {
+      "name": "OPPLAYER4/0",
+      "id": 26,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        4406,
+        48
+      ],
+      "hex": "b61150"
+    },
+    {
+      "name": "OPPLAYER4/1",
+      "id": 26,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        18027,
+        101
+      ],
+      "hex": "eb461b"
+    },
+    {
+      "name": "OPPLAYER4/2",
+      "id": 26,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        65535,
+        255
+      ],
+      "hex": "7fff81"
+    },
+    {
+      "name": "OPPLAYER4/3",
+      "id": 26,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "800080"
+    },
+    {
+      "name": "CLICKWORLDMAP/0",
+      "id": 28,
+      "length": 4,
+      "roles": [
+        "packed"
+      ],
+      "values": [
+        288775040
+      ],
+      "hex": "5b801136"
+    },
+    {
+      "name": "CLICKWORLDMAP/1",
+      "id": 28,
+      "length": 4,
+      "roles": [
+        "packed"
+      ],
+      "values": [
+        1181454517
+      ],
+      "hex": "90b5466b"
+    },
+    {
+      "name": "CLICKWORLDMAP/2",
+      "id": 28,
+      "length": 4,
+      "roles": [
+        "packed"
+      ],
+      "values": [
+        -1
+      ],
+      "hex": "ffffffff"
+    },
+    {
+      "name": "CLICKWORLDMAP/3",
+      "id": 28,
+      "length": 4,
+      "roles": [
+        "packed"
+      ],
+      "values": [
+        0
+      ],
+      "hex": "00000000"
+    },
+    {
+      "name": "OPPLAYER3/0",
+      "id": 30,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        17,
+        12373
+      ],
+      "hex": "9130d5"
+    },
+    {
+      "name": "OPPLAYER3/1",
+      "id": 30,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        70,
+        25994
+      ],
+      "hex": "c6650a"
+    },
+    {
+      "name": "OPPLAYER3/2",
+      "id": 30,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        255,
+        65535
+      ],
+      "hex": "7fff7f"
+    },
+    {
+      "name": "OPPLAYER3/3",
+      "id": 30,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "800080"
+    },
+    {
+      "name": "OPNPC4_V2/0",
+      "id": 31,
+      "length": 4,
+      "roles": [
+        "controlKey",
+        "subop",
+        "index"
+      ],
+      "values": [
+        17,
+        48,
+        20340
+      ],
+      "hex": "6f50744f"
+    },
+    {
+      "name": "OPNPC4_V2/1",
+      "id": 31,
+      "length": 4,
+      "roles": [
+        "controlKey",
+        "subop",
+        "index"
+      ],
+      "values": [
+        70,
+        101,
+        33961
+      ],
+      "hex": "3a1ba984"
+    },
+    {
+      "name": "OPNPC4_V2/2",
+      "id": 31,
+      "length": 4,
+      "roles": [
+        "controlKey",
+        "subop",
+        "index"
+      ],
+      "values": [
+        255,
+        255,
+        65535
+      ],
+      "hex": "8181ffff"
+    },
+    {
+      "name": "OPNPC4_V2/3",
+      "id": 31,
+      "length": 4,
+      "roles": [
+        "controlKey",
+        "subop",
+        "index"
+      ],
+      "values": [
+        0,
+        0,
+        0
+      ],
+      "hex": "80800000"
+    },
+    {
+      "name": "OPWORLDENTITY3/0",
+      "id": 32,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        4406,
+        48
+      ],
+      "hex": "1136d0"
+    },
+    {
+      "name": "OPWORLDENTITY3/1",
+      "id": 32,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        18027,
+        101
+      ],
+      "hex": "466b9b"
+    },
+    {
+      "name": "OPWORLDENTITY3/2",
+      "id": 32,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        65535,
+        255
+      ],
+      "hex": "ffff01"
+    },
+    {
+      "name": "OPWORLDENTITY3/3",
+      "id": 32,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "000000"
+    },
+    {
+      "name": "EXIT_FREECAM/0",
+      "id": 34,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "EXIT_FREECAM/1",
+      "id": 34,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "EXIT_FREECAM/2",
+      "id": 34,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "EXIT_FREECAM/3",
+      "id": 34,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "OPPLAYER2/0",
+      "id": 35,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        4406,
+        48
+      ],
+      "hex": "3611d0"
+    },
+    {
+      "name": "OPPLAYER2/1",
+      "id": 35,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        18027,
+        101
+      ],
+      "hex": "6b469b"
+    },
+    {
+      "name": "OPPLAYER2/2",
+      "id": 35,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        65535,
+        255
+      ],
+      "hex": "ffff01"
+    },
+    {
+      "name": "OPPLAYER2/3",
+      "id": 35,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "000000"
+    },
+    {
+      "name": "IF_BUTTONX/0",
+      "id": 38,
+      "length": 9,
+      "roles": [
+        "combinedId",
+        "sub",
+        "obj",
+        "op"
+      ],
+      "values": [
+        288775040,
+        12373,
+        20340,
+        110
+      ],
+      "hex": "11365b8030554f746e"
+    },
+    {
+      "name": "IF_BUTTONX/1",
+      "id": 38,
+      "length": 9,
+      "roles": [
+        "combinedId",
+        "sub",
+        "obj",
+        "op"
+      ],
+      "values": [
+        1181454517,
+        25994,
+        33961,
+        163
+      ],
+      "hex": "466b90b5658a84a9a3"
+    },
+    {
+      "name": "IF_BUTTONX/2",
+      "id": 38,
+      "length": 9,
+      "roles": [
+        "combinedId",
+        "sub",
+        "obj",
+        "op"
+      ],
+      "values": [
+        -1,
+        65535,
+        65535,
+        255
+      ],
+      "hex": "ffffffffffffffffff"
+    },
+    {
+      "name": "IF_BUTTONX/3",
+      "id": 38,
+      "length": 9,
+      "roles": [
+        "combinedId",
+        "sub",
+        "obj",
+        "op"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "000000000000000000"
+    },
+    {
+      "name": "OPLOC6/0",
+      "id": 39,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        4406
+      ],
+      "hex": "b611"
+    },
+    {
+      "name": "OPLOC6/1",
+      "id": 39,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        18027
+      ],
+      "hex": "eb46"
+    },
+    {
+      "name": "OPLOC6/2",
+      "id": 39,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        65535
+      ],
+      "hex": "7fff"
+    },
+    {
+      "name": "OPLOC6/3",
+      "id": 39,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        0
+      ],
+      "hex": "8000"
+    },
+    {
+      "name": "OPPLAYER8/0",
+      "id": 40,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        17,
+        12373
+      ],
+      "hex": "6f30d5"
+    },
+    {
+      "name": "OPPLAYER8/1",
+      "id": 40,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        70,
+        25994
+      ],
+      "hex": "3a650a"
+    },
+    {
+      "name": "OPPLAYER8/2",
+      "id": 40,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        255,
+        65535
+      ],
+      "hex": "81ff7f"
+    },
+    {
+      "name": "OPPLAYER8/3",
+      "id": 40,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "800080"
+    },
+    {
+      "name": "CLOSE_MODAL/0",
+      "id": 41,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "CLOSE_MODAL/1",
+      "id": 41,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "CLOSE_MODAL/2",
+      "id": 41,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "CLOSE_MODAL/3",
+      "id": 41,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "EVENT_CAMERA_POSITION/0",
+      "id": 43,
+      "length": 4,
+      "roles": [
+        "angleX",
+        "angleY"
+      ],
+      "values": [
+        4406,
+        12373
+      ],
+      "hex": "3611d530"
+    },
+    {
+      "name": "EVENT_CAMERA_POSITION/1",
+      "id": 43,
+      "length": 4,
+      "roles": [
+        "angleX",
+        "angleY"
+      ],
+      "values": [
+        18027,
+        25994
+      ],
+      "hex": "6b460a65"
+    },
+    {
+      "name": "EVENT_CAMERA_POSITION/2",
+      "id": 43,
+      "length": 4,
+      "roles": [
+        "angleX",
+        "angleY"
+      ],
+      "values": [
+        65535,
+        65535
+      ],
+      "hex": "ffff7fff"
+    },
+    {
+      "name": "EVENT_CAMERA_POSITION/3",
+      "id": 43,
+      "length": 4,
+      "roles": [
+        "angleX",
+        "angleY"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "00008000"
+    },
+    {
+      "name": "OPNPC2_V2/0",
+      "id": 44,
+      "length": 4,
+      "roles": [
+        "controlKey",
+        "subop",
+        "index"
+      ],
+      "values": [
+        17,
+        48,
+        20340
+      ],
+      "hex": "9150f44f"
+    },
+    {
+      "name": "OPNPC2_V2/1",
+      "id": 44,
+      "length": 4,
+      "roles": [
+        "controlKey",
+        "subop",
+        "index"
+      ],
+      "values": [
+        70,
+        101,
+        33961
+      ],
+      "hex": "c61b2984"
+    },
+    {
+      "name": "OPNPC2_V2/2",
+      "id": 44,
+      "length": 4,
+      "roles": [
+        "controlKey",
+        "subop",
+        "index"
+      ],
+      "values": [
+        255,
+        255,
+        65535
+      ],
+      "hex": "7f817fff"
+    },
+    {
+      "name": "OPNPC2_V2/3",
+      "id": 44,
+      "length": 4,
+      "roles": [
+        "controlKey",
+        "subop",
+        "index"
+      ],
+      "values": [
+        0,
+        0,
+        0
+      ],
+      "hex": "80808000"
+    },
+    {
+      "name": "IF_BUTTOND/0",
+      "id": 46,
+      "length": 16,
+      "roles": [
+        "selectedObj",
+        "selectedCombinedId",
+        "selectedSub",
+        "targetSub",
+        "targetObj",
+        "targetCombinedId"
+      ],
+      "values": [
+        4406,
+        810908319,
+        20340,
+        28307,
+        36274,
+        -1395526117
+      ],
+      "hex": "361155309f7a744f6e938d32d1ac1bf6"
+    },
+    {
+      "name": "IF_BUTTOND/1",
+      "id": 46,
+      "length": 16,
+      "roles": [
+        "selectedObj",
+        "selectedCombinedId",
+        "selectedSub",
+        "targetSub",
+        "targetObj",
+        "targetCombinedId"
+      ],
+      "values": [
+        18027,
+        1703587796,
+        33961,
+        41928,
+        49895,
+        -519689392
+      ],
+      "hex": "6b468a65d4afa984a3c8c26706e1502b"
+    },
+    {
+      "name": "IF_BUTTOND/2",
+      "id": 46,
+      "length": 16,
+      "roles": [
+        "selectedObj",
+        "selectedCombinedId",
+        "selectedSub",
+        "targetSub",
+        "targetObj",
+        "targetCombinedId"
+      ],
+      "values": [
+        65535,
+        -1,
+        65535,
+        65535,
+        65535,
+        -1
+      ],
+      "hex": "ffffffffffffffffffffff7fffffffff"
+    },
+    {
+      "name": "IF_BUTTOND/3",
+      "id": 46,
+      "length": 16,
+      "roles": [
+        "selectedObj",
+        "selectedCombinedId",
+        "selectedSub",
+        "targetSub",
+        "targetObj",
+        "targetCombinedId"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "00000000000000000000008000000000"
+    },
+    {
+      "name": "DETECT_MODIFIED_CLIENT/0",
+      "id": 48,
+      "length": 4,
+      "roles": [
+        "code"
+      ],
+      "values": [
+        288775040
+      ],
+      "hex": "11365b80"
+    },
+    {
+      "name": "DETECT_MODIFIED_CLIENT/1",
+      "id": 48,
+      "length": 4,
+      "roles": [
+        "code"
+      ],
+      "values": [
+        1181454517
+      ],
+      "hex": "466b90b5"
+    },
+    {
+      "name": "DETECT_MODIFIED_CLIENT/2",
+      "id": 48,
+      "length": 4,
+      "roles": [
+        "code"
+      ],
+      "values": [
+        -1
+      ],
+      "hex": "ffffffff"
+    },
+    {
+      "name": "DETECT_MODIFIED_CLIENT/3",
+      "id": 48,
+      "length": 4,
+      "roles": [
+        "code"
+      ],
+      "values": [
+        0
+      ],
+      "hex": "00000000"
+    },
+    {
+      "name": "OPNPC6/0",
+      "id": 53,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        4406
+      ],
+      "hex": "1136"
+    },
+    {
+      "name": "OPNPC6/1",
+      "id": 53,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        18027
+      ],
+      "hex": "466b"
+    },
+    {
+      "name": "OPNPC6/2",
+      "id": 53,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        65535
+      ],
+      "hex": "ffff"
+    },
+    {
+      "name": "OPNPC6/3",
+      "id": 53,
+      "length": 2,
+      "roles": [
+        "id"
+      ],
+      "values": [
+        0
+      ],
+      "hex": "0000"
+    },
+    {
+      "name": "OPPLAYER5/0",
+      "id": 54,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        4406,
+        48
+      ],
+      "hex": "361130"
+    },
+    {
+      "name": "OPPLAYER5/1",
+      "id": 54,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        18027,
+        101
+      ],
+      "hex": "6b4665"
+    },
+    {
+      "name": "OPPLAYER5/2",
+      "id": 54,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        65535,
+        255
+      ],
+      "hex": "ffffff"
+    },
+    {
+      "name": "OPPLAYER5/3",
+      "id": 54,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "000000"
+    },
+    {
+      "name": "OPPLAYERT/0",
+      "id": 61,
+      "length": 11,
+      "roles": [
+        "selectedSub",
+        "selectedCombinedId",
+        "controlKey",
+        "selectedObj",
+        "index"
+      ],
+      "values": [
+        4406,
+        810908319,
+        79,
+        28307,
+        36274
+      ],
+      "hex": "361130557a9fcf6e138d32"
+    },
+    {
+      "name": "OPPLAYERT/1",
+      "id": 61,
+      "length": 11,
+      "roles": [
+        "selectedSub",
+        "selectedCombinedId",
+        "controlKey",
+        "selectedObj",
+        "index"
+      ],
+      "values": [
+        18027,
+        1703587796,
+        132,
+        41928,
+        49895
+      ],
+      "hex": "6b46658aafd404a348c267"
+    },
+    {
+      "name": "OPPLAYERT/2",
+      "id": 61,
+      "length": 11,
+      "roles": [
+        "selectedSub",
+        "selectedCombinedId",
+        "controlKey",
+        "selectedObj",
+        "index"
+      ],
+      "values": [
+        65535,
+        -1,
+        255,
+        65535,
+        65535
+      ],
+      "hex": "ffffffffffff7fff7fff7f"
+    },
+    {
+      "name": "OPPLAYERT/3",
+      "id": 61,
+      "length": 11,
+      "roles": [
+        "selectedSub",
+        "selectedCombinedId",
+        "controlKey",
+        "selectedObj",
+        "index"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "0000000000008000800080"
+    },
+    {
+      "name": "OPNPCT/0",
+      "id": 62,
+      "length": 11,
+      "roles": [
+        "selectedCombinedId",
+        "index",
+        "selectedSub",
+        "selectedObj",
+        "controlKey"
+      ],
+      "values": [
+        288775040,
+        12373,
+        20340,
+        28307,
+        141
+      ],
+      "hex": "3611805b30554f746e1373"
+    },
+    {
+      "name": "OPNPCT/1",
+      "id": 62,
+      "length": 11,
+      "roles": [
+        "selectedCombinedId",
+        "index",
+        "selectedSub",
+        "selectedObj",
+        "controlKey"
+      ],
+      "values": [
+        1181454517,
+        25994,
+        33961,
+        41928,
+        194
+      ],
+      "hex": "6b46b590658a84a9a3483e"
+    },
+    {
+      "name": "OPNPCT/2",
+      "id": 62,
+      "length": 11,
+      "roles": [
+        "selectedCombinedId",
+        "index",
+        "selectedSub",
+        "selectedObj",
+        "controlKey"
+      ],
+      "values": [
+        -1,
+        65535,
+        65535,
+        65535,
+        255
+      ],
+      "hex": "ffffffffffffffffff7f01"
+    },
+    {
+      "name": "OPNPCT/3",
+      "id": 62,
+      "length": 11,
+      "roles": [
+        "selectedCombinedId",
+        "index",
+        "selectedSub",
+        "selectedObj",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "0000000000000000008000"
+    },
+    {
+      "name": "OPOBJ4_V2/0",
+      "id": 63,
+      "length": 8,
+      "roles": [
+        "z",
+        "x",
+        "controlKey",
+        "subop",
+        "id"
+      ],
+      "values": [
+        4406,
+        12373,
+        79,
+        110,
+        36274
+      ],
+      "hex": "36113055b1ee8d32"
+    },
+    {
+      "name": "OPOBJ4_V2/1",
+      "id": 63,
+      "length": 8,
+      "roles": [
+        "z",
+        "x",
+        "controlKey",
+        "subop",
+        "id"
+      ],
+      "values": [
+        18027,
+        25994,
+        132,
+        163,
+        49895
+      ],
+      "hex": "6b46658a7c23c267"
+    },
+    {
+      "name": "OPOBJ4_V2/2",
+      "id": 63,
+      "length": 8,
+      "roles": [
+        "z",
+        "x",
+        "controlKey",
+        "subop",
+        "id"
+      ],
+      "values": [
+        65535,
+        65535,
+        255,
+        255,
+        65535
+      ],
+      "hex": "ffffffff017fff7f"
+    },
+    {
+      "name": "OPOBJ4_V2/3",
+      "id": 63,
+      "length": 8,
+      "roles": [
+        "z",
+        "x",
+        "controlKey",
+        "subop",
+        "id"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "0000000000800080"
+    },
+    {
+      "name": "OPPLAYER6/0",
+      "id": 64,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        17,
+        12373
+      ],
+      "hex": "113055"
+    },
+    {
+      "name": "OPPLAYER6/1",
+      "id": 64,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        70,
+        25994
+      ],
+      "hex": "46658a"
+    },
+    {
+      "name": "OPPLAYER6/2",
+      "id": 64,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        255,
+        65535
+      ],
+      "hex": "ffffff"
+    },
+    {
+      "name": "OPPLAYER6/3",
+      "id": 64,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "000000"
+    },
+    {
+      "name": "OPOBJ3_V2/0",
+      "id": 65,
+      "length": 8,
+      "roles": [
+        "subop",
+        "x",
+        "id",
+        "z",
+        "controlKey"
+      ],
+      "values": [
+        17,
+        12373,
+        20340,
+        28307,
+        141
+      ],
+      "hex": "1130554f74936ef3"
+    },
+    {
+      "name": "OPOBJ3_V2/1",
+      "id": 65,
+      "length": 8,
+      "roles": [
+        "subop",
+        "x",
+        "id",
+        "z",
+        "controlKey"
+      ],
+      "values": [
+        70,
+        25994,
+        33961,
+        41928,
+        194
+      ],
+      "hex": "46658a84a9c8a3be"
+    },
+    {
+      "name": "OPOBJ3_V2/2",
+      "id": 65,
+      "length": 8,
+      "roles": [
+        "subop",
+        "x",
+        "id",
+        "z",
+        "controlKey"
+      ],
+      "values": [
+        255,
+        65535,
+        65535,
+        65535,
+        255
+      ],
+      "hex": "ffffffffffffff81"
+    },
+    {
+      "name": "OPOBJ3_V2/3",
+      "id": 65,
+      "length": 8,
+      "roles": [
+        "subop",
+        "x",
+        "id",
+        "z",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "0000000000000080"
+    },
+    {
+      "name": "IF_SUBOP/0",
+      "id": 66,
+      "length": 10,
+      "roles": [
+        "combinedId",
+        "sub",
+        "obj",
+        "op",
+        "subop"
+      ],
+      "values": [
+        288775040,
+        12373,
+        20340,
+        110,
+        141
+      ],
+      "hex": "11365b8030554f746e8d"
+    },
+    {
+      "name": "IF_SUBOP/1",
+      "id": 66,
+      "length": 10,
+      "roles": [
+        "combinedId",
+        "sub",
+        "obj",
+        "op",
+        "subop"
+      ],
+      "values": [
+        1181454517,
+        25994,
+        33961,
+        163,
+        194
+      ],
+      "hex": "466b90b5658a84a9a3c2"
+    },
+    {
+      "name": "IF_SUBOP/2",
+      "id": 66,
+      "length": 10,
+      "roles": [
+        "combinedId",
+        "sub",
+        "obj",
+        "op",
+        "subop"
+      ],
+      "values": [
+        -1,
+        65535,
+        65535,
+        255,
+        255
+      ],
+      "hex": "ffffffffffffffffffff"
+    },
+    {
+      "name": "IF_SUBOP/3",
+      "id": 66,
+      "length": 10,
+      "roles": [
+        "combinedId",
+        "sub",
+        "obj",
+        "op",
+        "subop"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "00000000000000000000"
+    },
+    {
+      "name": "SOUND_JINGLEEND/0",
+      "id": 67,
+      "length": 4,
+      "roles": [
+        "jingle"
+      ],
+      "values": [
+        288775040
+      ],
+      "hex": "11365b80"
+    },
+    {
+      "name": "SOUND_JINGLEEND/1",
+      "id": 67,
+      "length": 4,
+      "roles": [
+        "jingle"
+      ],
+      "values": [
+        1181454517
+      ],
+      "hex": "466b90b5"
+    },
+    {
+      "name": "SOUND_JINGLEEND/2",
+      "id": 67,
+      "length": 4,
+      "roles": [
+        "jingle"
+      ],
+      "values": [
+        -1
+      ],
+      "hex": "ffffffff"
+    },
+    {
+      "name": "SOUND_JINGLEEND/3",
+      "id": 67,
+      "length": 4,
+      "roles": [
+        "jingle"
+      ],
+      "values": [
+        0
+      ],
+      "hex": "00000000"
+    },
+    {
+      "name": "RESUME_P_COUNTDIALOG/0",
+      "id": 68,
+      "length": 4,
+      "roles": [
+        "count"
+      ],
+      "values": [
+        288775040
+      ],
+      "hex": "11365b80"
+    },
+    {
+      "name": "RESUME_P_COUNTDIALOG/1",
+      "id": 68,
+      "length": 4,
+      "roles": [
+        "count"
+      ],
+      "values": [
+        1181454517
+      ],
+      "hex": "466b90b5"
+    },
+    {
+      "name": "RESUME_P_COUNTDIALOG/2",
+      "id": 68,
+      "length": 4,
+      "roles": [
+        "count"
+      ],
+      "values": [
+        -1
+      ],
+      "hex": "ffffffff"
+    },
+    {
+      "name": "RESUME_P_COUNTDIALOG/3",
+      "id": 68,
+      "length": 4,
+      "roles": [
+        "count"
+      ],
+      "values": [
+        0
+      ],
+      "hex": "00000000"
+    },
+    {
+      "name": "WINDOW_STATUS/0",
+      "id": 69,
+      "length": 5,
+      "roles": [
+        "windowMode",
+        "frameWidth",
+        "frameHeight"
+      ],
+      "values": [
+        17,
+        12373,
+        20340
+      ],
+      "hex": "1130554f74"
+    },
+    {
+      "name": "WINDOW_STATUS/1",
+      "id": 69,
+      "length": 5,
+      "roles": [
+        "windowMode",
+        "frameWidth",
+        "frameHeight"
+      ],
+      "values": [
+        70,
+        25994,
+        33961
+      ],
+      "hex": "46658a84a9"
+    },
+    {
+      "name": "WINDOW_STATUS/2",
+      "id": 69,
+      "length": 5,
+      "roles": [
+        "windowMode",
+        "frameWidth",
+        "frameHeight"
+      ],
+      "values": [
+        255,
+        65535,
+        65535
+      ],
+      "hex": "ffffffffff"
+    },
+    {
+      "name": "WINDOW_STATUS/3",
+      "id": 69,
+      "length": 5,
+      "roles": [
+        "windowMode",
+        "frameWidth",
+        "frameHeight"
+      ],
+      "values": [
+        0,
+        0,
+        0
+      ],
+      "hex": "0000000000"
+    },
+    {
+      "name": "OPOBJ1_V2/0",
+      "id": 71,
+      "length": 8,
+      "roles": [
+        "subop",
+        "x",
+        "id",
+        "controlKey",
+        "z"
+      ],
+      "values": [
+        17,
+        12373,
+        20340,
+        110,
+        36274
+      ],
+      "hex": "1130554f746e328d"
+    },
+    {
+      "name": "OPOBJ1_V2/1",
+      "id": 71,
+      "length": 8,
+      "roles": [
+        "subop",
+        "x",
+        "id",
+        "controlKey",
+        "z"
+      ],
+      "values": [
+        70,
+        25994,
+        33961,
+        163,
+        49895
+      ],
+      "hex": "46658a84a9a367c2"
+    },
+    {
+      "name": "OPOBJ1_V2/2",
+      "id": 71,
+      "length": 8,
+      "roles": [
+        "subop",
+        "x",
+        "id",
+        "controlKey",
+        "z"
+      ],
+      "values": [
+        255,
+        65535,
+        65535,
+        255,
+        65535
+      ],
+      "hex": "ffffffffffff7fff"
+    },
+    {
+      "name": "OPOBJ1_V2/3",
+      "id": 71,
+      "length": 8,
+      "roles": [
+        "subop",
+        "x",
+        "id",
+        "controlKey",
+        "z"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "0000000000008000"
+    },
+    {
+      "name": "OPLOC1_V2/0",
+      "id": 72,
+      "length": 8,
+      "roles": [
+        "z",
+        "id",
+        "subop",
+        "x",
+        "controlKey"
+      ],
+      "values": [
+        4406,
+        12373,
+        79,
+        28307,
+        141
+      ],
+      "hex": "3611d5304f6e93f3"
+    },
+    {
+      "name": "OPLOC1_V2/1",
+      "id": 72,
+      "length": 8,
+      "roles": [
+        "z",
+        "id",
+        "subop",
+        "x",
+        "controlKey"
+      ],
+      "values": [
+        18027,
+        25994,
+        132,
+        41928,
+        194
+      ],
+      "hex": "6b460a6584a3c8be"
+    },
+    {
+      "name": "OPLOC1_V2/2",
+      "id": 72,
+      "length": 8,
+      "roles": [
+        "z",
+        "id",
+        "subop",
+        "x",
+        "controlKey"
+      ],
+      "values": [
+        65535,
+        65535,
+        255,
+        65535,
+        255
+      ],
+      "hex": "ffff7fffffffff81"
+    },
+    {
+      "name": "OPLOC1_V2/3",
+      "id": 72,
+      "length": 8,
+      "roles": [
+        "z",
+        "id",
+        "subop",
+        "x",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "0000800000000080"
+    },
+    {
+      "name": "SET_HEADING/0",
+      "id": 73,
+      "length": 1,
+      "roles": [
+        "heading"
+      ],
+      "values": [
+        17
+      ],
+      "hex": "91"
+    },
+    {
+      "name": "SET_HEADING/1",
+      "id": 73,
+      "length": 1,
+      "roles": [
+        "heading"
+      ],
+      "values": [
+        70
+      ],
+      "hex": "c6"
+    },
+    {
+      "name": "SET_HEADING/2",
+      "id": 73,
+      "length": 1,
+      "roles": [
+        "heading"
+      ],
+      "values": [
+        255
+      ],
+      "hex": "7f"
+    },
+    {
+      "name": "SET_HEADING/3",
+      "id": 73,
+      "length": 1,
+      "roles": [
+        "heading"
+      ],
+      "values": [
+        0
+      ],
+      "hex": "80"
+    },
+    {
+      "name": "IDLE/0",
+      "id": 74,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "IDLE/1",
+      "id": 74,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "IDLE/2",
+      "id": 74,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "IDLE/3",
+      "id": 74,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "NO_TIMEOUT/0",
+      "id": 75,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "NO_TIMEOUT/1",
+      "id": 75,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "NO_TIMEOUT/2",
+      "id": 75,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "NO_TIMEOUT/3",
+      "id": 75,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "OPNPC5_V2/0",
+      "id": 76,
+      "length": 4,
+      "roles": [
+        "index",
+        "controlKey",
+        "subop"
+      ],
+      "values": [
+        4406,
+        48,
+        79
+      ],
+      "hex": "11b6b0b1"
+    },
+    {
+      "name": "OPNPC5_V2/1",
+      "id": 76,
+      "length": 4,
+      "roles": [
+        "index",
+        "controlKey",
+        "subop"
+      ],
+      "values": [
+        18027,
+        101,
+        132
+      ],
+      "hex": "46ebe57c"
+    },
+    {
+      "name": "OPNPC5_V2/2",
+      "id": 76,
+      "length": 4,
+      "roles": [
+        "index",
+        "controlKey",
+        "subop"
+      ],
+      "values": [
+        65535,
+        255,
+        255
+      ],
+      "hex": "ff7f7f01"
+    },
+    {
+      "name": "OPNPC5_V2/3",
+      "id": 76,
+      "length": 4,
+      "roles": [
+        "index",
+        "controlKey",
+        "subop"
+      ],
+      "values": [
+        0,
+        0,
+        0
+      ],
+      "hex": "00808000"
+    },
+    {
+      "name": "IF_BUTTON/0",
+      "id": 78,
+      "length": 4,
+      "roles": [
+        "combinedId"
+      ],
+      "values": [
+        288775040
+      ],
+      "hex": "11365b80"
+    },
+    {
+      "name": "IF_BUTTON/1",
+      "id": 78,
+      "length": 4,
+      "roles": [
+        "combinedId"
+      ],
+      "values": [
+        1181454517
+      ],
+      "hex": "466b90b5"
+    },
+    {
+      "name": "IF_BUTTON/2",
+      "id": 78,
+      "length": 4,
+      "roles": [
+        "combinedId"
+      ],
+      "values": [
+        -1
+      ],
+      "hex": "ffffffff"
+    },
+    {
+      "name": "IF_BUTTON/3",
+      "id": 78,
+      "length": 4,
+      "roles": [
+        "combinedId"
+      ],
+      "values": [
+        0
+      ],
+      "hex": "00000000"
+    },
+    {
+      "name": "OPLOC4_V2/0",
+      "id": 79,
+      "length": 8,
+      "roles": [
+        "id",
+        "subop",
+        "controlKey",
+        "x",
+        "z"
+      ],
+      "values": [
+        4406,
+        48,
+        79,
+        28307,
+        36274
+      ],
+      "hex": "11b6b031936eb28d"
+    },
+    {
+      "name": "OPLOC4_V2/1",
+      "id": 79,
+      "length": 8,
+      "roles": [
+        "id",
+        "subop",
+        "controlKey",
+        "x",
+        "z"
+      ],
+      "values": [
+        18027,
+        101,
+        132,
+        41928,
+        49895
+      ],
+      "hex": "46ebe5fcc8a3e7c2"
+    },
+    {
+      "name": "OPLOC4_V2/2",
+      "id": 79,
+      "length": 8,
+      "roles": [
+        "id",
+        "subop",
+        "controlKey",
+        "x",
+        "z"
+      ],
+      "values": [
+        65535,
+        255,
+        255,
+        65535,
+        65535
+      ],
+      "hex": "ff7f7f81ffffffff"
+    },
+    {
+      "name": "OPLOC4_V2/3",
+      "id": 79,
+      "length": 8,
+      "roles": [
+        "id",
+        "subop",
+        "controlKey",
+        "x",
+        "z"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "0080808000000000"
+    },
+    {
+      "name": "OPWORLDENTITY1/0",
+      "id": 82,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        4406,
+        48
+      ],
+      "hex": "361150"
+    },
+    {
+      "name": "OPWORLDENTITY1/1",
+      "id": 82,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        18027,
+        101
+      ],
+      "hex": "6b461b"
+    },
+    {
+      "name": "OPWORLDENTITY1/2",
+      "id": 82,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        65535,
+        255
+      ],
+      "hex": "ffff81"
+    },
+    {
+      "name": "OPWORLDENTITY1/3",
+      "id": 82,
+      "length": 3,
+      "roles": [
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "000080"
+    },
+    {
+      "name": "OPNPC3_V2/0",
+      "id": 86,
+      "length": 4,
+      "roles": [
+        "index",
+        "subop",
+        "controlKey"
+      ],
+      "values": [
+        4406,
+        48,
+        79
+      ],
+      "hex": "361130cf"
+    },
+    {
+      "name": "OPNPC3_V2/1",
+      "id": 86,
+      "length": 4,
+      "roles": [
+        "index",
+        "subop",
+        "controlKey"
+      ],
+      "values": [
+        18027,
+        101,
+        132
+      ],
+      "hex": "6b466504"
+    },
+    {
+      "name": "OPNPC3_V2/2",
+      "id": 86,
+      "length": 4,
+      "roles": [
+        "index",
+        "subop",
+        "controlKey"
+      ],
+      "values": [
+        65535,
+        255,
+        255
+      ],
+      "hex": "ffffff7f"
+    },
+    {
+      "name": "OPNPC3_V2/3",
+      "id": 86,
+      "length": 4,
+      "roles": [
+        "index",
+        "subop",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0,
+        0
+      ],
+      "hex": "00000080"
+    },
+    {
+      "name": "OPOBJ6/0",
+      "id": 90,
+      "length": 6,
+      "roles": [
+        "z",
+        "id",
+        "x"
+      ],
+      "values": [
+        4406,
+        12373,
+        20340
+      ],
+      "hex": "11b6d530f44f"
+    },
+    {
+      "name": "OPOBJ6/1",
+      "id": 90,
+      "length": 6,
+      "roles": [
+        "z",
+        "id",
+        "x"
+      ],
+      "values": [
+        18027,
+        25994,
+        33961
+      ],
+      "hex": "46eb0a652984"
+    },
+    {
+      "name": "OPOBJ6/2",
+      "id": 90,
+      "length": 6,
+      "roles": [
+        "z",
+        "id",
+        "x"
+      ],
+      "values": [
+        65535,
+        65535,
+        65535
+      ],
+      "hex": "ff7f7fff7fff"
+    },
+    {
+      "name": "OPOBJ6/3",
+      "id": 90,
+      "length": 6,
+      "roles": [
+        "z",
+        "id",
+        "x"
+      ],
+      "values": [
+        0,
+        0,
+        0
+      ],
+      "hex": "008080008000"
+    },
+    {
+      "name": "OPWORLDENTITYT/0",
+      "id": 91,
+      "length": 11,
+      "roles": [
+        "selectedObj",
+        "controlKey",
+        "selectedCombinedId",
+        "index",
+        "selectedSub"
+      ],
+      "values": [
+        4406,
+        48,
+        1333041598,
+        28307,
+        36274
+      ],
+      "hex": "1136304f7499be6e93328d"
+    },
+    {
+      "name": "OPWORLDENTITYT/1",
+      "id": 91,
+      "length": 11,
+      "roles": [
+        "selectedObj",
+        "controlKey",
+        "selectedCombinedId",
+        "index",
+        "selectedSub"
+      ],
+      "values": [
+        18027,
+        101,
+        -2069246221,
+        41928,
+        49895
+      ],
+      "hex": "466b6584a9cef3a3c867c2"
+    },
+    {
+      "name": "OPWORLDENTITYT/2",
+      "id": 91,
+      "length": 11,
+      "roles": [
+        "selectedObj",
+        "controlKey",
+        "selectedCombinedId",
+        "index",
+        "selectedSub"
+      ],
+      "values": [
+        65535,
+        255,
+        -1,
+        65535,
+        65535
+      ],
+      "hex": "ffffffffffffffffff7fff"
+    },
+    {
+      "name": "OPWORLDENTITYT/3",
+      "id": 91,
+      "length": 11,
+      "roles": [
+        "selectedObj",
+        "controlKey",
+        "selectedCombinedId",
+        "index",
+        "selectedSub"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "0000000000000000008000"
+    },
+    {
+      "name": "OPNPC1_V2/0",
+      "id": 92,
+      "length": 4,
+      "roles": [
+        "subop",
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        17,
+        12373,
+        79
+      ],
+      "hex": "91d530b1"
+    },
+    {
+      "name": "OPNPC1_V2/1",
+      "id": 92,
+      "length": 4,
+      "roles": [
+        "subop",
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        70,
+        25994,
+        132
+      ],
+      "hex": "c60a657c"
+    },
+    {
+      "name": "OPNPC1_V2/2",
+      "id": 92,
+      "length": 4,
+      "roles": [
+        "subop",
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        255,
+        65535,
+        255
+      ],
+      "hex": "7f7fff01"
+    },
+    {
+      "name": "OPNPC1_V2/3",
+      "id": 92,
+      "length": 4,
+      "roles": [
+        "subop",
+        "index",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0,
+        0
+      ],
+      "hex": "80800000"
+    },
+    {
+      "name": "OPOBJT/0",
+      "id": 94,
+      "length": 15,
+      "roles": [
+        "selectedSub",
+        "id",
+        "z",
+        "x",
+        "selectedCombinedId",
+        "controlKey",
+        "selectedObj"
+      ],
+      "values": [
+        4406,
+        12373,
+        20340,
+        28307,
+        -1917659140,
+        172,
+        52208
+      ],
+      "hex": "11b630d54f74136ed7fc8db22cf0cb"
+    },
+    {
+      "name": "OPOBJT/1",
+      "id": 94,
+      "length": 15,
+      "roles": [
+        "selectedSub",
+        "id",
+        "z",
+        "x",
+        "selectedCombinedId",
+        "controlKey",
+        "selectedObj"
+      ],
+      "values": [
+        18027,
+        25994,
+        33961,
+        41928,
+        -1025045455,
+        225,
+        37
+      ],
+      "hex": "46eb650a84a948a30c31c2e7612500"
+    },
+    {
+      "name": "OPOBJT/2",
+      "id": 94,
+      "length": 15,
+      "roles": [
+        "selectedSub",
+        "id",
+        "z",
+        "x",
+        "selectedCombinedId",
+        "controlKey",
+        "selectedObj"
+      ],
+      "values": [
+        65535,
+        65535,
+        65535,
+        65535,
+        -1,
+        255,
+        65535
+      ],
+      "hex": "ff7fff7fffff7fffffffffff7fffff"
+    },
+    {
+      "name": "OPOBJT/3",
+      "id": 94,
+      "length": 15,
+      "roles": [
+        "selectedSub",
+        "id",
+        "z",
+        "x",
+        "selectedCombinedId",
+        "controlKey",
+        "selectedObj"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "008000800000800000000000800000"
+    },
+    {
+      "name": "OPPLAYER7/0",
+      "id": 95,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        17,
+        12373
+      ],
+      "hex": "6fd530"
+    },
+    {
+      "name": "OPPLAYER7/1",
+      "id": 95,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        70,
+        25994
+      ],
+      "hex": "3a0a65"
+    },
+    {
+      "name": "OPPLAYER7/2",
+      "id": 95,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        255,
+        65535
+      ],
+      "hex": "817fff"
+    },
+    {
+      "name": "OPPLAYER7/3",
+      "id": 95,
+      "length": 3,
+      "roles": [
+        "controlKey",
+        "index"
+      ],
+      "values": [
+        0,
+        0
+      ],
+      "hex": "808000"
+    },
+    {
+      "name": "EVENT_APPLET_FOCUS/0",
+      "id": 97,
+      "length": 1,
+      "roles": [
+        "inFocus"
+      ],
+      "values": [
+        17
+      ],
+      "hex": "11"
+    },
+    {
+      "name": "EVENT_APPLET_FOCUS/1",
+      "id": 97,
+      "length": 1,
+      "roles": [
+        "inFocus"
+      ],
+      "values": [
+        70
+      ],
+      "hex": "46"
+    },
+    {
+      "name": "EVENT_APPLET_FOCUS/2",
+      "id": 97,
+      "length": 1,
+      "roles": [
+        "inFocus"
+      ],
+      "values": [
+        255
+      ],
+      "hex": "ff"
+    },
+    {
+      "name": "EVENT_APPLET_FOCUS/3",
+      "id": 97,
+      "length": 1,
+      "roles": [
+        "inFocus"
+      ],
+      "values": [
+        0
+      ],
+      "hex": "00"
+    },
+    {
+      "name": "OPOBJ2_V2/0",
+      "id": 98,
+      "length": 8,
+      "roles": [
+        "x",
+        "id",
+        "subop",
+        "z",
+        "controlKey"
+      ],
+      "values": [
+        4406,
+        12373,
+        79,
+        28307,
+        141
+      ],
+      "hex": "11b63055b16e130d"
+    },
+    {
+      "name": "OPOBJ2_V2/1",
+      "id": 98,
+      "length": 8,
+      "roles": [
+        "x",
+        "id",
+        "subop",
+        "z",
+        "controlKey"
+      ],
+      "values": [
+        18027,
+        25994,
+        132,
+        41928,
+        194
+      ],
+      "hex": "46eb658a7ca34842"
+    },
+    {
+      "name": "OPOBJ2_V2/2",
+      "id": 98,
+      "length": 8,
+      "roles": [
+        "x",
+        "id",
+        "subop",
+        "z",
+        "controlKey"
+      ],
+      "values": [
+        65535,
+        65535,
+        255,
+        65535,
+        255
+      ],
+      "hex": "ff7fffff01ff7f7f"
+    },
+    {
+      "name": "OPOBJ2_V2/3",
+      "id": 98,
+      "length": 8,
+      "roles": [
+        "x",
+        "id",
+        "subop",
+        "z",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "0080000000008080"
+    },
+    {
+      "name": "MAP_BUILD_COMPLETE/0",
+      "id": 99,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "MAP_BUILD_COMPLETE/1",
+      "id": 99,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "MAP_BUILD_COMPLETE/2",
+      "id": 99,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "MAP_BUILD_COMPLETE/3",
+      "id": 99,
+      "length": 0,
+      "roles": [],
+      "values": [],
+      "hex": ""
+    },
+    {
+      "name": "OPLOC3_V2/0",
+      "id": 100,
+      "length": 8,
+      "roles": [
+        "z",
+        "x",
+        "subop",
+        "id",
+        "controlKey"
+      ],
+      "values": [
+        4406,
+        12373,
+        79,
+        28307,
+        141
+      ],
+      "hex": "36115530b1136e0d"
+    },
+    {
+      "name": "OPLOC3_V2/1",
+      "id": 100,
+      "length": 8,
+      "roles": [
+        "z",
+        "x",
+        "subop",
+        "id",
+        "controlKey"
+      ],
+      "values": [
+        18027,
+        25994,
+        132,
+        41928,
+        194
+      ],
+      "hex": "6b468a657c48a342"
+    },
+    {
+      "name": "OPLOC3_V2/2",
+      "id": 100,
+      "length": 8,
+      "roles": [
+        "z",
+        "x",
+        "subop",
+        "id",
+        "controlKey"
+      ],
+      "values": [
+        65535,
+        65535,
+        255,
+        65535,
+        255
+      ],
+      "hex": "ffffffff017fff7f"
+    },
+    {
+      "name": "OPLOC3_V2/3",
+      "id": 100,
+      "length": 8,
+      "roles": [
+        "z",
+        "x",
+        "subop",
+        "id",
+        "controlKey"
+      ],
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "hex": "0000000000800080"
+    }
+  ],
+  "gaps": [
+    {
+      "id": 1,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 2,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 7,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 14,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 17,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 20,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 22,
+      "reason": "native write count differs from reference"
+    },
+    {
+      "id": 23,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 25,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 27,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 29,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 33,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 36,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 37,
+      "reason": "native write count differs from reference"
+    },
+    {
+      "id": 42,
+      "reason": "native write count differs from reference"
+    },
+    {
+      "id": 45,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 47,
+      "reason": "native write count differs from reference"
+    },
+    {
+      "id": 49,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 50,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 51,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 55,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 56,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 57,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 58,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 59,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 60,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 70,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 77,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 80,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 81,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 83,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 84,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 85,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 87,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    },
+    {
+      "id": 88,
+      "reason": "native write count differs from reference"
+    },
+    {
+      "id": 89,
+      "reason": "native write count differs from reference"
+    },
+    {
+      "id": 93,
+      "reason": "native write count differs from reference"
+    },
+    {
+      "id": 96,
+      "reason": "native write count differs from reference"
+    },
+    {
+      "id": 101,
+      "reason": "variable/conditional/custom decoder; requires native capture or codec adapter"
+    }
+  ],
+  "packetCount": 62
+}

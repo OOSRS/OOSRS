@@ -243,8 +243,8 @@ public class InventoryService
 	{
 		if (item == null) throw new IllegalArgumentException("inventory item is required");
 		if (!client.isClientThread()) throw new IllegalStateException("Inventory actions require the client thread");
-		if (client.getGameState() != net.runelite.api.GameState.LOGGED_IN || client.getRevision() != 240)
-			throw new IllegalStateException("Inventory actions require a logged-in revision-240 client");
+		if (client.getGameState() != net.runelite.api.GameState.LOGGED_IN || client.getRevision() != 241)
+			throw new IllegalStateException("Inventory actions require a logged-in revision-241 client");
 		item.requireCurrent(client);
 		ItemContainer inventory = container();
 		Item[] items = inventory == null ? null : inventory.getItems();

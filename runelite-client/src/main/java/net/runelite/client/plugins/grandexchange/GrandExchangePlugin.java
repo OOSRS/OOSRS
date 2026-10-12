@@ -430,7 +430,7 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		final int qty = offer.getQuantitySold() - savedOffer.getQuantitySold();
-		final int dspent = offer.getSpent() - savedOffer.getSpent();
+		final long dspent = offer.getSpent() - savedOffer.getSpent();
 		if (qty <= 0 || dspent <= 0)
 		{
 			return;
@@ -835,7 +835,7 @@ public class GrandExchangePlugin extends Plugin
 
 		if (config.showActivelyTradedPrice())
 		{
-			final int price = itemManager.getItemPriceWithSource(itemId, true);
+			final long price = itemManager.getItemPriceWithSource(itemId, true);
 			if (price > 0)
 			{
 				if (sb.length() > 0)

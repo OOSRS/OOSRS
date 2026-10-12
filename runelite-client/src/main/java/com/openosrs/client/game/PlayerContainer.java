@@ -39,8 +39,8 @@ public class PlayerContainer
 	private AttackStyle attackStyle;
 	private AttackStyle weakness;
 	private HiscoreResult skills;
-	private LinkedHashMap<Integer, Integer> gear;
-	private LinkedHashMap<Integer, Integer> riskedGear;
+	private LinkedHashMap<Integer, Long> gear;
+	private LinkedHashMap<Integer, Long> riskedGear;
 	private MeleeStyle meleeStyle;
 	private Player player;
 	private String location;
@@ -56,7 +56,7 @@ public class PlayerContainer
 	private int hpLevel;
 	private int potionBoost;
 	private int prayerLevel;
-	private int risk;
+	private long risk;
 	private int scoutTimer;
 	private int shield;
 	private int timer;

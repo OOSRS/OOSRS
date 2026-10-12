@@ -29,7 +29,7 @@ An open-source desktop client built around extensibility. Explore the world with
 
 Client and launcher updates have separate release channels. Failed downloads preserve existing cached files. A cached client still needs a game-compatible revision and a network connection to play.
 
-You can also download the client JAR directly and run `java -jar openosrs-client-1.2.0.jar`.
+You can also download the client JAR directly and run `java -jar openosrs-client-1.13.1.jar`.
 
 ## Built for plugin makers
 
@@ -61,7 +61,7 @@ Use the [Profiles sidebar](docs/PROFILES.md) to add Jagex accounts, save your ch
 git clone https://github.com/OOSRS/OOSRS.git
 cd OOSRS
 ./gradlew :runelite-client:shadowJar
-java -jar runelite-client/build/libs/openosrs-client-1.2.0.jar
+java -jar runelite-client/build/libs/openosrs-client-1.13.1.jar
 ```
 
 Use a Java 11 JDK. On Windows, use `gradlew.bat`. The build fetches its pinned game dependency and verifies its SHA-256; you do not need the private maintainer tools. [Full build guide →](docs/BUILDING.md)
@@ -75,9 +75,9 @@ Use a Java 11 JDK. On Windows, use `gradlew.bat`. The build fetches its pinned g
 - `runelite-jshell` — developer console support.
 - [OOSRS-Plugins](https://github.com/OOSRS/OOSRS-Plugins) — a separate repository containing three installable examples, included by default in the client.
 
-Existing Java package names preserve plugin compatibility. Revision 240 is the initial published baseline. Unverified packet layouts remain disabled; the API does not promise that every possible action is supported.
+Existing Java package names preserve plugin compatibility. The current release targets game revision 241. Unverified packet layouts remain disabled; the API does not promise that every possible action is supported.
 
-See [what changed in 1.2.0](docs/releases/1.2.0.md) and the [existing API compatibility limits](docs/releases/1.0.2.md#plugin-compatibility).
+See [what changed in 1.13.1](docs/releases/1.13.1.md) and the [existing API compatibility limits](docs/releases/1.0.2.md#plugin-compatibility).
 
 ## Contribute
 
@@ -91,4 +91,4 @@ See [LICENSE](LICENSE), [NOTICE](NOTICE), and individual source headers. This re
 
 Plugins built on the OpenOSRS API can act through a real, moving cursor instead of submitting interactions directly. It is off by default; switch it on under **Mouse settings**. See the [human input guide](docs/HUMAN_INPUT.md) for the settings, plugin integration, completion handling and current limits.
 
-See the [1.2.0 verification status](docs/STATUS.md) for the released build and the scope of live mouse checks.
+See the [current verification status](docs/STATUS.md) for the released build and the scope of live mouse checks.

@@ -255,8 +255,8 @@ public class LootTrackerPluginTest
 		});
 		when(client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST)).thenReturn(itemContainer);
 
-		when(itemManager.getItemPrice(ItemID.TWISTED_BOW)).thenReturn(1_100_000_000);
-		when(itemManager.getItemPrice(ItemID.PURE_ESSENCE)).thenReturn(6);
+		when(itemManager.getItemPrice(ItemID.TWISTED_BOW)).thenReturn((long) (1_100_000_000));
+		when(itemManager.getItemPrice(ItemID.PURE_ESSENCE)).thenReturn((long) (6));
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
 		widgetLoaded.setGroupId(WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID);

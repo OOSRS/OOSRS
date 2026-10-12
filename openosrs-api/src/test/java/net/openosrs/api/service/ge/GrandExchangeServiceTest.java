@@ -169,8 +169,8 @@ class GrandExchangeServiceTest
 		when(offer0.getItemId()).thenReturn(4151);
 		when(offer0.getTotalQuantity()).thenReturn(1);
 		when(offer0.getQuantitySold()).thenReturn(1);
-		when(offer0.getPrice()).thenReturn(2000000);
-		when(offer0.getSpent()).thenReturn(2000000);
+		when(offer0.getPrice()).thenReturn((long) (2000000));
+		when(offer0.getSpent()).thenReturn((long) (2000000));
 		when(offer0.getState()).thenReturn(GrandExchangeOfferState.BOUGHT);
 
 		GrandExchangeOffer[] array = new GrandExchangeOffer[]{offer0, null};

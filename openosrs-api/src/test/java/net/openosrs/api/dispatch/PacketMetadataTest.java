@@ -25,7 +25,7 @@ class PacketMetadataTest
         file.getSendPath().setAddNodeStatic(true);
         assertThrows(IllegalStateException.class, file::validate);
         file = HooksFile.load();
-        file.packetById(14).getWrites().get(0).setW("W1");
+        file.packetById(3).getWrites().get(0).setW("W1");
         assertThrows(IllegalStateException.class, file::validate);
     }
 
@@ -48,10 +48,10 @@ class PacketMetadataTest
         file.getSendPath().setFactoryMethods(java.util.List.of("aa(Ljs;Lyt;)Ljava/lang/Object;"));
         assertThrows(IllegalStateException.class, file::validate);
         file = HooksFile.load();
-        file.packetById(14).getWrites().get(0).setOwner("unrelated.Buffer");
+        file.packetById(3).getWrites().get(0).setOwner("unrelated.Buffer");
         assertThrows(IllegalStateException.class, file::validate);
         file = HooksFile.load();
-        file.packetById(14).getWrites().get(0).setStaticMethod(true);
+        file.packetById(3).getWrites().get(0).setStaticMethod(true);
         assertThrows(IllegalStateException.class, file::validate);
     }
 }
