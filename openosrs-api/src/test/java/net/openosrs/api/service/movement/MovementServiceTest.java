@@ -43,13 +43,13 @@ class MovementServiceTest
 	{
 		when(packets.available()).thenReturn(true);
 		when(packets.cipherReady()).thenReturn(true);
-		when(packets.send("MOVE_GAMECLICK", 5, 3494, 0, 3162)).thenReturn(true);
+		when(packets.send("MOVE_GAMECLICK", 5, 0, 3494, 3162)).thenReturn(true);
 
 		WorldPoint target = new WorldPoint(3162, 3494, 0);
 		boolean result = service.walkTo(target);
 
 		assertTrue(result);
-		verify(packets).send("MOVE_GAMECLICK", 5, 3494, 0, 3162);
+		verify(packets).send("MOVE_GAMECLICK", 5, 0, 3494, 3162);
 		verifyNoInteractions(dispatcher);
 	}
 
@@ -58,13 +58,13 @@ class MovementServiceTest
 	{
 		when(packets.available()).thenReturn(true);
 		when(packets.cipherReady()).thenReturn(true);
-		when(packets.send("MOVE_GAMECLICK", 5, 3494, 1, 3162)).thenReturn(true);
+		when(packets.send("MOVE_GAMECLICK", 5, 1, 3494, 3162)).thenReturn(true);
 
 		WorldPoint target = new WorldPoint(3162, 3494, 0);
 		boolean result = service.walkTo(target, true);
 
 		assertTrue(result);
-		verify(packets).send("MOVE_GAMECLICK", 5, 3494, 1, 3162);
+		verify(packets).send("MOVE_GAMECLICK", 5, 1, 3494, 3162);
 		verifyNoInteractions(dispatcher);
 	}
 
@@ -88,7 +88,7 @@ class MovementServiceTest
 	{
 		when(packets.available()).thenReturn(true);
 		when(packets.cipherReady()).thenReturn(true);
-		when(packets.send("MOVE_GAMECLICK", 5, 3494, 0, 3162)).thenReturn(false);
+		when(packets.send("MOVE_GAMECLICK", 5, 0, 3494, 3162)).thenReturn(false);
 		when(dispatcher.dispatch(eq(MenuAction.WALK), eq(0), anyInt(), anyInt(), anyString(), anyString(), eq(-1), anyInt()))
 			.thenReturn(true);
 
@@ -96,7 +96,7 @@ class MovementServiceTest
 		boolean result = service.walkTo(target);
 
 		assertTrue(result);
-		verify(packets).send("MOVE_GAMECLICK", 5, 3494, 0, 3162);
+		verify(packets).send("MOVE_GAMECLICK", 5, 0, 3494, 3162);
 		verify(dispatcher).dispatch(eq(MenuAction.WALK), eq(0), anyInt(), anyInt(), eq("Walk here"), eq(""), eq(-1), anyInt());
 	}
 

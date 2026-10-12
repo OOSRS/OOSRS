@@ -100,7 +100,8 @@ public class MovementService
 		net.openosrs.api.dispatch.PacketDispatcher p = packets != null ? packets : net.openosrs.api.Context.getService(net.openosrs.api.dispatch.PacketDispatcher.class);
 		if (p != null && p.available() && p.cipherReady())
 		{
-			if (p.send("MOVE_GAMECLICK", 5, target.getY(), ctrl ? 1 : 0, target.getX()))
+			// Revision 241: payload length, control modifier, world Y, world X.
+			if (p.send("MOVE_GAMECLICK", 5, ctrl ? 1 : 0, target.getY(), target.getX()))
 			{
 				return true;
 			}
