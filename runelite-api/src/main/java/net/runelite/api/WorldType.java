@@ -91,7 +91,12 @@ public enum WorldType
 	/**
 	 * Seasonal world type for leagues and seasonal deadman.
 	 */
-	SEASONAL(1 << 30);
+	SEASONAL(1 << 30),
+	/**
+	 * Hardcore main world. Appended to preserve existing enum ordinals;
+	 * the protocol mask matches RuneLite's HARDCORE_MAIN flag.
+	 */
+	HARDCORE_MAIN(1 << 11);
 
 	private final int mask;
 
